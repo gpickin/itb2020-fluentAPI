@@ -31,7 +31,7 @@ create_staging_image:
 
     - apt-get update
     - apt-get upgrade -y
-    - apt-get install -y gnupg software-properties-common apt-transport-https ca-certificates
+    - apt-get install -y ssh gnupg software-properties-common apt-transport-https ca-certificates
     # Docker Deamon
     - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
     - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable"
@@ -60,6 +60,9 @@ deploy_staging:
     - echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - touch ~/.ssh/known_hosts
+    - apt-get update
+    - apt-get upgrade -y
+    - apt-get install -y ssh
   script:
     - export DOCKER_SERVICE_NAME=fluentAPIImage_cfml
     # Override our SSH connection point for staging of our swarm master - this may also be provided as an environment variable
