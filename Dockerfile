@@ -1,3 +1,4 @@
 FROM ortussolutions/commandbox
 COPY . /app
-RUN ${BUILD_DIR}/run.sh && sleep 30 && cd ${APP_DIR} && box server stop
+RUN chmod +x ${APP_DIR}/workbench/setup-env.sh
+RUN ${APP_DIR}/workbench/setup-env.sh
