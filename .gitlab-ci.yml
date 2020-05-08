@@ -1,0 +1,95 @@
+image: ortussolutions/commandbox
+
+stages:
+  - tests
+  - localStackCheck
+  - imageBuild
+  - remoteStackCheck
+  - imageDeploy
+  - imageTest
+  - artifacts
+
+cfformat:
+  image: ortussolutions/commandbox:latest
+  stage: tests
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /skip-format/
+  before_script:
+    - echo 'skip before_script'
+  script:
+    - box install commandbox-cfformat
+    - box run-script format:check
+
+
+create_staging_image:
+  stage: imageBuild
+  only:
+    - development
+  script:
+
+    - box install --verbose
+    - echo "Logging in to Docker Hub Registry"
+    - docker login -u gpickin -p $DOCKER_REGISTRY_PASSWORD
+    # Build our compiled image using our Dockerfile
+    - docker build --no-cache -t ${CI_COMMIT_REF_NAME} ./Dockerfile ./
+    - echo "Docker image successfully built"
+    - docker tag ${CI_COMMIT_REF_NAME} gpickin/fluent-api:${CI_COMMIT_REF_NAME}
+    - docker tag ${CI_COMMIT_REF_NAME} gpickin/fluent-api
+    # Push our new image and tags to the registry
+    - echo "Pushing new image to registry - gpickin/fluent-api:${CI_COMMIT_REF_NAME}"
+    - docker push gpickin/fluent-api
+    - docker push gpickin/fluent-api:${CI_COMMIT_REF_NAME}
+    - echo "Image gpickin/fluent-api:${CI_COMMIT_REF_NAME} ( STAGING ) pushed successfully"
+
+
+deploy_staging:
+  stage: imageDeploy
+  only:
+    - development
+  before_script:
+    - mkdir -p ~/.ssh
+    - echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - touch ~/.ssh/known_hosts
+  script:
+    - export DOCKER_SERVICE_NAME=fluentAPIImage_cfml
+    # Override our SSH connection point for staging of our swarm master - this may also be provided as an environment variable
+    - export SSH_CONNECT=root@64.225.34.122
+    # Connect up via SSH to avoid any prompts to add the host key
+    - ssh -o 'StrictHostKeyChecking no' $SSH_CONNECT
+    # Note:  The --with-registry-auth flag must be passed in order for the master to pass its authentication to the registry to all nodes
+    - ssh $SSH_CONNECT
+        "
+        sudo docker login -u gpickin -p $DOCKER_REGISTRY_PASSWORD &&
+        sudo docker service update
+          --update-order start-first
+          --detach=false
+          --with-registry-auth
+          --force
+          --image gpickin/fluent-api ${DOCKER_SERVICE_NAME}
+        "
+
+
+rollback_staging:
+  stage: imageDeploy
+  when: manual
+  only:
+    - development
+  before_script:
+    - mkdir -p ~/.ssh
+    - echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - touch ~/.ssh/known_hosts
+  script:
+    - export DOCKER_SERVICE_NAME=fluentAPIImage_cfml
+    # Override our SSH connection point for staging of our swarm master - this may also be provided as an environment variable
+    - export SSH_CONNECT=root@64.225.34.122
+    # Connect up via SSH to avoid any prompts to add the host key
+    - ssh -o 'StrictHostKeyChecking no' $SSH_CONNECT
+    - echo "Rolling Back STAGING"
+    - ssh $SSH_CONNECT
+        "
+        sudo docker login -u gpickin -p $DOCKER_REGISTRY_PASSWORD &&
+        sudo docker service rollback --detach=false ${DOCKER_SERVICE_NAME}
+        "
