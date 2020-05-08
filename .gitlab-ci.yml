@@ -40,7 +40,7 @@ create_staging_image:
     - echo "Logging in to Docker Hub Registry"
     - docker login -u gpickin -p $DOCKER_REGISTRY_PASSWORD
     # Build our compiled image using our Dockerfile
-    - docker build --no-cache -t ${CI_COMMIT_REF_NAME} ./Dockerfile ./
+    - docker build --no-cache -t ${CI_COMMIT_REF_NAME} -f ./Dockerfile ./
     - echo "Docker image successfully built"
     - docker tag ${CI_COMMIT_REF_NAME} gpickin/fluent-api:${CI_COMMIT_REF_NAME}
     - docker tag ${CI_COMMIT_REF_NAME} gpickin/fluent-api
