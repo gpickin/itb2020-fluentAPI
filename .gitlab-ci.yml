@@ -101,3 +101,6 @@ rollback_staging:
         sudo docker login -u gpickin -p $DOCKER_REGISTRY_PASSWORD &&
         sudo docker service rollback --detach=false ${DOCKER_SERVICE_NAME}
         "
+
+services:
+  - docker:19.03.8-dind
