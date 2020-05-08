@@ -23,32 +23,31 @@ cfformat:
 
 
 create_staging_image:
+  image: docker:19.03.8
   stage: imageBuild
+  services:
+    - docker:19.03.8-dind
   only:
     - development
   script:
-    - box install --verbose
+    - curl -fsSl https://downloads.ortussolutions.com/debs/gpg | sudo apt-key add -
+    - echo "deb https://downloads.ortussolutions.com/debs/noarch /" | sudo tee -a /etc/apt/sources.list.d/commandbox.list
+    - sudo apt-get update && sudo apt-get install apt-transport-https commandbox- box install --verbose
 
-    - apt-get update
-    - apt-get upgrade -y
-    - apt-get install -y ssh gnupg software-properties-common apt-transport-https ca-certificates
-    # Docker Deamon
-    - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-    - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable"
-    - apt install -y openssh-client jq zip nodejs docker-ce
+    - box install --verbose
 
     - echo "Logging in to Docker Hub Registry"
     - docker login -u gpickin -p $DOCKER_REGISTRY_PASSWORD
-    # Build our compiled image using our Dockerfile
-    # - docker build --no-cache -t ${CI_COMMIT_REF_NAME} -f ./Dockerfile ./
-    # - echo "Docker image successfully built"
-    # - docker tag ${CI_COMMIT_REF_NAME} gpickin/fluent-api:${CI_COMMIT_REF_NAME}
-    # - docker tag ${CI_COMMIT_REF_NAME} gpickin/fluent-api
-    # # Push our new image and tags to the registry
-    # - echo "Pushing new image to registry - gpickin/fluent-api:${CI_COMMIT_REF_NAME}"
-    # - docker push gpickin/fluent-api
-    # - docker push gpickin/fluent-api:${CI_COMMIT_REF_NAME}
-    # - echo "Image gpickin/fluent-api:${CI_COMMIT_REF_NAME} ( STAGING ) pushed successfully"
+    #Build our compiled image using our Dockerfile
+    - docker build --no-cache -t ${CI_COMMIT_REF_NAME} -f ./Dockerfile ./
+    - echo "Docker image successfully built"
+    - docker tag ${CI_COMMIT_REF_NAME} gpickin/fluent-api:${CI_COMMIT_REF_NAME}
+    - docker tag ${CI_COMMIT_REF_NAME} gpickin/fluent-api
+    # Push our new image and tags to the registry
+    - echo "Pushing new image to registry - gpickin/fluent-api:${CI_COMMIT_REF_NAME}"
+    - docker push gpickin/fluent-api
+    - docker push gpickin/fluent-api:${CI_COMMIT_REF_NAME}
+    - echo "Image gpickin/fluent-api:${CI_COMMIT_REF_NAME} ( STAGING ) pushed successfully"
 
 
 deploy_staging:
@@ -104,6 +103,3 @@ rollback_staging:
         sudo docker login -u gpickin -p $DOCKER_REGISTRY_PASSWORD &&
         sudo docker service rollback --detach=false ${DOCKER_SERVICE_NAME}
         "
-
-services:
-  - docker:19.03.8-dind
