@@ -22,10 +22,7 @@ component extends="v6.models.BaseEntity" accessors="true" {
 		return this;
 	}
 
-	this.constraints = {
-		userID: { required: true, type: "numeric" },
-		body: { required: true }
-	};
+	this.constraints = { userID: { required: true, type: "numeric" }, body: { required: true } };
 
 	/**
 	 * getUser

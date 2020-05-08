@@ -13,10 +13,10 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 						then( "I will get a list of Rants", function() {
 							var event = get( "/api/v3/rants" );
 							var returnedJSON = event.getRenderData().data;
-							//expect( structKeyExists( returnedJSON, "error" ) ).toBeTrue();
+							// expect( structKeyExists( returnedJSON, "error" ) ).toBeTrue();
 							// expect( structKeyExists( returnedJSON, "error" ) ).toBe( true );
 							// expect( returnedJSON ).toHaveKey( "error" );
-							//expect( returnedJSON ).toHaveKey( "errors" );
+							// expect( returnedJSON ).toHaveKey( "errors" );
 							expect( returnedJSON ).toHaveKeyWithCase( "ERROR" );
 							// expect( returnedJSON ).toHaveKeyWithCase( "errors" );
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );

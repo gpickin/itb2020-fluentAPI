@@ -64,10 +64,7 @@ component displayName="Rants" extends="api.handlers.BaseHandler" {
 	 * @response-412 /resources/apidocs/api-v6/Rants/create/responses.json##412
 	 */
 	function create( event, rc, prc ) {
-		var validationResults = validateOrFail(
-			target = rc,
-			constraints = rantService.getConstraints()
-		);
+		var validationResults = validateOrFail( target = rc, constraints = rantService.getConstraints() );
 		userService.existsOrFail( rc.userID );
 		var result = rantService
 			.new( validationResults )
@@ -89,20 +86,14 @@ component displayName="Rants" extends="api.handlers.BaseHandler" {
 	function update( event, rc, prc ) {
 		var validationResults = validateOrFail(
 			target = rc,
-			constraints = rantService.addConstraints( {
-				rantID: { required: true, type: "numeric" }
-			} )
+			constraints = rantService.addConstraints( { rantID: { required: true, type: "numeric" } } )
 		);
 		userService.existsOrFail( rc.userID );
 		rantService
 			.getOrFail( rc.rantID )
 			.populate( validationResults )
 			.setID( rc.rantID )
-			.validateOrFail(
-				constraints = rantService.addConstraints( {
-					ID: { required: true, type: "numeric" }
-				})
-			)
+			.validateOrFail( constraints = rantService.addConstraints( { ID: { required: true, type: "numeric" } } ) )
 			.save();
 		prc.response.addMessage( "Rant Updated" );
 	}
