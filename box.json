@@ -1,0 +1,49 @@
+{
+    "name":"FluentAPI",
+    "version":"1.0.0",
+    "location":"",
+    "author":"You",
+    "slug":"fluentapi",
+    "createPackageDirectory":false,
+    "type":"mvc",
+    "homepage":"https://github.com/coldbox-templates/rest-hmvc",
+    "documentation":"https://github.com/coldbox-templates/rest-hmvc",
+    "repository":{
+        "type":"git",
+        "url":"https://github.com/coldbox-templates/rest-hmvc"
+    },
+    "bugs":"https://github.com/coldbox-templates/rest-hmvc/issues",
+    "shortDescription":"A modular API RESTFul template",
+    "contributors":[],
+    "ignore":[],
+    "devDependencies":{
+        "relax":"^4.1.0+174",
+        "testbox":"^3.0.0",
+        "commandbox-dotenv":"*",
+        "commandbox-cfconfig":"*",
+        "commandbox-cfformat":"*"
+    },
+    "installPaths":{
+        "coldbox":"coldbox/",
+        "relax":"modules/relax/",
+        "testbox":"testbox/",
+        "cbSwagger":"modules/cbSwagger/",
+        "cbvalidation":"modules/cbvalidation/",
+        "route-visualizer":"modules/route-visualizer/",
+        "cors":"modules/cors/",
+        "mementifier":"modules/mementifier/"
+    },
+    "dependencies":{
+        "coldbox":"5.6.2",
+        "cbswagger":"^2.1.1+118",
+        "cbvalidation":"^2.1.0+126",
+        "route-visualizer":"^1.4.0+24",
+        "cors":"^3.0.3",
+        "mementifier":"^2.1.0+100"
+    },
+    "scripts":{
+        "lint":"cflint **.cf* --text --html --json --!exitOnError --suppress",
+        "format":"cfformat run modules_app/**/*.cfc,tests/specs/**/*.cfc --overwrite --verbose",
+        "format:check":"cfformat check modules_app/**/*.cfc,tests/specs/**/*.cfc --verbose"
+    }
+}
