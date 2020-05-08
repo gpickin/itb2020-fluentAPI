@@ -40,15 +40,15 @@ create_staging_image:
     - echo "Logging in to Docker Hub Registry"
     - docker login -u gpickin -p $DOCKER_REGISTRY_PASSWORD
     # Build our compiled image using our Dockerfile
-    - docker build --no-cache -t ${CI_COMMIT_REF_NAME} -f ./Dockerfile ./
-    - echo "Docker image successfully built"
-    - docker tag ${CI_COMMIT_REF_NAME} gpickin/fluent-api:${CI_COMMIT_REF_NAME}
-    - docker tag ${CI_COMMIT_REF_NAME} gpickin/fluent-api
-    # Push our new image and tags to the registry
-    - echo "Pushing new image to registry - gpickin/fluent-api:${CI_COMMIT_REF_NAME}"
-    - docker push gpickin/fluent-api
-    - docker push gpickin/fluent-api:${CI_COMMIT_REF_NAME}
-    - echo "Image gpickin/fluent-api:${CI_COMMIT_REF_NAME} ( STAGING ) pushed successfully"
+    # - docker build --no-cache -t ${CI_COMMIT_REF_NAME} -f ./Dockerfile ./
+    # - echo "Docker image successfully built"
+    # - docker tag ${CI_COMMIT_REF_NAME} gpickin/fluent-api:${CI_COMMIT_REF_NAME}
+    # - docker tag ${CI_COMMIT_REF_NAME} gpickin/fluent-api
+    # # Push our new image and tags to the registry
+    # - echo "Pushing new image to registry - gpickin/fluent-api:${CI_COMMIT_REF_NAME}"
+    # - docker push gpickin/fluent-api
+    # - docker push gpickin/fluent-api:${CI_COMMIT_REF_NAME}
+    # - echo "Image gpickin/fluent-api:${CI_COMMIT_REF_NAME} ( STAGING ) pushed successfully"
 
 
 deploy_staging:
