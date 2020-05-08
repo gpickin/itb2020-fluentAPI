@@ -10,14 +10,14 @@ The slides can be found at: SLIDES HERE
 
 ### Modules needed
 
-This app works with CommandBox, it also uses a couple of modules which are useful in most CommandBox projects:
+This app works with CommandBox, it also uses a couple of CommandBox system modules which are useful in most CommandBox projects ( in box.json for simplicity ):
 
 - CFConfig CLI - https://www.forgebox.io/view/commandbox-cfconfig
 - CommandBox dotenv - https://www.forgebox.io/view/commandbox-dotenv
-
+- CFFormat - https://www.forgebox.io/view/commandbox-cfformat
+- 
 Recommened but not required: 
 
-- CFFormat - https://www.forgebox.io/view/commandbox-cfformat
 - commandbox-cflint - https://www.forgebox.io/view/commandbox-cflint
 
 ### Database setup
@@ -69,3 +69,7 @@ http://127.0.0.1:60146/cbswagger
 
 - Import into Postman: https://www.postman.com/
 - Use with Swagger.io site: https://editor.swagger.io/
+
+### View Route Visualizer
+
+http://127.0.0.1:60146/route-visualizer
