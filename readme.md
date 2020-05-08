@@ -4,7 +4,7 @@ This repo is the demo repo for the presentation given at Into the Box 2020.
 
 ## Slides:
 
-The slides can be found at: SLIDES HERE
+The slides can be found at: https://drive.google.com/file/d/1C-__UfDdvvjpIGKtx4B_J14Z2frnJUKL/view?usp=sharing
 
 ## App Setup
 
