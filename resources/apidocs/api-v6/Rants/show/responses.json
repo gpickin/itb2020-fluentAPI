@@ -1,0 +1,55 @@
+{
+    "200": {
+        "description": "Returns the requested Rant",
+        "content": {
+            "application/json": {
+                "example": {
+					"$ref": "example.200.json"
+				},
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "error": {
+                            "description": "Flag to indicate an error.",
+                            "type": "boolean"
+                        },
+                        "messages": {
+                            "description": "An array of error messages.",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "data": {
+                            "description": "The Rant returned",
+                            "type": "object",
+                            "properties": {
+								"id": {
+										"description": "The Rant ID",
+										"type": "integer"
+                                    },
+                                    "body": {
+										"description": "The body of the Rant",
+										"type": "string"
+									},
+									"userID": {
+										"description": "The ID of the creating User",
+										"type": "integer"
+                                    },
+                                    "createdDate": {
+										"description": "The Date and Time the Rant was Created",
+										"type": "string"
+									},
+									"modifiedDate": {
+										"description": "The Date and Time the Rant was Modified",
+										"type": "string"
+									}
+							}
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+}

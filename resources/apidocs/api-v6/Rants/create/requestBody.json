@@ -1,0 +1,29 @@
+{
+    "description": "Needed fields to create a Rant",
+    "required": true,
+    "content": {
+        "application/json": {
+            "schema": {
+                "type": "object",
+                "required": [
+                    "body",
+                    "userID",
+                ],
+                "properties": {
+                    "body": {
+                        "description": "The body of the Rant.",
+                        "type": "string"
+                    },
+                    "userID": {
+                        "description": "The id corresponding to the User who sent this Rant",
+                        "type": "integer"
+                    },
+                },
+                "example": {
+                    "body": "I love to get up on my SoapBox and Rant away",
+                    "userID": 99
+                }
+            }
+        }
+    }
+}

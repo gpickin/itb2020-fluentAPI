@@ -1,0 +1,69 @@
+{
+    "200": {
+        "description": "Creates the Rant and shows the id for the newly created Rant",
+        "content": {
+            "application/json": {
+                "example": {
+					"$ref": "example.200.json"
+				},
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "error": {
+                            "description": "Flag to indicate an error.",
+                            "type": "boolean"
+                        },
+                        "messages": {
+                            "description": "An array of error messages.",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "data": {
+                            "description": "The Data returned, a struct with a single key, rantID of the new Rant",
+                            "type": "object",
+                            "properties": {
+								"rantID": {
+									"description": "The ID of the newly created Rant.",
+									"type": "integer"
+								}
+							}
+                        }
+
+                    }
+                }
+            }
+        }
+    },
+    "412": {
+        "description": "Validation failed trying to create a Rant.",
+        "content": {
+            "application/json": {
+                "example": {
+					"$ref": "example.412.json"
+				},
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "error": {
+                            "description": "Flag to indicate an error.",
+                            "type": "boolean"
+                        },
+                        "messages": {
+                            "description": "An array of error messages.",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "data": {
+                            "description": "Empty response for 412",
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

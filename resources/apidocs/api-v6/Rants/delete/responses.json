@@ -1,0 +1,32 @@
+{
+    "200": {
+        "description": "Deletes the Rant and a message stating it was done",
+        "content": {
+            "application/json": {
+                "example": {
+					"$ref": "example.200.json"
+				},
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "error": {
+                            "description": "Flag to indicate an error.",
+                            "type": "boolean"
+                        },
+                        "messages": {
+                            "description": "An array of error messages.",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "data": {
+                            "description": "Empty string",
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

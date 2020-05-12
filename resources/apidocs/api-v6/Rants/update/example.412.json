@@ -1,0 +1,8 @@
+{
+    "data": {},
+    "error": true,
+    "pagination": {},
+    "messages": [
+        "The 'BODY' value is required"
+    ]
+}

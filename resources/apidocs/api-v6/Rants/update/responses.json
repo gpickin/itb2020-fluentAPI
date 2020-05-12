@@ -1,0 +1,62 @@
+{
+    "200": {
+        "description": "Updates the Rant",
+        "content": {
+            "application/json": {
+                "example": {
+					"$ref": "example.200.json"
+				},
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "error": {
+                            "description": "Flag to indicate an error.",
+                            "type": "boolean"
+                        },
+                        "messages": {
+                            "description": "An array of error messages.",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "data": {
+                            "description": "Empty string for Rant Update",
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "412": {
+        "description": "Validation failed trying to update the Rant.",
+        "content": {
+            "application/json": {
+                "example": {
+					"$ref": "example.412.json"
+				},
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "error": {
+                            "description": "Flag to indicate an error.",
+                            "type": "boolean"
+                        },
+                        "messages": {
+                            "description": "An array of error messages.",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "data": {
+                            "description": "Empty response for 412",
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

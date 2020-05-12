@@ -1,0 +1,35 @@
+{
+	"description": "User Not Found",
+	"content": {
+		"application/json": {
+			"example": {
+				"data": {},
+				"error": true,
+				"pagination": {},
+				"messages": [
+					"User Not Found",
+				]
+			},
+			"schema": {
+				"type": "object",
+				"properties": {
+					"error": {
+						"description": "Flag to indicate an error.",
+						"type": "boolean"
+					},
+					"messages": {
+						"description": "An array of error messages.",
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"data": {
+						"description": "Empty response for 404",
+						"type": "string"
+					}
+				}
+			}
+		}
+	}
+}

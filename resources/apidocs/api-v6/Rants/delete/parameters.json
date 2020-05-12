@@ -1,0 +1,13 @@
+{
+    "parameters": [
+        {
+            "name": "rantID",
+            "description": "The identifier for the Rant to Delete.",
+            "schema": {
+                "type": "integer"
+            },
+            "required": true,
+            "in": "path"
+        }
+    ]
+}
