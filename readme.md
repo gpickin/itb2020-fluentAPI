@@ -1,10 +1,6 @@
-# 2020-ITB - Modern Functional & Fluent CFML REST APIs
+# Modern Functional & Fluent CFML REST APIs
 
-This repo is the demo repo for the presentation given at Into the Box 2020.
-
-## Slides:
-
-The slides can be found at: https://drive.google.com/file/d/1C-__UfDdvvjpIGKtx4B_J14Z2frnJUKL/view?usp=sharing
+This repo is a demo for our presentation on building modern functional & fluent CFML REST APIs.
 
 ## App Setup
 
