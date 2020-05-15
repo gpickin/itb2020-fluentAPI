@@ -52,7 +52,7 @@
     },
     "cfmigrations":{
         "migrationsDirectory":"resources/database/migrations",
-        "schema":"${DB_SCHEMA}",
+        "schema":"${DB_DATABASE}",
         "connectionInfo":{
             "bundleName":"${DB_BUNDLENAME}",
             "bundleVersion":"${DB_BUNDLEVERSION}",
