@@ -1,10 +1,10 @@
 {
     "app":{
-		"serverHomeDirectory":".engine/adobe2018",
+        "serverHomeDirectory":".engine/adobe2018",
         "cfengine":"adobe@2018"
     },
     "web":{
-		"directoryBrowsing":true,
+        "directoryBrowsing":true,
         "rewrites":{
             "enable":true
         }

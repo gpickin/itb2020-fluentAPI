@@ -75,7 +75,7 @@ component extends="coldbox.system.EventHandler" {
 			// start a resource timer
 			var stime = getTickCount();
 			// prepare our response object
-			prc.response = getModel( "Response@api" );
+			prc.response = getInstance( "Response@api" );
 			// prepare argument execution
 			var args = { event: arguments.event, rc: arguments.rc, prc: arguments.prc };
 			structAppend( args, arguments.eventArguments );
@@ -207,7 +207,7 @@ component extends="coldbox.system.EventHandler" {
 
 		// Verify response exists, else create one
 		if ( !structKeyExists( prc, "Response" ) ) {
-			prc.response = getModel( "Response@api" );
+			prc.response = getInstance( "Response@api" );
 		}
 
 		// Setup General Error Response
@@ -298,7 +298,7 @@ component extends="coldbox.system.EventHandler" {
 		);
 
 		// Setup Response
-		prc.response = getModel( "Response@api" )
+		prc.response = getInstance( "Response@api" )
 			.setError( true )
 			.addMessage( "InvalidHTTPMethod Execution of (#arguments.faultAction#): #event.getHTTPMethod()#" )
 			.setStatusCode( STATUS.NOT_ALLOWED )
@@ -327,7 +327,7 @@ component extends="coldbox.system.EventHandler" {
 		eventArguments
 	) {
 		// Setup Response
-		prc.response = getModel( "Response@api" )
+		prc.response = getInstance( "Response@api" )
 			.setError( true )
 			.addMessage( "Action '#arguments.missingAction#' could not be found" )
 			.setStatusCode( STATUS.NOT_ALLOWED )
@@ -355,7 +355,7 @@ component extends="coldbox.system.EventHandler" {
 		abort = false
 	) {
 		if ( !structKeyExists( prc, "Response" ) ) {
-			prc.response = getModel( "Response@api" );
+			prc.response = getInstance( "Response@api" );
 		}
 
 		// case when the a jwt token was valid, but expired
@@ -388,7 +388,7 @@ component extends="coldbox.system.EventHandler" {
 		abort = false
 	) {
 		if ( !structKeyExists( prc, "Response" ) ) {
-			prc.response = getModel( "Response@api" );
+			prc.response = getInstance( "Response@api" );
 		}
 
 		prc.response
@@ -422,7 +422,7 @@ component extends="coldbox.system.EventHandler" {
 	 */
 	function onInvalidRoute( event, rc, prc ) {
 		if ( !structKeyExists( prc, "Response" ) ) {
-			prc.response = getModel( "Response@api" );
+			prc.response = getInstance( "Response@api" );
 		}
 
 		prc.response
@@ -443,7 +443,7 @@ component extends="coldbox.system.EventHandler" {
 		prc = getRequestCollection( private = true )
 	) {
 		if ( !structKeyExists( prc, "Response" ) ) {
-			prc.response = getModel( "Response@api" );
+			prc.response = getInstance( "Response@api" );
 		}
 
 		prc.response
