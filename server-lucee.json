@@ -1,7 +1,7 @@
 {
     "app":{
-		"serverHomeDirectory":".engine/adobe2018",
-        "cfengine":"adobe@2018"
+		"serverHomeDirectory":".engine/lucee5",
+        "cfengine":"lucee@5"
     },
     "web":{
 		"directoryBrowsing":true,
