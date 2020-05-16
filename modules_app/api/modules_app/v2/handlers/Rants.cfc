@@ -7,14 +7,12 @@ component extends="coldbox.system.RestHandler" {
 	property name="rantService" inject="RantService@v2";
 	property name="userService" inject="UserService@v2";
 
-
 	/**
 	 * Returns a list of Rants
 	 */
 	any function list( event, rc, prc ) {
 		prc.response.setData( rantService.list() );
 	}
-
 
 	/**
 	 * Returns a single Rant
@@ -26,9 +24,10 @@ component extends="coldbox.system.RestHandler" {
 			prc.response.setErrorMessage( validationResults.getAllErrors(), 412 );
 			return;
 		}
-		var rant = rantService.get( rc.rantID )
-		if ( rant.len() ) {
-			prc.response.setData( deserializeJSON( serializeJSON( rant[ 1 ], "struct" ) ) )
+		var rant = rantService.get( rc.rantID );
+
+		if ( !rant.isEmpty() ) {
+			prc.response.setData( rant )
 		} else {
 			prc.response.setErrorMessage( "Error loading Rant - Rant not found", 404 );
 		}

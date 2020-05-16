@@ -73,7 +73,7 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 							expect( event ).toHaveStatusCode( 200 );
 							expect( returnedJSON ).toHaveKeyWithCase( "data" );
 							expect( returnedJSON.data ).toBeStruct();
-							expect( returnedJSON.data ).toHaveKeyWithCase( "id" );
+							expect( returnedJSON.data ).toHaveKeyWithCase( "ID" );
 							expect( returnedJSON.data.id ).toBe( 7 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();

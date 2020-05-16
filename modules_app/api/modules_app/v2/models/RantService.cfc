@@ -10,24 +10,30 @@ component singleton accessors="true" {
 		return this;
 	}
 
-	function list() {
-		return queryExecute( "select * from rants ORDER BY createdDate DESC", {}, { returntype: "array" } );
+	array function list() {
+		return queryExecute( "select * from rants ORDER BY createdDate DESC", {} )
+			.reduce( (result, row) => {
+				result.append( row );
+				return result;
+			}, [] );
 	}
 
-	function get( required numeric rantID ) {
+	struct function get( required numeric rantID ) {
 		return queryExecute(
 			"select * from rants
 			where id = :rantID",
-			{ rantID: { value: "#rantID#", type: "cf_sql_numeric" } },
-			{ returntype: "array" }
-		);
+			{ rantID: { value: "#rantID#", cfsqltype: "cf_sql_numeric" } }
+		)
+		.reduce( (result, row) => {
+			return row;
+		}, {} );
 	}
 
 	function delete( required numeric rantID ) {
 		queryExecute(
 			"delete from rants
 			where id = :rantID",
-			{ rantID: { value: "#rantID#", type: "cf_sql_numeric" } },
+			{ rantID: { value: "#rantID#", cfsqltype: "cf_sql_numeric" } },
 			{ result: "local.result" }
 		);
 		return local.result;
@@ -44,17 +50,17 @@ component singleton accessors="true" {
 			modifiedDate = :modifiedDate
 			",
 			{
-				body: { value: "#body#", type: "cf_sql_longvarchar" },
-				userID: { value: "#userID#", type: "cf_sql_numeric" },
-				createdDate: { value: "#now#", type: "cf_sql_timestamp" },
-				modifiedDate: { value: "#now#", type: "cf_sql_timestamp" }
+				body: { value: "#body#", cfsqltype: "cf_sql_longvarchar" },
+				userID: { value: "#userID#", cfsqltype: "cf_sql_numeric" },
+				createdDate: { value: "#now#", cfsqltype: "cf_sql_timestamp" },
+				modifiedDate: { value: "#now#", cfsqltype: "cf_sql_timestamp" }
 			},
 			{ result: "local.result" }
 		);
 		return local.result;
 	}
 
-	function update( required body,  ) {
+	function update( required body, required rantId  ) {
 		var now = now();
 		queryExecute(
 			"update rants
@@ -64,9 +70,9 @@ component singleton accessors="true" {
 			where id = :rantID
 			",
 			{
-				rantID: { value: "#rantID#", type: "cf_sql_integer" },
-				body: { value: "#body#", type: "cf_sql_longvarchar" },
-				modifiedDate: { value: "#now#", type: "cf_sql_timestamp" }
+				rantID: { value: "#rantID#", cfsqltype: "cf_sql_integer" },
+				body: { value: "#body#", cfsqltype: "cf_sql_longvarchar" },
+				modifiedDate: { value: "#now#", cfsqltype: "cf_sql_timestamp" }
 			},
 			{ result: "local.result" }
 		);
@@ -78,7 +84,7 @@ component singleton accessors="true" {
 			queryExecute(
 				"select id from rants
 				where id = :rantID",
-				{ rantID: { value: "#rantID#", type: "cf_sql_numeric" } },
+				{ rantID: { value: "#rantID#", cfsqltype: "cf_sql_numeric" } },
 				{ returntype: "array" }
 			).len()
 		)
