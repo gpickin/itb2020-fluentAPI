@@ -44,8 +44,8 @@
         "mementifier":"modules/mementifier/"
     },
     "scripts":{
-		"start:lucee" : "server start serverConfigFile=server-lucee.json --force",
-		"start:adobe" : "server start serverConfigFile=server.json --force",
+        "start:lucee":"server start serverConfigFile=server-lucee.json --force",
+        "start:adobe":"server start serverConfigFile=server.json --force",
         "lint":"cflint **.cf* --text --html --json --!exitOnError --suppress",
         "format":"cfformat run modules_app/**/*.cfc,tests/specs/**/*.cfc --overwrite --verbose",
         "format:check":"cfformat check modules_app/**/*.cfc,tests/specs/**/*.cfc --verbose"
