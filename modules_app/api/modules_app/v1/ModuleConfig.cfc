@@ -5,10 +5,6 @@ component {
 
 	// Module Properties
 	this.title = "v1";
-	this.author = "";
-	this.webURL = "";
-	this.description = "";
-	this.version = "1.0.0";
 	// Module Entry Point
 	this.entryPoint = "v1";
 	// Inherit entry point from parent, so this will be /api/v1
