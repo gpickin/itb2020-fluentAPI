@@ -1,7 +1,7 @@
 /**
  * My RESTFul Rants Event Handler which inherits from the module `api`
  */
-component displayName="Rants" extends="api.handlers.BaseHandler" {
+component displayName="Rants" extends="coldbox.system.RestHandler" {
 
 	// DI
 	property name="rantService" inject="RantService@v6";

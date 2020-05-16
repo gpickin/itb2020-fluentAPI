@@ -1,7 +1,7 @@
 /**
  * My RESTFul Rants Event Handler which inherits from the module `api`
  */
-component extends="api.handlers.BaseHandler" {
+component extends="coldbox.system.RestHandler" {
 
 	// DI
 	property name="rantService" inject="RantService@v1";
@@ -15,7 +15,6 @@ component extends="api.handlers.BaseHandler" {
 		var rants = rantService.list();
 		prc.response.setData( rants );
 	}
-
 
 	/**
 	 * Returns a single Rant
@@ -34,10 +33,10 @@ component extends="api.handlers.BaseHandler" {
 			prc.response.addMessage( "rantID must be numeric" );
 			return;
 		}
-		var rant = rantService.getRant( rc.rantID )
+		var rant = rantService.getRant( rc.rantID );
 
 		if ( rant.len() ) {
-			prc.response.setData( deserializeJSON( serializeJSON( rant[ 1 ], "struct" ) ) )
+			prc.response.setData( queryGetRow( rant, 1 ) );
 		} else {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 404 );

@@ -13,6 +13,7 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 						then( "I will get a list of Rants", function() {
 							var event = get( "/api/v1/rants/list" );
 							var returnedJSON = event.getRenderData().data;
+
 							expect( structKeyExists( returnedJSON, "error" ) ).toBeTrue();
 							// expect( structKeyExists( returnedJSON, "error" ) ).toBe( true );
 							// expect( returnedJSON ).toHaveKey( "error" );
@@ -22,7 +23,7 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeFalse();
 							expect( returnedJSON ).toHaveKeyWithCase( "data" );
-							expect( returnedJSON.data ).toBeArray();
+							expect( returnedJSON.data ).toBeQuery();
 							expect( returnedJSON.data ).toHaveLengthGTE( 1 );
 						} );
 					} );
@@ -83,7 +84,7 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 							expect( event ).toHaveStatusCode( 200 );
 							expect( returnedJSON ).toHaveKeyWithCase( "data" );
 							expect( returnedJSON.data ).toBeStruct();
-							expect( returnedJSON.data ).toHaveKeyWithCase( "id" );
+							expect( returnedJSON.data ).toHaveKeyWithCase( "ID" );
 							expect( returnedJSON.data.id ).toBe( 7 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
