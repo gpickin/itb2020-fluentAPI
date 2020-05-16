@@ -14,8 +14,7 @@ component singleton accessors="true" {
 		return queryExecute(
 			"select * from users
 			where id = :userID",
-			{ userID: { value: "#userID#", type: "cf_sql_numeric" } },
-			{ returntype: "array" }
+			{ userID: { value: "#userID#", type: "cf_sql_numeric" } }
 		);
 	}
 
