@@ -10,7 +10,7 @@ component extends="coldbox.system.RestHandler" {
 	/**
 	 * Returns a list of Rants
 	 */
-	any function list( event, rc, prc ) {
+	any function list( event, rc, prc ){
 		prc.response.setData( rantService.list() );
 	}
 
@@ -18,8 +18,11 @@ component extends="coldbox.system.RestHandler" {
 	 * Returns a single Rant
 	 *
 	 */
-	function view( event, rc, prc ) {
-		var validationResults = validate( target = rc, constraints = { rantID: { required: true, type: "numeric" } } );
+	function view( event, rc, prc ){
+		var validationResults = validate(
+			target      = rc,
+			constraints = { rantID : { required : true, type : "numeric" } }
+		);
 		if ( validationResults.hasErrors() ) {
 			prc.response.setErrorMessage( validationResults.getAllErrors(), 412 );
 			return;
@@ -37,8 +40,11 @@ component extends="coldbox.system.RestHandler" {
 	 * Deletes a single Rant
 	 *
 	 */
-	function delete( event, rc, prc ) {
-		var validationResults = validate( target = rc, constraints = { rantID: { required: true, type: "numeric" } } );
+	function delete( event, rc, prc ){
+		var validationResults = validate(
+			target      = rc,
+			constraints = { rantID : { required : true, type : "numeric" } }
+		);
 		if ( validationResults.hasErrors() ) {
 			prc.response.setErrorMessage( validationResults.getAllErrors(), 412 );
 			return;
@@ -56,10 +62,13 @@ component extends="coldbox.system.RestHandler" {
 	 * Creates a new Rant
 	 *
 	 */
-	function create( event, rc, prc ) {
+	function create( event, rc, prc ){
 		var validationResults = validate(
-			target = rc,
-			constraints = { userID: { required: true, type: "numeric" }, body: { required: true } }
+			target      = rc,
+			constraints = {
+				userID : { required : true, type : "numeric" },
+				body   : { required : true }
+			}
 		);
 		if ( validationResults.hasErrors() ) {
 			prc.response.setErrorMessage( validationResults.getAllErrors(), 412 );
@@ -71,7 +80,7 @@ component extends="coldbox.system.RestHandler" {
 		}
 		var result = rantService.create( body = rc.body, userID = rc.userID );
 		if ( result.recordcount ) {
-			prc.response.setData( { "rantID": result.generatedKey } );
+			prc.response.setData( { "rantID" : result.generatedKey } );
 			prc.response.addMessage( "Rant created" );
 			return;
 		} else {
@@ -84,13 +93,13 @@ component extends="coldbox.system.RestHandler" {
 	 * Updates an Existing Rant
 	 *
 	 */
-	function save( event, rc, prc ) {
+	function save( event, rc, prc ){
 		var validationResults = validate(
-			target = rc,
+			target      = rc,
 			constraints = {
-				rantID: { required: true, type: "numeric" },
-				body: { required: true },
-				userID: { required: true, type: "numeric" }
+				rantID : { required : true, type : "numeric" },
+				body   : { required : true },
+				userID : { required : true, type : "numeric" }
 			}
 		);
 		if ( validationResults.hasErrors() ) {
@@ -106,7 +115,11 @@ component extends="coldbox.system.RestHandler" {
 			prc.response.setErrorMessage( "User not found", 404 );
 			return;
 		}
-		var result = rantService.update( body = rc.body, userID = rc.userID, rantID = rc.rantID );
+		var result = rantService.update(
+			body   = rc.body,
+			userID = rc.userID,
+			rantID = rc.rantID
+		);
 		if ( result.recordcount ) {
 			prc.response.addMessage( "Rant Updated" );
 		} else {

@@ -19,11 +19,11 @@ component accessors="true" {
 	 * @entityName The name of the entity so we can reference it for calls to related DAO and Service. Set as optional for backwards
 	 */
 	function init(
-		pk = "id",
-		entityName = "",
+		pk          = "id",
+		entityName  = "",
 		serviceName = "",
-		moduleName = ""
-	) {
+		moduleName  = ""
+	){
 		setPk( arguments.pk );
 		if ( len( entityName ) ) {
 			setEntityName( arguments.entityName );
@@ -42,7 +42,7 @@ component accessors="true" {
 	/**
 	 * Verify if entity is loaded or not
 	 */
-	boolean function isLoaded() {
+	boolean function isLoaded(){
 		return ( isNull( variables[ getPk() ] ) OR !len( variables[ getPk() ] ) ? false : true );
 	}
 
@@ -67,20 +67,20 @@ component accessors="true" {
 			.getRequestService()
 			.getContext()
 			.getCollection(),
-		scope = "",
-		boolean trustedSetter = false,
-		include = "",
-		exclude = "",
-		boolean ignoreEmpty = false,
-		nullEmptyInclude = "",
-		nullEmptyExclude = "",
+		scope                        = "",
+		boolean trustedSetter        = false,
+		include                      = "",
+		exclude                      = "",
+		boolean ignoreEmpty          = false,
+		nullEmptyInclude             = "",
+		nullEmptyExclude             = "",
 		boolean composeRelationships = false,
 		string jsonstring,
 		string xml,
 		query qry
-	) {
+	){
 		arguments[ "model" ] = this;
-		arguments.target = this;
+		arguments.target     = this;
 
 		// json?
 		if ( structKeyExists( arguments, "jsonstring" ) ) {
@@ -113,33 +113,33 @@ component accessors="true" {
 	 * @throws ValidationException error
 	 */
 	public struct function validateOrFail(
-		any constraints = {},
-		string fields = "*",
-		string locale = "",
+		any constraints      = {},
+		string fields        = "*",
+		string locale        = "",
 		string excludeFields = "",
 		string includeFields = ""
-	) {
+	){
 		var result = wirebox
 			.getInstance( "ValidationManager@cbvalidation" )
 			.validate(
-				target = this,
-				fields = arguments.fields,
-				constraints = arguments.constraints,
-				locale = arguments.locale,
+				target        = this,
+				fields        = arguments.fields,
+				constraints   = arguments.constraints,
+				locale        = arguments.locale,
 				excludeFields = arguments.excludeFields,
 				includeFields = arguments.includeFields
 			);
 		if ( result.hasErrors() ) {
 			throw(
-				type = "ValidationException",
-				message = "The Model #getEntityName()# failed to pass validation",
+				type         = "ValidationException",
+				message      = "The Model #getEntityName()# failed to pass validation",
 				extendedInfo = serializeJSON( result.getAllErrors() )
 			);
 		}
 		return this;
 	}
 
-	function save() {
+	function save(){
 		if ( isLoaded() ) {
 			return wirebox.getInstance( "#getServiceName()#" ).update( this );
 		} else {
@@ -147,25 +147,25 @@ component accessors="true" {
 		}
 	}
 
-	function delete() {
+	function delete(){
 		return wirebox.getInstance( "#getServiceName()#" ).delete( this.getID() );
 	}
 
 	this.memento = {
 		// An array of the properties/relationships to include by default
-		defaultIncludes: [ "*" ],
+		defaultIncludes : [ "*" ],
 		// An array of properties/relationships to exclude by default
-		defaultExcludes: [],
+		defaultExcludes : [],
 		// An array of properties/relationships to NEVER include
-		neverInclude: [
+		neverInclude    : [
 			"entityName",
 			"pk",
 			"serviceName",
 			"moduleName"
 		], // A struct of defaults for properties/relationships if they are null
-		defaults: {},
+		defaults : {},
 		// A struct of mapping functions for properties/relationships that can transform them
-		mappers: {}
+		mappers  : {}
 	}
 
 }

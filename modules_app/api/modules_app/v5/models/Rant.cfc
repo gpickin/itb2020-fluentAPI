@@ -7,17 +7,17 @@ component extends="v5.models.BaseEntity" accessors="true" {
 	property name="userService" inject="UserService@v5";
 
 	// Properties
-	property name="id" type="string";
-	property name="body" type="string";
-	property name="createdDate" type="date";
+	property name="id"           type="string";
+	property name="body"         type="string";
+	property name="createdDate"  type="date";
 	property name="modifiedDate" type="date";
-	property name="userID" type="string";
+	property name="userID"       type="string";
 
 
 	/**
 	 * Constructor
 	 */
-	Rant function init() {
+	Rant function init(){
 		super.init( entityName = "rant", moduleName = "v5" );
 		return this;
 	}
@@ -25,7 +25,7 @@ component extends="v5.models.BaseEntity" accessors="true" {
 	/**
 	 * getUser
 	 */
-	function getUser() {
+	function getUser(){
 		return userService.get( getUserID() );
 	}
 

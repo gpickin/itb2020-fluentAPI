@@ -4,31 +4,31 @@
 component {
 
 	// Module Properties
-	this.title = "v1";
+	this.title             = "v1";
 	// Module Entry Point
-	this.entryPoint = "v1";
+	this.entryPoint        = "v1";
 	// Inherit entry point from parent, so this will be /api/v1
 	this.inheritEntryPoint = true;
 	// Model Namespace
-	this.modelNamespace = "v1";
+	this.modelNamespace    = "v1";
 	// CF Mapping
-	this.cfmapping = "v1";
+	this.cfmapping         = "v1";
 	// Module Dependencies
-	this.dependencies = [];
+	this.dependencies      = [];
 
-	function configure() {
+	function configure(){
 	}
 
 	/**
 	 * Fired when the module is registered and activated.
 	 */
-	function onLoad() {
+	function onLoad(){
 	}
 
 	/**
 	 * Fired when the module is unregistered and unloaded
 	 */
-	function onUnload() {
+	function onUnload(){
 	}
 
 }
