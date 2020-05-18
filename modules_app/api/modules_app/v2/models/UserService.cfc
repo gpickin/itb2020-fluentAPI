@@ -20,10 +20,7 @@ component singleton accessors="true" {
 					type  : "cf_sql_numeric"
 				}
 			}
-		).reduce( ( result, row ) => {
-			result.append( row );
-			return result;
-		}, [] );
+		).reduce( ( result, row ) => row, {} );
 	}
 
 	boolean function exists( required numeric userID ){
@@ -36,8 +33,7 @@ component singleton accessors="true" {
 						value : "#userID#",
 						type  : "cf_sql_numeric"
 					}
-				},
-				{ returntype : "array" }
+				}
 			).len()
 		)
 	}

@@ -24,8 +24,7 @@ component
 		return queryExecute(
 			"select * from rants ORDER BY createdDate DESC",
 			{}
-		)
-		.reduce( ( result, row ) => {
+		).reduce( ( result, row ) => {
 			result.append( row );
 			return result;
 		}, [] );
@@ -37,13 +36,11 @@ component
 			where id = :rantID",
 			{
 				rantID : {
-					value : "#rantID#",
-					cfsqltype  : "cf_sql_numeric"
+					value     : "#rantID#",
+					cfsqltype : "cf_sql_numeric"
 				}
 			}
-		).reduce( ( result, row ) => {
-			return row;
-		}, {} );
+		).reduce( ( result, row ) => row, {} );
 	}
 
 	function delete( required numeric rantID ){
@@ -52,8 +49,8 @@ component
 			where id = :rantID",
 			{
 				rantID : {
-					value : "#rantID#",
-					cfsqltype  : "cf_sql_numeric"
+					value     : "#rantID#",
+					cfsqltype : "cf_sql_numeric"
 				}
 			},
 			{ result : "local.result" }
@@ -61,32 +58,35 @@ component
 		return local.result;
 	}
 
-	function create( required body, required numeric userID ){
+	function create(
+		required body,
+		required numeric userID
+	){
 		var now = now();
 		queryExecute(
 			"insert into rants
 			set
-			body         = :body,
-			userID       = :userID,
-			createdDate  = :createdDate,
-			modifiedDate = :modifiedDate
+				body         = :body,
+				userID       = :userID,
+				createdDate  = :createdDate,
+				modifiedDate = :modifiedDate
 			",
 			{
 				body : {
-					value : "#body#",
-					cfsqltype  : "cf_sql_longvarchar"
+					value     : "#body#",
+					cfsqltype : "cf_sql_longvarchar"
 				},
 				userID : {
-					value : "#userID#",
-					cfsqltype  : "cf_sql_numeric"
+					value     : "#userID#",
+					cfsqltype : "cf_sql_numeric"
 				},
 				createdDate : {
-					value : "#now#",
-					cfsqltype  : "cf_sql_timestamp"
+					value     : "#now#",
+					cfsqltype : "cf_sql_timestamp"
 				},
 				modifiedDate : {
-					value : "#now#",
-					cfsqltype  : "cf_sql_timestamp"
+					value     : "#now#",
+					cfsqltype : "cf_sql_timestamp"
 				}
 			},
 			{ result : "local.result" }
@@ -99,22 +99,22 @@ component
 		queryExecute(
 			"update rants
 			set
-			body         = :body,
+			body                                 = :body,
 			modifiedDate = :modifiedDate
-			where id     = :rantID
+			where id                 = :rantID
 			",
 			{
 				rantID : {
-					value : "#rantID#",
-					cfsqltype  : "cf_sql_integer"
+					value     : "#rantID#",
+					cfsqltype : "cf_sql_integer"
 				},
 				body : {
-					value : "#body#",
-					cfsqltype  : "cf_sql_longvarchar"
+					value     : "#body#",
+					cfsqltype : "cf_sql_longvarchar"
 				},
 				modifiedDate : {
-					value : "#now#",
-					cfsqltype  : "cf_sql_timestamp"
+					value     : "#now#",
+					cfsqltype : "cf_sql_timestamp"
 				}
 			},
 			{ result : "local.result" }

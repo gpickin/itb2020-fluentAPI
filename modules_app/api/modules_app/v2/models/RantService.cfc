@@ -11,10 +11,11 @@ component singleton accessors="true" {
 	}
 
 	array function list(){
-		return queryExecute( "select * from rants ORDER BY createdDate DESC", {} ).reduce( ( result, row ) => {
-			result.append( row );
-			return result;
-		}, [] );
+		return queryExecute( "select * from rants ORDER BY createdDate DESC", {} )
+			.reduce( ( result, row ) => {
+				result.append( row );
+				return result;
+			}, [] );
 	}
 
 	struct function get( required numeric rantID ){
@@ -118,8 +119,7 @@ component singleton accessors="true" {
 						value     : "#rantID#",
 						cfsqltype : "cf_sql_numeric"
 					}
-				},
-				{ returntype : "array" }
+				}
 			).len()
 		)
 	}

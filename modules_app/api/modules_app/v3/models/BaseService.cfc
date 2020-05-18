@@ -46,11 +46,10 @@ component accessors="true" {
 				where #getPrimaryKey()# = :id",
 				{
 					id : {
-						value : arguments[ 1 ],
-						cfsqltype  : "cf_sql_numeric"
+						value     : arguments[ 1 ],
+						cfsqltype : "cf_sql_numeric"
 					}
-				},
-				{ returntype : "array" }
+				}
 			).len()
 		)
 	}
@@ -64,9 +63,11 @@ component accessors="true" {
 	function existsOrFail(){
 		if ( exists( argumentCollection = arguments ) ) {
 			return true;
-		} else {
-			throw( type = "EntityNotFound", message = "#entityName# Not Found" );
 		}
+		throw(
+			type    = "EntityNotFound",
+			message = "#entityName# Not Found"
+		);
 	}
 
 	/**
@@ -78,7 +79,10 @@ component accessors="true" {
 	function getOrFail(){
 		var maybeEntity = this.get( argumentCollection = arguments );
 		if ( maybeEntity.isEmpty() ) {
-			throw( type = "EntityNotFound", message = "#getEntityName()# Not Found" );
+			throw(
+				type    = "EntityNotFound",
+				message = "#getEntityName()# Not Found"
+			);
 		}
 		return maybeEntity;
 	}

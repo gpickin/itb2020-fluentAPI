@@ -20,13 +20,13 @@ component extends="coldbox.system.RestHandler" {
 	 *
 	 */
 	function show( event, rc, prc ){
-		var validationResults = validateOrFail(
+		validateOrFail(
 			target      = rc,
-			constraints = { rantID : { required : true, type : "numeric" } }
+			constraints = {
+				rantID : { required : true, type : "numeric" }
+			}
 		);
-		prc.response.setData(
-			rantService.getOrFail( rc.rantID )
-		);
+		prc.response.setData( rantService.getOrFail( rc.rantID ) );
 	}
 
 	/**
@@ -36,10 +36,12 @@ component extends="coldbox.system.RestHandler" {
 	function delete( event, rc, prc ){
 		var validationResults = validateOrFail(
 			target      = rc,
-			constraints = { rantID : { required : true, type : "numeric" } }
+			constraints = {
+				rantID : { required : true, type : "numeric" }
+			}
 		);
 		rantService.existsOrFail( rc.rantID )
-		var result = rantService.delete( rc.rantID );
+		rantService.delete( rc.rantID );
 		prc.response.addMessage( "Rant deleted" );
 	}
 
@@ -48,7 +50,7 @@ component extends="coldbox.system.RestHandler" {
 	 *
 	 */
 	function create( event, rc, prc ){
-		var validationResults = validateOrFail(
+		validateOrFail(
 			target      = rc,
 			constraints = {
 				userID : { required : true, type : "numeric" },
@@ -57,11 +59,8 @@ component extends="coldbox.system.RestHandler" {
 		);
 		userService.existsOrFail( rc.userID );
 		var result = rantService.create( body = rc.body, userID = rc.userID );
-		if ( result.recordcount ) {
-			prc.response.setData( { "rantID" : result.generatedKey } );
-			prc.response.addMessage( "Rant created" );
-			return;
-		}
+		prc.response.setData( { "rantID" : result.generatedKey } );
+		prc.response.addMessage( "Rant created" );
 	}
 
 	/**
@@ -69,7 +68,7 @@ component extends="coldbox.system.RestHandler" {
 	 *
 	 */
 	function update( event, rc, prc ){
-		var validationResults = validateOrFail(
+		validateOrFail(
 			target      = rc,
 			constraints = {
 				rantID : { required : true, type : "numeric" },
@@ -81,14 +80,13 @@ component extends="coldbox.system.RestHandler" {
 		rantService.existsOrFail( rc.rantID );
 		userService.existsOrFail( rc.userID );
 
-		var result = rantService.update(
+		rantService.update(
 			body   = rc.body,
 			userID = rc.userID,
 			rantID = rc.rantID
 		);
-		if ( result.recordcount ) {
-			prc.response.addMessage( "Rant Updated" );
-		}
+
+		prc.response.addMessage( "Rant Updated" );
 	}
 
 }

@@ -29,9 +29,8 @@ component
 					value : "#userID#",
 					type  : "cf_sql_numeric"
 				}
-			},
-			{ returntype : "array" }
-		);
+			}
+		).reduce( ( result, row ) => row, {} );
 	}
 
 }
