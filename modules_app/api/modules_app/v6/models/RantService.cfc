@@ -1,15 +1,11 @@
 /**
- * I am the Rant Service v6
+ * I am the Rant Service v5
  */
 component
-	extends="v6.models.BaseService"
+	extends="v5.models.BaseService"
 	singleton
 	accessors="true"
 {
-
-	// DI Injection
-	property name="wirebox"   inject="wirebox";
-	property name="populator" inject="wirebox:populator";
 
 	/**
 	 * Constructor
@@ -19,7 +15,7 @@ component
 			entityName    = "rant",
 			tableName     = "rants",
 			parameterName = "rantID",
-			moduleName    = "v6"
+			moduleName    = "v5"
 		)
 		return this;
 	}
@@ -28,35 +24,31 @@ component
 		return this
 			.listArray()
 			.map( function( rant ){
-				return populator.populateFromStruct( new (), rant );
+				return populator.populateFromStruct( new(), rant );
 			} );
 	}
 
 	function listArray(){
 		return queryExecute(
 			"select * from rants ORDER BY createdDate DESC",
-			{},
-			{ returntype : "array" }
-		)
+			{}
+		).reduce( ( result, row ) => {
+			result.append( row );
+			return result;
+		}, [] );
 	}
 
 	Rant function get( required numeric rantID ){
-		var q = queryExecute(
+		return queryExecute(
 			"select * from rants
 			where id = :rantID",
 			{
 				rantID : {
 					value : "#rantID#",
-					type  : "cf_sql_numeric"
+					cfsqltype  : "cf_sql_numeric"
 				}
-			},
-			{ returntype : "array" }
-		);
-		if ( q.len() ) {
-			return populator.populateFromStruct( new (), q[ 1 ] );
-		} else {
-			return new ()
-		}
+			}
+		).reduce( ( result, row ) => populator.populateFromStruct( result, row ), new() );
 	}
 
 	function delete( required numeric rantID ){
@@ -66,7 +58,7 @@ component
 			{
 				rantID : {
 					value : "#rantID#",
-					type  : "cf_sql_numeric"
+					cfsqltype  : "cf_sql_numeric"
 				}
 			},
 			{ result : "local.result" }
@@ -90,19 +82,19 @@ component
 			{
 				body : {
 					value : "#arguments.rant.getBody()#",
-					type  : "cf_sql_longvarchar"
+					cfsqltype  : "cf_sql_longvarchar"
 				},
 				userID : {
 					value : "#arguments.rant.getuserID()#",
-					type  : "cf_sql_numeric"
+					cfsqltype  : "cf_sql_numeric"
 				},
 				createdDate : {
 					value : "#arguments.rant.getCreatedDate()#",
-					type  : "cf_sql_timestamp"
+					cfsqltype  : "cf_sql_timestamp"
 				},
 				modifiedDate : {
 					value : "#arguments.rant.getModifiedDate()#",
-					type  : "cf_sql_timestamp"
+					cfsqltype  : "cf_sql_timestamp"
 				}
 			},
 			{ result : "local.result" }
@@ -124,20 +116,21 @@ component
 			{
 				rantID : {
 					value : "#arguments.rant.getID()#",
-					type  : "cf_sql_integer"
+					cfsqltype  : "cf_sql_integer"
 				},
 				body : {
 					value : "#arguments.rant.getBody()#",
-					type  : "cf_sql_longvarchar"
+					cfsqltype  : "cf_sql_longvarchar"
 				},
 				modifiedDate : {
 					value : "#arguments.rant.getModifiedDate()#",
-					type  : "cf_sql_timestamp"
+					cfsqltype  : "cf_sql_timestamp"
 				}
 			},
 			{ result : "local.result" }
 		);
-		return local.result;
+
+		return arguments.rant;
 	}
 
 }

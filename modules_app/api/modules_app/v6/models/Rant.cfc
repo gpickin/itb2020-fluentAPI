@@ -1,10 +1,10 @@
 /**
  * I am a new Rant Object
  */
-component extends="v6.models.BaseEntity" accessors="true" {
+component extends="v5.models.BaseEntity" accessors="true" {
 
 	// DI
-	property name="userService" inject="UserService@v6";
+	property name="userService" inject="UserService@v5";
 
 	// Properties
 	property name="id"           type="string";
@@ -13,19 +13,27 @@ component extends="v6.models.BaseEntity" accessors="true" {
 	property name="modifiedDate" type="date";
 	property name="userID"       type="string";
 
+	// Validation Constraints
+	this.constraints = {
+		body   : { required : true },
+		userID : {
+			required 	: true,
+			type 		: "numeric",
+			udf 		: ( value, target ) => {
+				if( isNull( arguments.value ) || !isNumeric( arguments.value ) ) return false
+           		return userService.exists( arguments.value );
+			},
+			udfMessage : "User ({rejectedValue}) not found"
+		}
+	};
 
 	/**
 	 * Constructor
 	 */
 	Rant function init(){
-		super.init( entityName = "rant", moduleName = "v6" );
+		super.init( entityName = "rant", moduleName = "v5" );
 		return this;
 	}
-
-	this.constraints = {
-		userID : { required : true, type : "numeric" },
-		body   : { required : true }
-	};
 
 	/**
 	 * getUser
@@ -33,15 +41,5 @@ component extends="v6.models.BaseEntity" accessors="true" {
 	function getUser(){
 		return userService.get( getUserID() );
 	}
-
-	// function getMemento() {
-	// 	return {
-	// 		"id" = getID(),
-	// 		"body" = getBody(),
-	// 		"createdDate" = dateFormat( getCreatedDate(), "long" ),
-	// 		"modifiedDate" = dateFormat( getModifiedDate(), "long" ),
-	// 		"userId" = getUserID()
-	// 	};
-	// }
 
 }

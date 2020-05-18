@@ -1,8 +1,8 @@
 /**
- * I am the User Service v6
+ * I am the User Service v5
  */
 component
-	extends="v6.models.BaseService"
+	extends="v5.models.BaseService"
 	singleton
 	accessors="true"
 {
@@ -15,7 +15,7 @@ component
 			entityName    = "user",
 			tableName     = "users",
 			parameterName = "userID",
-			moduleName    = "v6"
+			moduleName    = "v5"
 		)
 		return this;
 	}
@@ -27,16 +27,10 @@ component
 			{
 				userID : {
 					value : "#userID#",
-					type  : "cf_sql_numeric"
+					cfsqltype  : "cf_sql_numeric"
 				}
-			},
-			{ returntype : "array" }
-		);
-		if ( q.len() ) {
-			return populator.populateFromStruct( new (), q[ 1 ] );
-		} else {
-			return new ()
-		}
+			}
+		).reduce( ( result, row ) => populator.populateFromStruct( result, row ), new() );
 	}
 
 }
