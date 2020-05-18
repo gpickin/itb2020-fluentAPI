@@ -20,6 +20,12 @@ component
 		return this;
 	}
 
+	/**
+	 * Let WireBox build new Rant objects for me
+	 */
+	User function new() provider="User@v4"{
+	}
+
 	User function get( required numeric userID ){
 		var q = queryExecute(
 			"select * from users
@@ -27,16 +33,10 @@ component
 			{
 				userID : {
 					value : "#userID#",
-					type  : "cf_sql_numeric"
+					cfsqltype  : "cf_sql_numeric"
 				}
-			},
-			{ returntype : "array" }
-		);
-		if ( q.len() ) {
-			return populator.populateFromStruct( new (), q[ 1 ] );
-		} else {
-			return new ()
-		}
+			}
+		).reduce( ( result, row ) => populator.populateFromStruct( result, row ), new() );
 	}
 
 }

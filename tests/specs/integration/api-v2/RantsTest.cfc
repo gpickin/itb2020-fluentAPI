@@ -1,4 +1,4 @@
-component extends="tests.resources.BaseTest" appMapping="/" {
+component extends="tests.resources.BaseTest"  {
 
 	function run() {
 		describe( "Rants V2 API Handler", function() {

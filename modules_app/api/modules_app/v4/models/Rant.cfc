@@ -13,6 +13,11 @@ component accessors="true" {
 	property name="modifiedDate" type="date";
 	property name="userID"       type="string";
 
+	// Validation Constraints
+	this.constraints = {
+		body   : { required : true },
+		userID : { required : true, type : "numeric" }
+	};
 
 	/**
 	 * Constructor
@@ -35,6 +40,9 @@ component accessors="true" {
 		return ( !isNull( variables.id ) && len( variables.id ) );
 	}
 
+	/**
+	 * Marshall my object to data
+	 */
 	function getMemento(){
 		return {
 			"id"           : getID(),
