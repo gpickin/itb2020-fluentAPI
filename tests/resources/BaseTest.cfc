@@ -35,13 +35,13 @@ component extends="coldbox.system.testing.BaseTestCase" appMapping="/root" {
                 }
                 catch ( any e ) {
                     expectation.message = "[#expecation.actual#] does not have a getStatusCode method.";
-                    debug( expectation.actual );
+                    debug( expectation.actual.getResponse() );
                     return false;
                 }
 
                 if ( statusCode != args.statusCode ) {
                     expectation.message = "#args.message#. Received incorrect status code. Expected [#args.statusCode#]. Received [#statusCode#].";
-                    debug( expectation.actual );
+                    debug( expectation.actual.getResponse() );
                     return false;
                 }
 

@@ -43,15 +43,11 @@ component accessors="true" {
 	 * @data Data to populate the new Entity with
 	 */
 	function new( struct data = {} ){
-		// if( data.isEmpty() ){
-
-		// } else {
 		var modelName = getEntityName();
 		if ( getModuleName() != "" ) {
 			modelName = modelName & "@" & getModuleName();
 		}
 		return populator.populateFromStruct( target = wireBox.getInstance( "#modelName#" ), memento = arguments.data )
-		// }
 	}
 
 	/**

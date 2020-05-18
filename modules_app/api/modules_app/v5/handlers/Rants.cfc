@@ -7,12 +7,26 @@ component extends="coldbox.system.RestHandler" {
 	property name="rantService" inject="RantService@v5";
 	property name="userService" inject="UserService@v5";
 
+	this.prehandler_only = "show,delete,update";
+	any function preHandler( event, rc, prc, action, eventArguments ){
+		try{
+			validateOrFail(
+				target      = rc,
+				constraints = { rantID : { required : true, type : "numeric" } }
+			);
+		} catch( any e ){
+			arguments.exception = e;
+			this.onValidationException( argumentCollection = arguments );
+		}
+	}
 
 	/**
 	 * Returns a list of Rants
 	 */
 	any function index( event, rc, prc ){
-		prc.response.setData( rantService.listArray() );
+		prc.response.setData(
+			rantService.list().map( ( rant ) => rant.getMemento() )
+		);
 	}
 
 	/**
@@ -20,11 +34,9 @@ component extends="coldbox.system.RestHandler" {
 	 *
 	 */
 	function show( event, rc, prc ){
-		var validationResults = validateOrFail(
-			target      = rc,
-			constraints = { rantID : { required : true, type : "numeric" } }
+		prc.response.setData(
+			rantService.getOrFail( rc.rantID ).getMemento()
 		);
-		prc.response.setData( rantService.getOrFail( rc.rantID ).getMemento() )
 	}
 
 	/**
@@ -32,36 +44,25 @@ component extends="coldbox.system.RestHandler" {
 	 *
 	 */
 	function delete( event, rc, prc ){
-		var validationResults = validateOrFail(
-			target      = rc,
-			constraints = { rantID : { required : true, type : "numeric" } }
-		);
-		rantService.getOrFail( rc.rantID ).delete();
+		rantService
+			.getOrFail( rc.rantID  )
+			.delete();
+
 		prc.response.addMessage( "Rant deleted" );
 	}
 
 	/**
 	 * Creates a new Rant
-	 *
 	 */
 	function create( event, rc, prc ){
-		var validationResults = validateOrFail(
-			target      = rc,
-			constraints = {
-				userID : { required : true, type : "numeric" },
-				body   : { required : true }
-			}
-		);
-		userService.existsOrFail( rc.userID );
 		var result = rantService
-			.new( validationResults )
-			.validateOrFail( {
-				body   : { required : true },
-				userID : { required : true, type : "numeric" }
-			} )
+			.new( rc )
+			.validateOrFail()
 			.save();
-		prc.response.setData( { "rantID" : result.getID() } );
-		prc.response.addMessage( "Rant created" );
+
+		prc.response
+			.setData( { "rantID" : result.getID() } )
+			.addMessage( "Rant created" );
 	}
 
 	/**
@@ -69,27 +70,12 @@ component extends="coldbox.system.RestHandler" {
 	 *
 	 */
 	function update( event, rc, prc ){
-		var validationResults = validateOrFail(
-			target      = rc,
-			constraints = {
-				rantID : { required : true, type : "numeric" },
-				body   : { required : true },
-				userID : { required : true, type : "numeric" }
-			}
-		);
-		userService.existsOrFail( rc.userID );
 		rantService
 			.getOrFail( rc.rantID )
-			.populate( validationResults )
-			.setID( rc.rantID )
-			.validateOrFail(
-				constraints = {
-					id     : { required : true, type : "numeric" },
-					body   : { required : true },
-					userID : { required : true, type : "numeric" }
-				}
-			)
+			.populate( memento=rc, exclude="id" )
+			.validateOrFail()
 			.save();
+
 		prc.response.addMessage( "Rant Updated" );
 	}
 

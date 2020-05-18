@@ -27,16 +27,10 @@ component
 			{
 				userID : {
 					value : "#userID#",
-					type  : "cf_sql_numeric"
+					cfsqltype  : "cf_sql_numeric"
 				}
-			},
-			{ returntype : "array" }
-		);
-		if ( q.len() ) {
-			return populator.populateFromStruct( new (), q[ 1 ] );
-		} else {
-			return new ()
-		}
+			}
+		).reduce( ( result, row ) => populator.populateFromStruct( result, row ), new() );
 	}
 
 }
