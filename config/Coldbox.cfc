@@ -39,7 +39,7 @@
 			// Error/Exception Handling
 			invalidHTTPMethodHandler : "",
 			exceptionHandler         : "v1:Echo.onError",
-			invalidEventHandler      : "",
+			invalidEventHandler      : "v1:Echo.onInvalidEvent",
 			customErrorTemplate      : "",
 			// Application Aspects
 			handlerCaching           : true,

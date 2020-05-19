@@ -28,16 +28,14 @@ component extends="tests.resources.BaseTest" {
 			scenario( "Get an individual Rant", function() {
 				given( "I make a get call to /api/v6/rants/:rantID", function() {
 					when( "I pass an invalid rantID", function() {
-						then( "I will get a 400 error", function() {
+						then( "it will be ignored and get the full listing", function() {
 							var rantID = "x"
 							var event = get( "/api/v6/rants/#rantID#" );
 							var returnedJSON = event.getRenderData().data;
-							expect( returnedJSON ).toHaveKeyWithCase( "error" );
-							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 400 );
-							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
-							expect( returnedJSON.messages ).toBeArray();
-							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
+							expect( returnedJSON.error ).toBeFalse();
+							expect( event ).toHaveStatusCode( 200 );
+							expect( returnedJSON.data ).toBeArray()
+							expect( returnedJSON.data ).toHaveLengthGTE( 1 );
 						} );
 					} );
 
@@ -270,16 +268,13 @@ component extends="tests.resources.BaseTest" {
 					} );
 
 					when( "Including a non numeric rantID param", function() {
-						then( "I will get a 400 error", function() {
+						then( "I will get a 405 error because we only accept numeric Ids", function() {
 							var rantID = "abc";
 							var event = put( "/api/v6/rants/#rantID#", { "userID": "1", "body": "abc" } );
 							var returnedJSON = event.getRenderData().data;
-							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 400 );
-							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
-							expect( returnedJSON.messages ).toBeArray();
-							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
+							expect( event ).toHaveStatusCode( 405 );
+							expect( returnedJSON.messages.toString() ).toInclude( "InvalidHTTPMethod" );
 						} );
 					} );
 
@@ -371,12 +366,9 @@ component extends="tests.resources.BaseTest" {
 							var rantID = "abc";
 							var event = delete( "/api/v6/rants/#rantID#" );
 							var returnedJSON = event.getRenderData().data;
-							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 400 );
-							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
-							expect( returnedJSON.messages ).toBeArray();
-							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
+							expect( event ).toHaveStatusCode( 405 );
+							expect( returnedJSON.messages.toString() ).toInclude( "InvalidHTTPMethod" );
 						} );
 					} );
 
