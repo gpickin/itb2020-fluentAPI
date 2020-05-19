@@ -16,7 +16,7 @@
  *******************************************************************************/
 component
 	extends="coldbox.system.testing.BaseTestCase"
-	appMapping="/root"
+
 {
 
 	/*********************************** LIFE CYCLE Methods ***********************************/

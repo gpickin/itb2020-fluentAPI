@@ -1,33 +1,42 @@
 /**
  * I am the User Service V4
  */
-component extends="v4.models.BaseService" singleton accessors="true" {
+component
+	extends="v4.models.BaseService"
+	singleton
+	accessors="true"
+{
 
 	/**
 	 * Constructor
 	 */
-	UserService function init() {
+	UserService function init(){
 		super.init(
-			entityName = "user",
-			tableName = "users",
+			entityName    = "user",
+			tableName     = "users",
 			parameterName = "userID",
-			moduleName = "v4"
+			moduleName    = "v4"
 		)
 		return this;
 	}
 
-	User function get( required numeric userID ) {
+	/**
+	 * Let WireBox build new Rant objects for me
+	 */
+	User function new() provider="User@v4"{
+	}
+
+	User function get( required numeric userID ){
 		var q = queryExecute(
 			"select * from users
 			where id = :userID",
-			{ userID: { value: "#userID#", type: "cf_sql_numeric" } },
-			{ returntype: "array" }
-		);
-		if ( q.len() ) {
-			return populator.populateFromStruct( new (), q[ 1 ] );
-		} else {
-			return new ()
-		}
+			{
+				userID : {
+					value : "#userID#",
+					cfsqltype  : "cf_sql_numeric"
+				}
+			}
+		).reduce( ( result, row ) => populator.populateFromStruct( result, row ), new() );
 	}
 
 }

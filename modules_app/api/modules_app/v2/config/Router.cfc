@@ -1,6 +1,6 @@
 component {
 
-	function configure() {
+	function configure(){
 		post( "/rants/create", "rants.create" )
 		route( "/rants/:rantID/delete", "rants.delete" )
 		route( "/rants/:rantID/save", "rants.save" )

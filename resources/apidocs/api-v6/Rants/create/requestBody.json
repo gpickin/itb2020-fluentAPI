@@ -7,7 +7,7 @@
                 "type": "object",
                 "required": [
                     "body",
-                    "userID",
+                    "userID"
                 ],
                 "properties": {
                     "body": {
@@ -17,7 +17,7 @@
                     "userID": {
                         "description": "The id corresponding to the User who sent this Rant",
                         "type": "integer"
-                    },
+                    }
                 },
                 "example": {
                     "body": "I love to get up on my SoapBox and Rant away",

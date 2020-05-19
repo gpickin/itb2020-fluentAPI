@@ -1,7 +1,7 @@
 {
     "app":{
         "serverHomeDirectory":".engine/adobe2018",
-        "cfengine":"adobe@2018"
+        "cfengine":"adobe@2018.0.7"
     },
     "web":{
         "directoryBrowsing":true,

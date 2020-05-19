@@ -48,7 +48,13 @@
         "start:adobe":"server start serverConfigFile=server.json --force",
         "lint":"cflint **.cf* --text --html --json --!exitOnError --suppress",
         "format":"cfformat run modules_app/**/*.cfc,tests/specs/**/*.cfc --overwrite --verbose",
-        "format:check":"cfformat check modules_app/**/*.cfc,tests/specs/**/*.cfc --verbose"
+		"format:check":"cfformat check modules_app/**/*.cfc,tests/specs/**/*.cfc --verbose",
+		"test:v1" : "testbox run directory=tests/specs/integration/api-v1",
+		"test:v2" : "testbox run directory=tests/specs/integration/api-v2",
+		"test:v3" : "testbox run directory=tests/specs/integration/api-v3",
+		"test:v4" : "testbox run directory=tests/specs/integration/api-v4",
+		"test:v5" : "testbox run directory=tests/specs/integration/api-v5",
+		"test:v6" : "testbox run directory=tests/specs/integration/api-v6"
     },
     "cfmigrations":{
         "migrationsDirectory":"resources/database/migrations",

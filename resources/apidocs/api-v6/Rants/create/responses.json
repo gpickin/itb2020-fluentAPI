@@ -36,12 +36,12 @@
             }
         }
     },
-    "412": {
+    "400": {
         "description": "Validation failed trying to create a Rant.",
         "content": {
             "application/json": {
                 "example": {
-					"$ref": "example.412.json"
+					"$ref": "example.400.json"
 				},
                 "schema": {
                     "type": "object",
@@ -58,7 +58,7 @@
                             }
                         },
                         "data": {
-                            "description": "Empty response for 412",
+                            "description": "Empty response for 400",
                             "type": "string"
                         }
                     }

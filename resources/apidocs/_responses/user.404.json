@@ -7,7 +7,7 @@
 				"error": true,
 				"pagination": {},
 				"messages": [
-					"User Not Found",
+					"User Not Found"
 				]
 			},
 			"schema": {

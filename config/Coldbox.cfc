@@ -42,8 +42,8 @@
 			invalidEventHandler      : "",
 			customErrorTemplate      : "",
 			// Application Aspects
-			handlerCaching           : false,
-			eventCaching             : false,
+			handlerCaching           : true,
+			eventCaching             : true,
 			viewCaching              : false,
 			// Will automatically do a mapDirectory() on your `models` for you.
 			autoMapModels            : true,
