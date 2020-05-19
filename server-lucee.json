@@ -1,10 +1,11 @@
 {
+    "name":"fluentapi-lucee",
     "app":{
-		"serverHomeDirectory":".engine/lucee5",
+        "serverHomeDirectory":".engine/lucee5",
         "cfengine":"lucee@5"
     },
     "web":{
-		"directoryBrowsing":true,
+        "directoryBrowsing":true,
         "rewrites":{
             "enable":true
         }
