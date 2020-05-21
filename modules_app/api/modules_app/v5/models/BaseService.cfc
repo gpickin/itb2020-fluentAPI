@@ -3,6 +3,11 @@
  */
 component accessors="true" {
 
+	// DI
+	property name="wirebox" 	inject="wirebox";
+	property name="populator" 	inject="wirebox:populator";
+
+	// Properties
 	property name="entityName";
 	property name="tableName";
 	property name="primaryKey";
@@ -13,11 +18,11 @@ component accessors="true" {
 	function init(
 		entityName,
 		tableName,
-		primaryKey = "id",
+		primaryKey  = "id",
 		// parameterName="",
 		serviceName = "",
-		moduleName = ""
-	) {
+		moduleName  = ""
+	){
 		setEntityName( arguments.entityName );
 		setTableName( arguments.tableName );
 		setPrimaryKey( arguments.primaryKey );
@@ -42,16 +47,12 @@ component accessors="true" {
 	 *
 	 * @data Data to populate the new Entity with
 	 */
-	function new( struct data = {} ) {
-		// if( data.isEmpty() ){
-
-		// } else {
-		var modelName = getEntityName();
-		if ( getModuleName() != "" ) {
-			modelName = modelName & "@" & getModuleName();
-		}
-		return populator.populateFromStruct( target = wireBox.getInstance( "#modelName#" ), memento = arguments.data )
-		// }
+	function new( struct data = {} ){
+		var modelName = getEntityName() & ( getModuleName().len() ? "@#getModuleName()#" : "" );
+		return populator.populateFromStruct(
+			target = wireBox.getInstance( modelName ),
+			memento = arguments.data
+		);
 	}
 
 	/**
@@ -59,13 +60,17 @@ component accessors="true" {
 	 *
 	 * @return Returns true if there is a row with the matching Primary Key, otherwise returns false
 	 */
-	boolean function exists() {
+	boolean function exists(){
 		return booleanFormat(
 			queryExecute(
 				"select id from #getTableName()#
 				where #getPrimaryKey()# = :id",
-				{ id: { value: arguments[ 1 ], type: "cf_sql_numeric" } },
-				{ returntype: "array" }
+				{
+					id : {
+						value     : arguments[ 1 ],
+						cfsqltype : "cf_sql_numeric"
+					}
+				}
 			).len()
 		)
 	}
@@ -76,12 +81,14 @@ component accessors="true" {
 	 * @return Returns true if there is a row with the matching Primary Key
 	 * @throws EntityNotFound if the entity is not found
 	 */
-	function existsOrFail() {
+	function existsOrFail(){
 		if ( exists( argumentCollection = arguments ) ) {
 			return true;
-		} else {
-			throw( type = "EntityNotFound", message = "#entityName# Not Found" );
 		}
+		throw(
+			type    = "EntityNotFound",
+			message = "#entityName# Not Found"
+		);
 	}
 
 	/**
@@ -90,10 +97,13 @@ component accessors="true" {
 	 * @return Returns the Entity if there is a row with the matching Primary Key
 	 * @throws EntityNotFound if the entity is not found
 	 */
-	function getOrFail() {
+	function getOrFail(){
 		var maybeEntity = this.get( argumentCollection = arguments );
-		if ( isNull( maybeEntity ) || !maybeEntity.isLoaded() ) {
-			throw( type = "EntityNotFound", message = "#getEntityName()# Not Found" );
+		if ( !maybeEntity.isLoaded() ) {
+			throw(
+				type    = "EntityNotFound",
+				message = "#getEntityName()# Not Found"
+			);
 		}
 		return maybeEntity;
 	}

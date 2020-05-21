@@ -1,4 +1,4 @@
-component extends="tests.resources.BaseTest" appMapping="/" {
+component extends="tests.resources.BaseTest" {
 
 	function run() {
 		describe( "Rants V6 API Handler", function() {
@@ -13,6 +13,7 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 						then( "I will get a list of Rants", function() {
 							var event = get( "/api/v6/rants" );
 							var returnedJSON = event.getRenderData().data;
+							//debug( returnedJSON );
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeFalse();
@@ -27,19 +28,14 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 			scenario( "Get an individual Rant", function() {
 				given( "I make a get call to /api/v6/rants/:rantID", function() {
 					when( "I pass an invalid rantID", function() {
-						then( "I will get a 412 error", function() {
+						then( "it will be ignored and get the full listing", function() {
 							var rantID = "x"
 							var event = get( "/api/v6/rants/#rantID#" );
 							var returnedJSON = event.getRenderData().data;
-							expect( returnedJSON ).toHaveKeyWithCase( "error" );
-							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 412 );
-							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
-							expect( returnedJSON.messages ).toBeArray();
-							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe(
-								"The 'RANTID' has an invalid type, expected type is numeric"
-							);
+							expect( returnedJSON.error ).toBeFalse();
+							expect( event ).toHaveStatusCode( 200 );
+							expect( returnedJSON.data ).toBeArray()
+							expect( returnedJSON.data ).toHaveLengthGTE( 1 );
 						} );
 					} );
 
@@ -48,13 +44,13 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 							var rantID = "1"
 							var event = get( "/api/v6/rants/#rantID#" );
 							var returnedJSON = event.getRenderData().data;
+							//debug( returnedJSON );
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
 							expect( event ).toHaveStatusCode( 404 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toMatch( "Rant not found" );
 						} );
 					} );
 
@@ -92,88 +88,80 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 					} );
 
 					when( "Including no userID param", function() {
-						then( "I will get a 412 error", function() {
+						then( "I will get a 400 error", function() {
 							var event = post( "/api/v6/rants", {} );
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 412 );
+							expect( event ).toHaveStatusCode( 400 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe( "The 'USERID' value is required" );
 						} );
 					} );
 
 					when( "Including an empty userID param", function() {
-						then( "I will get a 412 error", function() {
+						then( "I will get a 400 error", function() {
 							var event = post( "/api/v6/rants", { "userID": "" } );
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 412 );
+							expect( event ).toHaveStatusCode( 400 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe( "The 'USERID' value is required" );
 						} );
 					} );
 
 					when( "Including a non numeric userID param", function() {
-						then( "I will get a 412 error", function() {
+						then( "I will get a 400 error", function() {
 							var event = post( "/api/v6/rants", { "userID": "abc" } );
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 412 );
+							expect( event ).toHaveStatusCode( 400 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe(
-								"The 'USERID' has an invalid type, expected type is numeric"
-							);
 						} );
 					} );
 
 					when( "Including no body param", function() {
-						then( "I will get a 412 error", function() {
+						then( "I will get a 400 error", function() {
 							var event = post( "/api/v6/rants", { "userID": "5" } );
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 412 );
+							expect( event ).toHaveStatusCode( 400 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe( "The 'BODY' value is required" );
 						} );
 					} );
 
 					when( "Including an empty body param", function() {
-						then( "I will get a 412 error", function() {
+						then( "I will get a 400 error", function() {
 							var event = post( "/api/v6/rants", { "userID": "5", "body": "" } );
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 412 );
+							expect( event ).toHaveStatusCode( 400 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe( "The 'BODY' value is required" );
 						} );
 					} );
 
 					when( "Including valid userID for a non existing User", function() {
-						then( "I will get a 404 error", function() {
+						then( "I will get a 400 error", function() {
 							var event = post( "/api/v6/rants", { "body": "xsxswxws", "userID": "1" } );
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 404 );
+							expect( event ).toHaveStatusCode( 400 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe( "User not found" );
 						} );
 					} );
 
@@ -196,7 +184,6 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 					} );
 				} );
 			} );
-
 
 
 			scenario( "Update a Rant", function() {
@@ -223,113 +210,85 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 						} );
 					} );
 
-					when( "Including no userID param", function() {
-						then( "I will get a 412 error", function() {
-							var rantID = "7";
-							var event = put( "/api/v6/rants/#rantID#", {} );
-							var returnedJSON = event.getRenderData().data;
-							expect( returnedJSON ).toHaveKeyWithCase( "error" );
-							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 412 );
-							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
-							expect( returnedJSON.messages ).toBeArray();
-							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe( "The 'USERID' value is required" );
-						} );
-					} );
-
 					when( "Including an empty userID param", function() {
-						then( "I will get a 412 error", function() {
+						then( "I will get a 400 error", function() {
 							var rantID = "7";
 							var event = put( "/api/v6/rants/#rantID#", { "userID": "" } );
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 412 );
+							expect( event ).toHaveStatusCode( 400 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe( "The 'USERID' value is required" );
 						} );
 					} );
 
 					when( "Including a non numeric userID param", function() {
-						then( "I will get a 412 error", function() {
+						then( "I will get a 400 error", function() {
 							var rantID = "7";
 							var event = put( "/api/v6/rants/#rantID#", { "userID": "abc" } );
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 412 );
+							expect( event ).toHaveStatusCode( 400 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe(
-								"The 'USERID' has an invalid type, expected type is numeric"
-							);
 						} );
 					} );
 
 
 					when( "Including no body param", function() {
-						then( "I will get a 412 error", function() {
-							var rantID = "1";
+						then( "I will get a 400 error", function() {
+							var rantID = "4";
 							var event = put( "/api/v6/rants/#rantID#", { "userID": "1" } );
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 412 );
+							expect( event ).toHaveStatusCode( 400 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe( "The 'BODY' value is required" );
 						} );
 					} );
 
 					when( "Including an empty body param", function() {
-						then( "I will get a 412 error", function() {
-							var rantID = "1";
+						then( "I will get a 400 error", function() {
+							var rantID = "4";
 							var event = put( "/api/v6/rants/#rantID#", { "userID": "1", "body": "" } );
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 412 );
+							expect( event ).toHaveStatusCode( 400 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe( "The 'BODY' value is required" );
 						} );
 					} );
 
 					when( "Including a non numeric rantID param", function() {
-						then( "I will get a 412 error", function() {
+						then( "I will get a 405 error because we only accept numeric Ids", function() {
 							var rantID = "abc";
 							var event = put( "/api/v6/rants/#rantID#", { "userID": "1", "body": "abc" } );
 							var returnedJSON = event.getRenderData().data;
-							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 412 );
-							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
-							expect( returnedJSON.messages ).toBeArray();
-							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe(
-								"The 'RANTID' has an invalid type, expected type is numeric"
-							);
+							expect( event ).toHaveStatusCode( 405 );
+							expect( returnedJSON.messages.toString() ).toInclude( "InvalidHTTPMethod" );
 						} );
 					} );
 
 					when( "Including valid userID for a non existing User", function() {
-						then( "I will get a 404 error", function() {
+						then( "I will get a 400 error", function() {
 							var rantID = "7";
 							var event = put( "/api/v6/rants/#rantID#", { "body": "xsxswxws", "userID": "1" } );
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 404 );
+							expect( event ).toHaveStatusCode( 400 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe( "User not found" );
 						} );
 					} );
 
@@ -344,7 +303,6 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe( "Rant not found" );
 						} );
 					} );
 
@@ -353,6 +311,7 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 							var rantID = "7";
 							var event = put( "/api/v6/rants/#rantID#", { "body": "xsxswxws", "userID": "5" } );
 							var returnedJSON = event.getRenderData().data;
+							//debug( returnedJSON );
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeFalse();
 							expect( event.getStatusCode() ).toBe( 200 );
@@ -403,19 +362,13 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 					} );
 
 					when( "Including a non numeric rantID param", function() {
-						then( "I will get a 412 error", function() {
+						then( "I will get a 400 error", function() {
 							var rantID = "abc";
 							var event = delete( "/api/v6/rants/#rantID#" );
 							var returnedJSON = event.getRenderData().data;
-							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
-							expect( event ).toHaveStatusCode( 412 );
-							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
-							expect( returnedJSON.messages ).toBeArray();
-							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe(
-								"The 'RANTID' has an invalid type, expected type is numeric"
-							);
+							expect( event ).toHaveStatusCode( 405 );
+							expect( returnedJSON.messages.toString() ).toInclude( "InvalidHTTPMethod" );
 						} );
 					} );
 
@@ -430,7 +383,6 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
-							expect( returnedJSON.messages[ 1 ] ).toBe( "Rant not found" );
 						} );
 					} );
 
@@ -441,8 +393,8 @@ component extends="tests.resources.BaseTest" appMapping="/" {
 							setup();
 							var rantID = returnedJSON.data.rantID;
 							var event2 = delete( "/api/v6/rants/#rantID#" );
+
 							var returnedJSON2 = event2.getRenderData().data;
-							debug( returnedJSON2 );
 							expect( returnedJSON2 ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON2.error ).toBeFalse();
 							expect( event2.getStatusCode() ).toBe( 200 );

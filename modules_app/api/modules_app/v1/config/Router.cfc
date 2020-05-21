@@ -1,6 +1,6 @@
 component {
 
-	function configure() {
+	function configure(){
 		route( "/", "echo.index" );
 		route( "/:handler/:action" ).end();
 	}

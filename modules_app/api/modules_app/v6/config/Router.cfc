@@ -1,10 +1,19 @@
 component {
 
-	function configure() {
-		resources( resource = "rants", parameterName = "rantID", except = [ "new", "edit" ] );
+	function configure(){
+		// Echo
+		route( "/", "echo.index" )
 
-		route( "/", "echo.index" );
-		route( "/:handler/:action" ).end();
+		// Type the ID to numeric
+		resources(
+			resource      = "rants",
+			parameterName = "rantID-numeric",
+			except        = [ "new", "edit" ]
+		)
+
+
+		// Catch All Invalid Routes
+		route( "/:anything", "Echo.onInvalidRoute" )
 	}
 
 }

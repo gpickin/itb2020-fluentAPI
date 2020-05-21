@@ -7,7 +7,7 @@
 				"error": true,
 				"pagination": {},
 				"messages": [
-					"Rant Not Found",
+					"Rant Not Found"
 				]
 			},
 			"schema": {
@@ -25,7 +25,7 @@
 						}
 					},
 					"data": {
-						"description": "Empty response for 412",
+						"description": "Empty response",
 						"type": "string"
 					}
 				}

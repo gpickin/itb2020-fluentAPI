@@ -1,4 +1,4 @@
-component{
+component {
 
 	function configure(){
 		// Set Full Rewrites
@@ -15,9 +15,9 @@ component{
 		 */
 
 		// A nice healthcheck route example
-		route("/healthcheck",function(event,rc,prc){
+		route( "/healthcheck", function( event, rc, prc ){
 			return "Ok!";
-		});
+		} );
 
 		// Conventions based routing
 		route( ":handler/:action?" ).end();

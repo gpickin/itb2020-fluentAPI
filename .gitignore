@@ -3,6 +3,8 @@
 settings.xml
 WEB-INF
 .env
+.engine/**
+.vscode/**
 
 # logs + tests
 logs/**
