@@ -18,20 +18,21 @@
     ],
     "ignore":[],
     "devDependencies":{
-        "relax":"^4.1.0+174",
-        "route-visualizer":"^1.4.0+24",
-        "testbox":"^4.0.0",
+        "relax":"*",
+        "route-visualizer":"*",
+        "testbox":"*",
         "commandbox-dotenv":"*",
+        "commandbox-docbox":"*",
         "commandbox-cfconfig":"*",
         "commandbox-cfformat":"*",
         "commandbox-migrations":"*"
     },
     "dependencies":{
-        "coldbox":"6.0.0-RC",
-        "cbswagger":"^2.1.1+118",
-        "cbvalidation":"^2.1.0+126",
-        "cors":"3.0.2",
-        "mementifier":"^2.1.0+100"
+        "coldbox":"^6.7.0+3",
+        "cbswagger":"^2.6.0+147",
+        "cbvalidation":"^3.4.0+14",
+        "cors":"^3.0.6",
+        "mementifier":"^2.8.0+4"
     },
     "installPaths":{
         "coldbox":"coldbox/",
@@ -43,18 +44,23 @@
         "cors":"modules/cors/",
         "mementifier":"modules/mementifier/"
     },
+    "testbox":{
+        "runner":"http://localhost:60299/tests/runner.cfm"
+    },
     "scripts":{
         "start:lucee":"server start serverConfigFile=server-lucee.json --force",
         "start:adobe":"server start serverConfigFile=server.json --force",
+        "cfpm":"echo '\".engine/adobe2021/WEB-INF/cfusion/bin/cfpm.sh\"' | run",
+        "cfpm:install":"echo '\".engine/adobe2021/WEB-INF/cfusion/bin/cfpm.sh\" install ${1}' | run",
         "lint":"cflint **.cf* --text --html --json --!exitOnError --suppress",
-        "format":"cfformat run modules_app/**/*.cfc,tests/specs/**/*.cfc --overwrite --verbose",
-		"format:check":"cfformat check modules_app/**/*.cfc,tests/specs/**/*.cfc --verbose",
-		"test:v1" : "testbox run directory=tests/specs/integration/api-v1",
-		"test:v2" : "testbox run directory=tests/specs/integration/api-v2",
-		"test:v3" : "testbox run directory=tests/specs/integration/api-v3",
-		"test:v4" : "testbox run directory=tests/specs/integration/api-v4",
-		"test:v5" : "testbox run directory=tests/specs/integration/api-v5",
-		"test:v6" : "testbox run directory=tests/specs/integration/api-v6"
+        "format":"cfformat run config,Application.cfc,modules_app/**/*.cfc,tests/specs/**/*.cfc --overwrite --verbose",
+        "format:watch":"cfformat watch config,Application.cfc,modules_app/**/*.cfc,tests/specs/**/*.cfc ./.cfformat.json",
+        "test:v1":"testbox run directory=tests/specs/integration/api-v1",
+        "test:v2":"testbox run directory=tests/specs/integration/api-v2",
+        "test:v3":"testbox run directory=tests/specs/integration/api-v3",
+        "test:v4":"testbox run directory=tests/specs/integration/api-v4",
+        "test:v5":"testbox run directory=tests/specs/integration/api-v5",
+        "test:v6":"testbox run directory=tests/specs/integration/api-v6"
     },
     "cfmigrations":{
         "migrationsDirectory":"resources/database/migrations",
