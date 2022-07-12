@@ -45,7 +45,7 @@
         "mementifier":"modules/mementifier/"
     },
     "testbox":{
-        "runner":"http://localhost:60299/tests/runner.cfm"
+        "runner":"http://localhost:60146/tests/runner.cfm"
     },
     "scripts":{
         "start:lucee":"server start serverConfigFile=server-lucee.json --force",

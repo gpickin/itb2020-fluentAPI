@@ -10,7 +10,7 @@ Just use CommandBox and install them: `box install`
 
 ### Database setup
 
-The database needed for this is MySQL 5.7. The SQL file for this project is located in the `/workbench/database` folder. Please use that to seed your database, and call the database fluentAPI for consistency with the `.env.example` file provided or you can use our migrations.
+The database needed for this is MySQL 5.7+ or 8+. The SQL file for this project is located in the `/workbench/database` folder. Please use that to seed your database, and call the database fluentAPI for consistency with the `.env.example` file provided or you can use our migrations.
 
 First create the database `fluentapi` in your MySQL database and get some credentials ready for storage:
 
