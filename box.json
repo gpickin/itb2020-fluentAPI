@@ -54,7 +54,7 @@
         "start:adobe":"server start serverConfigFile=server.json --force",
         "cfpm":"echo '\".engine/adobe2021/WEB-INF/cfusion/bin/cfpm.sh\"' | run",
         "cfpm:install":"echo '\".engine/adobe2021/WEB-INF/cfusion/bin/cfpm.sh\" install ${1}' | run",
-		"install:2021":"run-script cfpm:install mysql,debugger",
+		"install:2021":"run-script cfpm:install mysql,debugger,chart",
         "lint":"cflint **.cf* --text --html --json --!exitOnError --suppress",
         "format":"cfformat run config,Application.cfc,modules_app/**/*.cfc,tests/specs/**/*.cfc --overwrite --verbose",
         "format:watch":"cfformat watch config,Application.cfc,modules_app/**/*.cfc,tests/specs/**/*.cfc ./.cfformat.json",

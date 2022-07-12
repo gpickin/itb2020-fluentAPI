@@ -5,6 +5,7 @@
 	"thistimezone":"UTC",
 	"adminPassword": "${CFCONFIG_ADMINPASSWORD}",
 	"debuggingEnabled":true,
+	"debuggingShowDatabase":true,
 	"debuggingReportExecutionTimes": false,
 	"disableInternalCFJavaComponents":false,
 	"requestTimeoutEnabled": true,
