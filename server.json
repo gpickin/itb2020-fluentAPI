@@ -1,13 +1,15 @@
 {
+	"name":"fluentapi-adobe",
     "app":{
-        "serverHomeDirectory":".engine/adobe2018",
-        "cfengine":"adobe@2018.0.7"
+        "serverHomeDirectory":".engine/adobe2021",
+        "cfengine":"adobe@2021"
     },
     "web":{
-        "directoryBrowsing":true,
+        "http":{
+            "port":"60299"
+        },
         "rewrites":{
-            "enable":true
+            "enable":"true"
         }
-    },
-    "name":"fluentapi-adobe"
+    }
 }
