@@ -1,6 +1,6 @@
 component {
 
-	function configure(){
+	function configure() {
 		// Set Full Rewrites
 		setFullRewrites( true );
 
@@ -15,7 +15,7 @@ component {
 		 */
 
 		// A nice healthcheck route example
-		route( "/healthcheck", function( event, rc, prc ){
+		route( "/healthcheck", function( event, rc, prc ) {
 			return "Ok!";
 		} );
 

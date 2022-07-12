@@ -4,7 +4,7 @@ component {
 		queryExecute( "
 			INSERT INTO `users` (`id`, `username`, `email`, `password`, `createdDate`, `modifiedDate`) VALUES
 			(2, 'gpickin', 'gavin@ortussolutions.com', '$2a$12$JKiBJZF352Tfm/c3PpeslOBKRAwtXlwczMPKeUV1raD0d1cwh5B5.', '2018-10-04 17:55:19', '2018-10-04 17:55:19'),
-			(3, 'luis', 'lmajano@ortussolutions.com', '$2a$12$kSM/7Q5WgJ/xaKfLYwbPj.4QVJZo7tonT/h/PFDoUwfW3GDV/AttC', '2018-10-05 09:07:14', '2018-10-05 09:07:14'),
+			(3, 'luis', 'lmajano@ortussolutions.com', '$2a$12$FE2J7ZLWaI2rSqejAu/84uLy7qlSufQsDsSE1lNNKyA05GG30gr8C', '2018-10-05 09:07:14', '2018-10-05 09:07:14'),
 			(4, 'brad', 'brad@ortussolutions.com', '$2a$12$Vbb4dYywI5X.1qKEV2mDzeOTZk3iHIDfEtz80SoMT0KkFWTkb.PB6', '2018-10-05 09:29:37', '2018-10-05 09:29:37'),
 			(5, 'javier', 'jquintero@ortussolutions.com', '$2a$12$UIEOglSflvGUbn5sHeBZ1.sAlaoBI4rpNOCIk2vF8R2KKz.ihP9/W', '2018-10-05 09:30:32', '2018-10-05 09:30:32'),
 			(6, 'scott', 'scott@scott.com', '$2a$12$OjIpxecG9AlZTgVGV1jsvOegTwbqgJ29PlUkfomGsK/6hsVicsRW.', '2018-10-05 09:32:07', '2018-10-05 09:32:07'),

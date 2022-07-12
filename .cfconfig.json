@@ -1,6 +1,12 @@
 {
+	"systemErr":"System",
+	"systemOut":"System",
+	"componentCacheEnabled":false,
+	"thistimezone":"UTC",
 	"adminPassword": "${CFCONFIG_ADMINPASSWORD}",
+	"debuggingEnabled":true,
 	"debuggingReportExecutionTimes": false,
+	"disableInternalCFJavaComponents":false,
 	"requestTimeoutEnabled": true,
 	"robustExceptionEnabled": true,
 	"whitespaceManagement": "white-space-pref",

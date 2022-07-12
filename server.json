@@ -1,5 +1,5 @@
 {
-	"name":"fluentapi-adobe",
+    "name":"fluentapi-adobe",
     "app":{
         "serverHomeDirectory":".engine/adobe2021",
         "cfengine":"adobe@2021"

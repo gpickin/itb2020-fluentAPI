@@ -2,8 +2,13 @@
 	/**
 	 * Configure WireBox, that's it!
 	 */
-	function configure(){
-		// The WireBox configuration structure DSL
+	function configure() {
+		/**
+		 * --------------------------------------------------------------------------
+		 * WireBox Configuration (https://wirebox.ortusbooks.com)
+		 * --------------------------------------------------------------------------
+		 * Configure WireBox
+		 */
 		wireBox = {
 			// Scope registration, automatically register a wirebox injector instance on any CF scope
 			// By default it registeres itself on application scope

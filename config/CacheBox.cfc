@@ -2,15 +2,21 @@
 	/**
 	 * Configure CacheBox for ColdBox Application Operation
 	 */
-	function configure(){
-		// The CacheBox configuration structure DSL
+	function configure() {
+		/**
+		 * --------------------------------------------------------------------------
+		 * CacheBox Configuration (https://cachebox.ortusbooks.com)
+		 * --------------------------------------------------------------------------
+		 */
 		cacheBox = {
-			// LogBox config already in coldbox app, not needed
-			// logBoxConfig = "coldbox.system.web.config.LogBox",
-
-			// The defaultCache has an implicit name "default" which is a reserved cache name
-			// It also has a default provider of cachebox which cannot be changed.
-			// All timeouts are in minutes
+			/**
+			 * --------------------------------------------------------------------------
+			 * Default Cache Configuration
+			 * --------------------------------------------------------------------------
+			 * The defaultCache has an implicit name "default" which is a reserved cache name
+			 * It also has a default provider of cachebox which cannot be changed.
+			 * All timeouts are in minutes
+			 */
 			defaultCache : {
 				objectDefaultTimeout           : 120, // two hours default
 				objectDefaultLastAccessTimeout : 30, // 30 minutes idle time
@@ -23,9 +29,21 @@
 				objectStore                    : "ConcurrentStore", // guaranteed objects
 				coldboxEnabled                 : true
 			},
-			// Register all the custom named caches you like here
+			/**
+			 * --------------------------------------------------------------------------
+			 * Custom Cache Regions
+			 * --------------------------------------------------------------------------
+			 * You can use this section to register different cache regions and map them
+			 * to different cache providers
+			 */
 			caches : {
-				// Named cache for all coldbox event and view template caching
+				/**
+				 * --------------------------------------------------------------------------
+				 * ColdBox Template Cache
+				 * --------------------------------------------------------------------------
+				 * The ColdBox Template cache region is used for event/view caching and
+				 * other internal facilities that might require a more elastic cache.
+				 */
 				template : {
 					provider   : "coldbox.system.cache.providers.CacheBoxColdBoxProvider",
 					properties : {
