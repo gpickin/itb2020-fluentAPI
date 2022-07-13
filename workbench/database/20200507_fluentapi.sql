@@ -1,79 +1,132 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               5.7.12 - MySQL Community Server (GPL)
--- Server OS:                    Win64
--- HeidiSQL Version:             11.0.0.5919
--- --------------------------------------------------------
+# ************************************************************
+# Sequel Ace SQL dump
+# Version 20033
+#
+# https://sequel-ace.com/
+# https://github.com/Sequel-Ace/Sequel-Ace
+#
+# Host: 127.0.0.1 (MySQL 5.7.22)
+# Database: fluentapi
+# Generation Time: 2022-07-13 23:41:21 +0000
+# ************************************************************
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+SET NAMES utf8mb4;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40101 SET @OLD_SQL_MODE='NO_AUTO_VALUE_ON_ZERO', SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Dumping structure for table fluentapi.rants
-CREATE TABLE IF NOT EXISTS `rants` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+
+# Dump of table cfmigrations
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `cfmigrations`;
+
+CREATE TABLE `cfmigrations` (
+  `name` varchar(190) NOT NULL,
+  `migration_ran` datetime NOT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `cfmigrations` WRITE;
+/*!40000 ALTER TABLE `cfmigrations` DISABLE KEYS */;
+
+INSERT INTO `cfmigrations` (`name`, `migration_ran`)
+VALUES
+	('2020_05_15_183916_users','2022-07-13 16:46:50'),
+	('2020_05_15_183939_rants','2022-07-13 16:46:50'),
+	('2020_05_15_184033_seedrants','2022-07-13 16:46:50');
+
+/*!40000 ALTER TABLE `cfmigrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table rants
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `rants`;
+
+CREATE TABLE `rants` (
+  `id` varchar(255) NOT NULL,
   `body` text NOT NULL,
-  `createdDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `modifiedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `userId` int(10) unsigned NOT NULL,
+  `createdDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userId` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_rants_userId` (`userId`),
-  CONSTRAINT `fk_rants_userId` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `fk_rants_userId` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table fluentapi.rants: ~23 rows (approximately)
+LOCK TABLES `rants` WRITE;
 /*!40000 ALTER TABLE `rants` DISABLE KEYS */;
-INSERT INTO `rants` (`id`, `body`, `createdDate`, `modifiedDate`, `userId`) VALUES
-	(4, 'Another rant', '2020-05-03 23:00:07', '2020-05-03 23:00:07', 2),
-	(6, 'Another rant, where\'s my soapbox2', '2020-05-03 23:07:39', '2020-05-04 11:22:48', 3),
-	(7, 'Another rant, where\'s my soapbox23', '2020-05-03 23:20:22', '2020-05-07 11:43:07', 2),
-	(8, 'Another rant, where\'s my soapbox2', '2020-05-04 11:21:31', '2020-05-04 11:21:31', 2),
-	(9, 'Another rant, where\'s my soapbox2', '2020-05-04 12:05:18', '2020-05-04 12:05:18', 2),
-	(10, 'Another rant, where\'s my soapbox2', '2020-05-04 12:05:44', '2020-05-04 12:05:44', 2),
-	(11, 'Another rant, where\'s my soapbox2', '2020-05-04 20:58:28', '2020-05-04 20:58:28', 2),
-	(12, 'Another rant, where\'s my soapbox2', '2020-05-04 20:59:44', '2020-05-04 20:59:44', 2),
-	(13, 'Another rant, where\'s my soapbox2', '2020-05-04 21:06:16', '2020-05-04 21:06:16', 2),
-	(14, 'Another rant, where\'s my soapbox2', '2020-05-04 21:09:03', '2020-05-04 21:09:03', 2),
-	(15, 'Another rant, where\'s my soapbox2', '2020-05-04 21:09:13', '2020-05-04 21:09:13', 2),
-	(16, 'Another rant, where\'s my soapbox2', '2020-05-04 21:15:10', '2020-05-04 21:15:10', 2),
-	(18, 'Another rant, where\'s my soapbox2', '2020-05-07 09:29:06', '2020-05-07 09:29:06', 2),
-	(19, 'Another rant, where\'s my soapbox2', '2020-05-07 09:30:38', '2020-05-07 09:30:38', 2),
-	(20, 'Another rant, where\'s my soapbox2', '2020-05-07 09:30:46', '2020-05-07 09:30:46', 2),
-	(23, 'Another rant, where\'s my soapbox2', '2020-05-07 09:36:04', '2020-05-07 09:36:04', 2),
-	(24, 'Another rant, where\'s my soapbox2', '2020-05-07 09:37:03', '2020-05-07 09:37:03', 2),
-	(25, 'Another rant, where\'s my soapbox2', '2020-05-07 09:46:15', '2020-05-07 09:46:15', 2),
-	(110, 'Testing test test', '2020-05-07 22:18:43', '2020-05-07 22:18:43', 2),
-	(111, 'Testing test test', '2020-05-07 22:19:31', '2020-05-07 22:19:31', 2),
-	(112, 'Scott likes me preso', '2020-05-07 22:19:37', '2020-05-07 22:19:37', 5),
-	(113, 'Scott seems to like my preso', '2020-05-07 22:20:32', '2020-05-07 22:20:32', 2);
-/*!40000 ALTER TABLE `rants` ENABLE KEYS */;
 
--- Dumping structure for table fluentapi.users
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+INSERT INTO `rants` (`id`, `body`, `createdDate`, `updatedDate`, `userId`)
+VALUES
+	('0B068E2D-1E29-4049-BC5DDABE1491C25C','Captain America is the best superhero!','2022-07-13 16:46:49','2022-07-13 16:46:49','753C0511-257A-4674-92A7500293D60B28'),
+	('106EEAB6-44CA-43C2-AF85FA0CAAB86311','Testing test test','2022-07-13 16:46:49','2022-07-13 16:46:49','98BA3147-4071-4301-A011B1BD746077A3'),
+	('1E9B6514-13DC-44E5-8DA61A5CE3593041','This is the most amazing post in my life','2022-07-13 16:46:49','2022-07-13 16:46:49','E2F8B589-19E2-46DB-BE64D52483E6F6C6'),
+	('1FCCEC67-FB0E-4EE4-97C11403B1F890B3','I love kittens','2022-07-13 16:46:49','2022-07-13 16:46:49','147EB3B9-9102-4910-869CD8529F642AEE'),
+	('21626EB7-0AC7-4577-A6A10F929E916C79','What are you talking about!','2022-07-13 16:46:49','2022-07-13 16:46:49','147EB3B9-9102-4910-869CD8529F642AEE'),
+	('345AEC61-C741-4338-AF24BE1743C4F640','Scott seems to like my preso','2022-07-13 16:46:49','2022-07-13 16:46:49','98BA3147-4071-4301-A011B1BD746077A3'),
+	('381E5F38-7E87-4D3D-A7EA6BBC3C53D44C','I love soccer!','2022-07-13 16:46:49','2022-07-13 16:46:49','753C0511-257A-4674-92A7500293D60B28'),
+	('4D442EF9-B36B-4E3F-A2844FA2B77A3F76','This is the most amazing post in my life','2022-07-13 16:46:49','2022-07-13 16:46:49','9B232F88-8745-4872-A7D032BDA6AEE710'),
+	('576E42A0-98BA-4721-A4B3C6E8DC078455','Testing test test','2022-07-13 16:46:49','2022-07-13 16:46:49','9B232F88-8745-4872-A7D032BDA6AEE710'),
+	('6603FC86-279F-43AF-92C0DFABCD7BCD2B','Scott likes me preso','2022-07-13 16:46:49','2022-07-13 16:46:49','21B8DE1B-DE0D-456E-A56AF767AC72ADBF'),
+	('6E6D7AE4-E35B-4656-80D41B9F0A690561','Another rant','2022-07-13 16:46:49','2022-07-13 16:46:49','98BA3147-4071-4301-A011B1BD746077A3'),
+	('7A62D3C0-56EB-495F-8F401A5925E5E5A8','Why is this here!','2022-07-13 16:46:49','2022-07-13 16:46:49','753C0511-257A-4674-92A7500293D60B28'),
+	('81D28072-B557-4CD7-BDA6A728F40CD020','This post is not really good, it sucked!','2022-07-13 16:46:49','2022-07-13 16:46:49','21B8DE1B-DE0D-456E-A56AF767AC72ADBF'),
+	('9E88A5E4-D1E9-4314-A67D08C30E2CEFEC','Why are you doing this to me!','2022-07-13 16:46:49','2022-07-13 16:46:49','E2F8B589-19E2-46DB-BE64D52483E6F6C6'),
+	('A1AC85E5-8D2A-4751-B985100FA55A1495','I love espresso','2022-07-13 16:46:49','2022-07-13 16:46:49','98BA3147-4071-4301-A011B1BD746077A3'),
+	('B295B834-970D-4A88-B2C21DB1CE3C94EE','Please please please delete!','2022-07-13 16:46:49','2022-07-13 16:46:49','E2F8B589-19E2-46DB-BE64D52483E6F6C6'),
+	('D2EF83D6-1AE3-49D6-BCAA74422C8E2661','Scott seems to like my preso','2022-07-13 16:46:49','2022-07-13 16:46:49','147EB3B9-9102-4910-869CD8529F642AEE'),
+	('D967F1DA-9EB3-406F-A775D02203B46911','Captain America is the best superhero!','2022-07-13 16:46:49','2022-07-13 16:46:49','147EB3B9-9102-4910-869CD8529F642AEE'),
+	('E404B499-6C91-4512-9F8D34E6199016A8','I love espresso','2022-07-13 16:46:49','2022-07-13 16:46:49','753C0511-257A-4674-92A7500293D60B28'),
+	('F7A3E616-574E-4177-BB3E9E980218C125','Scott likes me preso','2022-07-13 16:46:49','2022-07-13 16:46:49','147EB3B9-9102-4910-869CD8529F642AEE');
+
+/*!40000 ALTER TABLE `rants` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table users
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `id` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `createdDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `modifiedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table fluentapi.users: ~6 rows (approximately)
+LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `createdDate`, `modifiedDate`) VALUES
-	(2, 'gpickin', 'gavin@ortussolutions.com', '$2a$12$JKiBJZF352Tfm/c3PpeslOBKRAwtXlwczMPKeUV1raD0d1cwh5B5.', '2018-10-04 17:55:19', '2018-10-04 17:55:19'),
-	(3, 'luis', 'lmajano@ortussolutions.com', '$2a$12$kSM/7Q5WgJ/xaKfLYwbPj.4QVJZo7tonT/h/PFDoUwfW3GDV/AttC', '2018-10-05 09:07:14', '2018-10-05 09:07:14'),
-	(4, 'brad', 'brad@ortussolutions.com', '$2a$12$Vbb4dYywI5X.1qKEV2mDzeOTZk3iHIDfEtz80SoMT0KkFWTkb.PB6', '2018-10-05 09:29:37', '2018-10-05 09:29:37'),
-	(5, 'javier', 'jquintero@ortussolutions.com', '$2a$12$UIEOglSflvGUbn5sHeBZ1.sAlaoBI4rpNOCIk2vF8R2KKz.ihP9/W', '2018-10-05 09:30:32', '2018-10-05 09:30:32'),
-	(6, 'scott', 'scott@scott.com', '$2a$12$OjIpxecG9AlZTgVGV1jsvOegTwbqgJ29PlUkfomGsK/6hsVicsRW.', '2018-10-05 09:32:07', '2018-10-05 09:32:07'),
-	(7, 'mike', 'mikep@netxn.com', '$2a$12$WWUwFEAoDGx.vB0jE54xser1myMUSwUMYo/aNn0cSGa8l6DQe67Q2', '2018-10-05 09:33:00', '2018-10-05 09:33:00');
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `createdDate`, `updatedDate`)
+VALUES
+	('147EB3B9-9102-4910-869CD8529F642AEE','luis','lmajano@ortussolutions.com','$2a$12$FE2J7ZLWaI2rSqejAu/84uLy7qlSufQsDsSE1lNNKyA05GG30gr8C','2022-07-13 16:46:49','2022-07-13 16:46:49'),
+	('21B8DE1B-DE0D-456E-A56AF767AC72ADBF','brad','brad@ortussolutions.com','$2a$12$Vbb4dYywI5X.1qKEV2mDzeOTZk3iHIDfEtz80SoMT0KkFWTkb.PB6','2022-07-13 16:46:49','2022-07-13 16:46:49'),
+	('753C0511-257A-4674-92A7500293D60B28','mike','mikep@netxn.com','$2a$12$WWUwFEAoDGx.vB0jE54xser1myMUSwUMYo/aNn0cSGa8l6DQe67Q2','2022-07-13 16:46:49','2022-07-13 16:46:49'),
+	('98BA3147-4071-4301-A011B1BD746077A3','gpickin','gavin@ortussolutions.com','$2a$12$JKiBJZF352Tfm/c3PpeslOBKRAwtXlwczMPKeUV1raD0d1cwh5B5.','2022-07-13 16:46:49','2022-07-13 16:46:49'),
+	('9B232F88-8745-4872-A7D032BDA6AEE710','scott','scott@scott.com','$2a$12$OjIpxecG9AlZTgVGV1jsvOegTwbqgJ29PlUkfomGsK/6hsVicsRW.','2022-07-13 16:46:49','2022-07-13 16:46:49'),
+	('E2F8B589-19E2-46DB-BE64D52483E6F6C6','javier','jquintero@ortussolutions.com','$2a$12$UIEOglSflvGUbn5sHeBZ1.sAlaoBI4rpNOCIk2vF8R2KKz.ihP9/W','2022-07-13 16:46:49','2022-07-13 16:46:49');
+
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
