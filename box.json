@@ -31,7 +31,7 @@
         "coldbox":"^6.7.0+3",
         "cbswagger":"^2.6.0+147",
         "cbvalidation":"^3.4.0+14",
-        "cors":"^3.0.6",
+        "cors":"^3.0.0",
         "mementifier":"^2.8.0+4",
         "cbdebugger":"^3.4.0+61"
     },
@@ -54,7 +54,7 @@
         "start:adobe":"server start serverConfigFile=server.json --force",
         "cfpm":"echo '\".engine/adobe2021/WEB-INF/cfusion/bin/cfpm.sh\"' | run",
         "cfpm:install":"echo '\".engine/adobe2021/WEB-INF/cfusion/bin/cfpm.sh\" install ${1}' | run",
-		"install:2021":"run-script cfpm:install mysql,debugger,chart",
+        "install:2021":"run-script cfpm:install mysql,debugger,chart",
         "lint":"cflint **.cf* --text --html --json --!exitOnError --suppress",
         "format":"cfformat run config,Application.cfc,modules_app/**/*.cfc,tests/specs/**/*.cfc --overwrite --verbose",
         "format:watch":"cfformat watch config,Application.cfc,modules_app/**/*.cfc,tests/specs/**/*.cfc ./.cfformat.json",
