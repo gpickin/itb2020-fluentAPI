@@ -1,13 +1,15 @@
 component {
 
 	function configure(){
-		post( "/rants/create", "rants.create" )
-		route( "/rants/:rantID/delete", "rants.delete" )
-		route( "/rants/:rantID/save", "rants.save" )
+		// CRUD
+		get( "/rants", "rants.list" )
 		get( "/rants/:rantID", "rants.view" )
-		route( "/rants", "rants.list" )
+		post( "/rants/create", "rants.create" )
+		delete( "/rants/:rantID/delete", "rants.delete" )
+		put( "/rants/:rantID/save", "rants.save" )
+
+		// Entry Point
 		route( "/", "echo.index" );
-		route( "/:handler/:action" ).end();
 	}
 
 }

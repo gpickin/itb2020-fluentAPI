@@ -11,73 +11,52 @@ component singleton accessors="true" {
 	}
 
 	array function list(){
-		return queryExecute( "select * from rants ORDER BY createdDate DESC", {} )
-			.reduce( ( result, row ) => {
-				result.append( row );
-				return result;
-			}, [] );
+		return queryExecute(
+			"select * from rants ORDER BY createdDate DESC",
+			{},
+			{ returnType : "array" }
+		);
 	}
 
-	struct function get( required numeric rantID ){
+	struct function get( required rantId ){
 		return queryExecute(
 			"select * from rants
-			where id = :rantID",
-			{
-				rantID : {
-					value     : "#rantID#",
-					cfsqltype : "cf_sql_numeric"
-				}
-			}
+				where id = :rantId
+			",
+			{ rantId : arguments.rantId }
 		).reduce( ( result, row ) => {
 			return row;
 		}, {} );
 	}
 
-	function delete( required numeric rantID ){
+	function delete( required rantId ){
 		queryExecute(
 			"delete from rants
-			where id = :rantID",
-			{
-				rantID : {
-					value     : "#rantID#",
-					cfsqltype : "cf_sql_numeric"
-				}
-			},
+				where id = :rantId",
+			{ rantId : arguments.rantId },
 			{ result : "local.result" }
 		);
 		return local.result;
 	}
 
-	function create( required body, required numeric userID ){
-		var now = now();
+	function create( required body, required userId ){
+		var now    = now();
+		var newKey = createUUID();
 		queryExecute(
 			"insert into rants
-			set
-			body         = :body,
-			userID       = :userID,
-			createdDate  = :createdDate,
-			modifiedDate = :modifiedDate
+				set
+				id  = :rantId,
+				body         = :body,
+				userId       = :userId,
 			",
 			{
-				body : {
-					value     : "#body#",
-					cfsqltype : "cf_sql_longvarchar"
-				},
-				userID : {
-					value     : "#userID#",
-					cfsqltype : "cf_sql_numeric"
-				},
-				createdDate : {
-					value     : "#now#",
-					cfsqltype : "cf_sql_timestamp"
-				},
-				modifiedDate : {
-					value     : "#now#",
-					cfsqltype : "cf_sql_timestamp"
-				}
+				rantId : newKey,
+				body   : { value : "#body#", cfsqltype : "cf_sql_longvarchar" },
+				userId : arguments.userId
 			},
 			{ result : "local.result" }
 		);
+		local.result.generatedKey = newKey;
 		return local.result;
 	}
 
@@ -85,41 +64,27 @@ component singleton accessors="true" {
 		var now = now();
 		queryExecute(
 			"update rants
-			set
-			body         = :body,
-			modifiedDate = :modifiedDate
-			where id     = :rantID
+				set
+				body         = :body,
+				modifiedDate = :modifiedDate
+				where id     = :rantId
 			",
 			{
-				rantID : {
-					value     : "#rantID#",
-					cfsqltype : "cf_sql_integer"
-				},
-				body : {
-					value     : "#body#",
-					cfsqltype : "cf_sql_longvarchar"
-				},
-				modifiedDate : {
-					value     : "#now#",
-					cfsqltype : "cf_sql_timestamp"
-				}
+				rantId       : arguments.rantId,
+				body         : { value : "#body#", cfsqltype : "cf_sql_longvarchar" },
+				modifiedDate : { value : "#now#", cfsqltype : "cf_sql_timestamp" }
 			},
 			{ result : "local.result" }
 		);
 		return local.result;
 	}
 
-	boolean function exists( required numeric rantID ){
+	boolean function exists( required rantId ){
 		return booleanFormat(
 			queryExecute(
 				"select id from rants
-				where id = :rantID",
-				{
-					rantID : {
-						value     : "#rantID#",
-						cfsqltype : "cf_sql_numeric"
-					}
-				}
+					where id = :rantId",
+				{ rantId : arguments.rantId }
 			).len()
 		)
 	}

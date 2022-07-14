@@ -1,5 +1,5 @@
 /**
- * I am the User Service
+ * I am the User Service V1
  */
 component singleton accessors="true" {
 
@@ -14,9 +14,7 @@ component singleton accessors="true" {
 		return queryExecute(
 			"select * from users
 			where id = :userId",
-			{
-				userId : arguments.userId
-			}
+			{ userId : arguments.userId }
 		);
 	}
 

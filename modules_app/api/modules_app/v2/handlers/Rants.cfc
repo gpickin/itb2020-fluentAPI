@@ -1,5 +1,10 @@
 /**
  * My RESTFul Rants Event Handler which inherits from the module `api`
+ * Since we inherit from the RestHandler we get lots of goodies like automatic HTTP method protection,
+ * missing routes, invalid routes, and much more.
+ *
+ * @see https://coldbox.ortusbooks.com/digging-deeper/rest-handler
+ * @see https://coldbox.ortusbooks.com/digging-deeper/rest-handler#rest-handler-security
  */
 component extends="coldbox.system.RestHandler" {
 
@@ -16,12 +21,11 @@ component extends="coldbox.system.RestHandler" {
 
 	/**
 	 * Returns a single Rant
-	 *
 	 */
 	function view( event, rc, prc ){
 		var validationResults = validate(
 			target      = rc,
-			constraints = { rantID : { required : true, type : "numeric" } }
+			constraints = { rantID : { required : true, type : "uuid" } }
 		);
 		if ( validationResults.hasErrors() ) {
 			prc.response.setErrorMessage( validationResults.getAllErrors(), 412 );
@@ -38,12 +42,11 @@ component extends="coldbox.system.RestHandler" {
 
 	/**
 	 * Deletes a single Rant
-	 *
 	 */
 	function delete( event, rc, prc ){
 		var validationResults = validate(
 			target      = rc,
-			constraints = { rantID : { required : true, type : "numeric" } }
+			constraints = { rantID : { required : true, type : "uuid" } }
 		);
 		if ( validationResults.hasErrors() ) {
 			prc.response.setErrorMessage( validationResults.getAllErrors(), 412 );
@@ -60,13 +63,12 @@ component extends="coldbox.system.RestHandler" {
 
 	/**
 	 * Creates a new Rant
-	 *
 	 */
 	function create( event, rc, prc ){
 		var validationResults = validate(
 			target      = rc,
 			constraints = {
-				userID : { required : true, type : "numeric" },
+				userID : { required : true, type : "uuid" },
 				body   : { required : true }
 			}
 		);
@@ -91,15 +93,14 @@ component extends="coldbox.system.RestHandler" {
 
 	/**
 	 * Updates an Existing Rant
-	 *
 	 */
 	function save( event, rc, prc ){
 		var validationResults = validate(
 			target      = rc,
 			constraints = {
-				rantID : { required : true, type : "numeric" },
+				rantID : { required : true, type : "uuid" },
 				body   : { required : true },
-				userID : { required : true, type : "numeric" }
+				userID : { required : true, type : "uuid" }
 			}
 		);
 		if ( validationResults.hasErrors() ) {

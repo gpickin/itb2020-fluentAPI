@@ -1,5 +1,5 @@
 /**
- * I am the Rant Service
+ * I am the Rant Service V1
  */
 component singleton accessors="true" {
 

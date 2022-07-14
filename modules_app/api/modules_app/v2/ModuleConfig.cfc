@@ -1,5 +1,5 @@
 /**
- * Module Config
+ * v2 Module Config
  */
 component {
 
