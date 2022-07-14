@@ -1,5 +1,5 @@
 /**
- * Module Config
+ * v1 Module Config
  */
 component {
 
@@ -7,7 +7,7 @@ component {
 	this.title             = "v1";
 	// Module Entry Point
 	this.entryPoint        = "v1";
-	// Inherit entry point from parent, so this will be /api/v1
+	// Inherit URI entry point from parent, so this will be /api/v1
 	this.inheritEntryPoint = true;
 	// Model Namespace
 	this.modelNamespace    = "v1";

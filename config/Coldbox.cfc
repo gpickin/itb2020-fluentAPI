@@ -41,7 +41,7 @@
 			// Error/Exception Handling
 			invalidHTTPMethodHandler : "",
 			exceptionHandler         : "v1:Echo.onError",
-			invalidEventHandler      : "v1:Echo.onInvalidEvent",
+			invalidEventHandler      : "v1:Echo.onInvalidRoute",
 			customErrorTemplate      : "",
 			// Application Aspects
 			handlerCaching           : true,
@@ -244,7 +244,7 @@
 		variables.modulesettings.cbdebugger = {
 			// This flag enables/disables the tracking of request data to our storage facilities
 			// To disable all tracking, turn this master key off
-			enabled        : getSystemSetting( "CBDEBUGGER_ENABLED", false ),
+			enabled        : true,//getSystemSetting( "CBDEBUGGER_ENABLED", false ),
 			// This setting controls if you will activate the debugger for visualizations ONLY
 			// The debugger will still track requests even in non debug mode.
 			debugMode      : true,

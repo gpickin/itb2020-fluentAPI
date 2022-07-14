@@ -7,7 +7,6 @@ component extends="coldbox.system.RestHandler" {
 	property name="rantService" inject="RantService@v1";
 	property name="userService" inject="UserService@v1";
 
-
 	/**
 	 * Returns a list of Rants
 	 */

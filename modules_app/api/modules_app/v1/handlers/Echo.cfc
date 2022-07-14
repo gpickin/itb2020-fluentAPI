@@ -15,10 +15,10 @@ component extends="coldbox.system.RestHandler" {
 	this.allowedMethods = {};
 
 	/**
-	 * Index
+	 * Say Hello
 	 */
-	any function index( event, rc, prc ){
-		event.getResponse().setData( "Welcome to my ColdBox RESTFul Service V1" );
+	function index( event, rc, prc ){
+		event.getResponse().setData( "Welcome to my ColdBox RESTFul Service v1" );
 	}
 
 }

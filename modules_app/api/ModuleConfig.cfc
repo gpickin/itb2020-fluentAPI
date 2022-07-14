@@ -1,5 +1,5 @@
 /**
- * Module Config
+ * API Core Module Configuration
  */
 component {
 
@@ -7,7 +7,8 @@ component {
 	this.title = "api";
 	this.description = "Base API Module";
 	this.version = "1.0.0";
-	// Module Entry Point
+
+	// Module Entry Point in the URI: http://yourapp/api
 	this.entryPoint = "api";
 	// Inheritable entry point.
 	this.inheritEntryPoint = true;
