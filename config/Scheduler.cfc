@@ -3,7 +3,7 @@ component {
 	/**
 	 * Configure the ColdBox Scheduler
 	 */
-	function configure() {
+	function configure(){
 		/**
 		 * --------------------------------------------------------------------------
 		 * Configuration Methods
@@ -22,7 +22,6 @@ component {
 		 * You register tasks with the task() method and get back a ColdBoxScheduledTask object
 		 * that you can use to register your tasks configurations.
 		 */
-
 	}
 
 	/**
@@ -40,7 +39,7 @@ component {
 	/**
 	 * Called whenever ANY task fails
 	 *
-	 * @task The task that got executed
+	 * @task      The task that got executed
 	 * @exception The ColdFusion exception object
 	 */
 	function onAnyTaskError( required task, required exception ){
@@ -49,7 +48,7 @@ component {
 	/**
 	 * Called whenever ANY task succeeds
 	 *
-	 * @task The task that got executed
+	 * @task   The task that got executed
 	 * @result The result (if any) that the task produced
 	 */
 	function onAnyTaskSuccess( required task, result ){
@@ -66,7 +65,7 @@ component {
 	/**
 	 * Called after ANY task runs
 	 *
-	 * @task The task that got executed
+	 * @task   The task that got executed
 	 * @result The result (if any) that the task produced
 	 */
 	function afterAnyTask( required task, result ){

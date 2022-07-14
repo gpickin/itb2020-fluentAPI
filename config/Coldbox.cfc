@@ -1,4 +1,5 @@
-﻿component{
+﻿component {
+
 	/**
 	 * Configure the ColdBox App For Production
 	 */
@@ -146,7 +147,6 @@
 				// If not empty, convert all date/times to the specific timezone
 				convertToTimezone : "UTC"
 			},
-
 			/**
 			 * --------------------------------------------------------------------------
 			 * cbSwagger Settings
@@ -203,7 +203,7 @@
 					// Define your security schemes here
 					// https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securitySchemeObject
 					"securitySchemes" : {
-						// "ApiKeyAuth" : {
+						 // "ApiKeyAuth" : {
 						// 	"type"        : "apiKey",
 						// 	"description" : "User your JWT as an Api Key for security",
 						// 	"name"        : "x-api-key",
@@ -226,8 +226,6 @@
 				//	{ "UserSecurity" : [] }
 				// ]
 			}
-
-
 		};
 	}
 
@@ -236,25 +234,25 @@
 	 */
 	function development(){
 		coldbox.handlersIndexAutoReload = true;
-		coldbox.handlerCaching = false;
+		coldbox.handlerCaching          = false;
 		coldbox.reinitpassword          = "";
-		coldbox.customErrorTemplate = "/coldbox/system/exceptions/Whoops.cfm";
+		coldbox.customErrorTemplate     = "/coldbox/system/exceptions/Whoops.cfm";
 
 		// Debugger Settings
 		variables.modulesettings.cbdebugger = {
 			// This flag enables/disables the tracking of request data to our storage facilities
 			// To disable all tracking, turn this master key off
-			enabled        : true,//getSystemSetting( "CBDEBUGGER_ENABLED", false ),
+			enabled          : true, // getSystemSetting( "CBDEBUGGER_ENABLED", false ),
 			// This setting controls if you will activate the debugger for visualizations ONLY
 			// The debugger will still track requests even in non debug mode.
-			debugMode      : true,
+			debugMode        : true,
 			// The URL password to use to activate it on demand
-			debugPassword  : "cb",
+			debugPassword    : "cb",
 			// This flag enables/disables the end of request debugger panel docked to the bottom of the page.
 			// If you disable it, then the only way to visualize the debugger is via the `/cbdebugger` endpoint
 			requestPanelDock : true,
 			// Request Tracker Options
-			requestTracker : {
+			requestTracker   : {
 				storage                      : "cachebox",
 				cacheName                    : "template",
 				trackDebuggerEvents          : false,
@@ -330,4 +328,5 @@
 			async : { enabled : true, expanded : false }
 		};
 	}
+
 }

@@ -4,12 +4,12 @@
 component extends="v5.models.BaseEntity" accessors="true" {
 
 	// Properties
-	property name="id"          	type="string";
-	property name="username"     	type="string";
-	property name="email"     		type="string";
-	property name="password"     	type="string";
-	property name="createdDate"  	type="date";
-	property name="modifiedDate" 	type="date";
+	property name="id"          type="string";
+	property name="username"    type="string";
+	property name="email"       type="string";
+	property name="password"    type="string";
+	property name="createdDate" type="date";
+	property name="updatedDate" type="date";
 
 
 	/**

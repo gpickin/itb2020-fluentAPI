@@ -20,12 +20,7 @@ component extends="coldbox.system.RestHandler" {
 	 *
 	 */
 	function show( event, rc, prc ){
-		validateOrFail(
-			target      = rc,
-			constraints = {
-				rantID : { required : true, type : "numeric" }
-			}
-		);
+		validateOrFail( target = rc, constraints = { rantID : { required : true, type : "numeric" } } );
 		prc.response.setData( rantService.getOrFail( rc.rantID ) );
 	}
 
@@ -36,9 +31,7 @@ component extends="coldbox.system.RestHandler" {
 	function delete( event, rc, prc ){
 		var validationResults = validateOrFail(
 			target      = rc,
-			constraints = {
-				rantID : { required : true, type : "numeric" }
-			}
+			constraints = { rantID : { required : true, type : "numeric" } }
 		);
 		rantService.existsOrFail( rc.rantID )
 		rantService.delete( rc.rantID );

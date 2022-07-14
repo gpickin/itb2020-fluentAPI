@@ -24,15 +24,12 @@ component
 		return this
 			.listArray()
 			.map( function( rant ){
-				return populator.populateFromStruct( new(), rant );
+				return populator.populateFromStruct( new (), rant );
 			} );
 	}
 
 	function listArray(){
-		return queryExecute(
-			"select * from rants ORDER BY createdDate DESC",
-			{}
-		).reduce( ( result, row ) => {
+		return queryExecute( "select * from rants ORDER BY createdDate DESC", {} ).reduce( ( result, row ) => {
 			result.append( row );
 			return result;
 		}, [] );
@@ -42,25 +39,15 @@ component
 		return queryExecute(
 			"select * from rants
 			where id = :rantID",
-			{
-				rantID : {
-					value : "#rantID#",
-					cfsqltype  : "cf_sql_numeric"
-				}
-			}
-		).reduce( ( result, row ) => populator.populateFromStruct( result, row ), new() );
+			{ rantID : { value : "#rantID#", cfsqltype : "cf_sql_numeric" } }
+		).reduce( ( result, row ) => populator.populateFromStruct( result, row ), new () );
 	}
 
 	function delete( required numeric rantID ){
 		queryExecute(
 			"delete from rants
 			where id = :rantID",
-			{
-				rantID : {
-					value : "#rantID#",
-					cfsqltype  : "cf_sql_numeric"
-				}
-			},
+			{ rantID : { value : "#rantID#", cfsqltype : "cf_sql_numeric" } },
 			{ result : "local.result" }
 		);
 		return local.result;
@@ -69,7 +56,7 @@ component
 	function create( required Rant rant ){
 		var now = now();
 		arguments.rant.setCreatedDate( now );
-		arguments.rant.setModifiedDate( now );
+		arguments.rant.setUpdatedDate( now );
 
 		queryExecute(
 			"insert into rants
@@ -77,24 +64,24 @@ component
 			body         = :body,
 			userID       = :userID,
 			createdDate  = :createdDate,
-			modifiedDate = :modifiedDate
+			updatedDate = :updatedDate
 			",
 			{
 				body : {
-					value : "#arguments.rant.getBody()#",
-					cfsqltype  : "cf_sql_longvarchar"
+					value     : "#arguments.rant.getBody()#",
+					cfsqltype : "cf_sql_longvarchar"
 				},
 				userID : {
-					value : "#arguments.rant.getuserID()#",
-					cfsqltype  : "cf_sql_numeric"
+					value     : "#arguments.rant.getuserID()#",
+					cfsqltype : "cf_sql_numeric"
 				},
 				createdDate : {
-					value : "#arguments.rant.getCreatedDate()#",
-					cfsqltype  : "cf_sql_timestamp"
+					value     : "#arguments.rant.getCreatedDate()#",
+					cfsqltype : "cf_sql_timestamp"
 				},
-				modifiedDate : {
-					value : "#arguments.rant.getModifiedDate()#",
-					cfsqltype  : "cf_sql_timestamp"
+				updatedDate : {
+					value     : "#arguments.rant.getUpdatedDate()#",
+					cfsqltype : "cf_sql_timestamp"
 				}
 			},
 			{ result : "local.result" }
@@ -105,26 +92,26 @@ component
 
 	function update( required Rant rant ){
 		var now = now();
-		arguments.rant.setModifiedDate( now );
+		arguments.rant.setUpdatedDate( now );
 		queryExecute(
 			"update rants
 			set
 			body         = :body,
-			modifiedDate = :modifiedDate
+			updatedDate = :updatedDate
 			where id     = :rantID
 			",
 			{
 				rantID : {
-					value : "#arguments.rant.getID()#",
-					cfsqltype  : "cf_sql_integer"
+					value     : "#arguments.rant.getID()#",
+					cfsqltype : "cf_sql_integer"
 				},
 				body : {
-					value : "#arguments.rant.getBody()#",
-					cfsqltype  : "cf_sql_longvarchar"
+					value     : "#arguments.rant.getBody()#",
+					cfsqltype : "cf_sql_longvarchar"
 				},
-				modifiedDate : {
-					value : "#arguments.rant.getModifiedDate()#",
-					cfsqltype  : "cf_sql_timestamp"
+				updatedDate : {
+					value     : "#arguments.rant.getUpdatedDate()#",
+					cfsqltype : "cf_sql_timestamp"
 				}
 			},
 			{ result : "local.result" }

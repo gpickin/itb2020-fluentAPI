@@ -47,7 +47,7 @@ component singleton accessors="true" {
 				set
 				id  = :rantId,
 				body         = :body,
-				userId       = :userId,
+				userId       = :userId
 			",
 			{
 				rantId : newKey,
@@ -66,13 +66,13 @@ component singleton accessors="true" {
 			"update rants
 				set
 				body         = :body,
-				modifiedDate = :modifiedDate
+				updatedDate = :updatedDate
 				where id     = :rantId
 			",
 			{
-				rantId       : arguments.rantId,
-				body         : { value : "#body#", cfsqltype : "cf_sql_longvarchar" },
-				modifiedDate : { value : "#now#", cfsqltype : "cf_sql_timestamp" }
+				rantId      : arguments.rantId,
+				body        : { value : "#body#", cfsqltype : "cf_sql_longvarchar" },
+				updatedDate : { value : "#now#", cfsqltype : "cf_sql_timestamp" }
 			},
 			{ result : "local.result" }
 		);

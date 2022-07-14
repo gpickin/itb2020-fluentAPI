@@ -7,11 +7,11 @@ component accessors="true" {
 	property name="userService" inject="UserService@v4";
 
 	// Properties
-	property name="id"           type="string";
-	property name="body"         type="string";
-	property name="createdDate"  type="date";
-	property name="modifiedDate" type="date";
-	property name="userID"       type="string";
+	property name="id"          type="string";
+	property name="body"        type="string";
+	property name="createdDate" type="date";
+	property name="updatedDate" type="date";
+	property name="userID"      type="string";
 
 	// Validation Constraints
 	this.constraints = {
@@ -45,11 +45,11 @@ component accessors="true" {
 	 */
 	function getMemento(){
 		return {
-			"id"           : getID(),
-			"body"         : getBody(),
-			"createdDate"  : dateFormat( getCreatedDate(), "long" ),
-			"modifiedDate" : dateFormat( getModifiedDate(), "long" ),
-			"userId"       : getUserID()
+			"id"          : getID(),
+			"body"        : getBody(),
+			"createdDate" : dateFormat( getCreatedDate(), "long" ),
+			"updatedDate" : dateFormat( getUpdatedDate(), "long" ),
+			"userId"      : getUserID()
 		};
 	}
 

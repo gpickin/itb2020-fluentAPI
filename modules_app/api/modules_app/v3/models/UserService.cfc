@@ -24,12 +24,7 @@ component
 		return queryExecute(
 			"select * from users
 			where id = :userID",
-			{
-				userID : {
-					value : "#userID#",
-					type  : "cf_sql_numeric"
-				}
-			}
+			{ userID : { value : "#userID#", type : "cf_sql_numeric" } }
 		).reduce( ( result, row ) => row, {} );
 	}
 

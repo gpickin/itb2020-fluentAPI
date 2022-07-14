@@ -21,10 +21,7 @@ component
 	}
 
 	array function list(){
-		return queryExecute(
-			"select * from rants ORDER BY createdDate DESC",
-			{}
-		).reduce( ( result, row ) => {
+		return queryExecute( "select * from rants ORDER BY createdDate DESC", {} ).reduce( ( result, row ) => {
 			result.append( row );
 			return result;
 		}, [] );
@@ -34,12 +31,7 @@ component
 		return queryExecute(
 			"select * from rants
 			where id = :rantID",
-			{
-				rantID : {
-					value     : "#rantID#",
-					cfsqltype : "cf_sql_numeric"
-				}
-			}
+			{ rantID : { value : "#rantID#", cfsqltype : "cf_sql_numeric" } }
 		).reduce( ( result, row ) => row, {} );
 	}
 
@@ -47,21 +39,13 @@ component
 		queryExecute(
 			"delete from rants
 			where id = :rantID",
-			{
-				rantID : {
-					value     : "#rantID#",
-					cfsqltype : "cf_sql_numeric"
-				}
-			},
+			{ rantID : { value : "#rantID#", cfsqltype : "cf_sql_numeric" } },
 			{ result : "local.result" }
 		);
 		return local.result;
 	}
 
-	function create(
-		required body,
-		required numeric userID
-	){
+	function create( required body, required numeric userID ){
 		var now = now();
 		queryExecute(
 			"insert into rants
@@ -69,25 +53,13 @@ component
 				body         = :body,
 				userID       = :userID,
 				createdDate  = :createdDate,
-				modifiedDate = :modifiedDate
+				updatedDate = :updatedDate
 			",
 			{
-				body : {
-					value     : "#body#",
-					cfsqltype : "cf_sql_longvarchar"
-				},
-				userID : {
-					value     : "#userID#",
-					cfsqltype : "cf_sql_numeric"
-				},
-				createdDate : {
-					value     : "#now#",
-					cfsqltype : "cf_sql_timestamp"
-				},
-				modifiedDate : {
-					value     : "#now#",
-					cfsqltype : "cf_sql_timestamp"
-				}
+				body        : { value : "#body#", cfsqltype : "cf_sql_longvarchar" },
+				userID      : { value : "#userID#", cfsqltype : "cf_sql_numeric" },
+				createdDate : { value : "#now#", cfsqltype : "cf_sql_timestamp" },
+				updatedDate : { value : "#now#", cfsqltype : "cf_sql_timestamp" }
 			},
 			{ result : "local.result" }
 		);
@@ -100,22 +72,13 @@ component
 			"update rants
 			set
 			body                                 = :body,
-			modifiedDate = :modifiedDate
+			updatedDate = :updatedDate
 			where id                 = :rantID
 			",
 			{
-				rantID : {
-					value     : "#rantID#",
-					cfsqltype : "cf_sql_integer"
-				},
-				body : {
-					value     : "#body#",
-					cfsqltype : "cf_sql_longvarchar"
-				},
-				modifiedDate : {
-					value     : "#now#",
-					cfsqltype : "cf_sql_timestamp"
-				}
+				rantID      : { value : "#rantID#", cfsqltype : "cf_sql_integer" },
+				body        : { value : "#body#", cfsqltype : "cf_sql_longvarchar" },
+				updatedDate : { value : "#now#", cfsqltype : "cf_sql_timestamp" }
 			},
 			{ result : "local.result" }
 		);

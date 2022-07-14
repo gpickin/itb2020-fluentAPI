@@ -4,8 +4,8 @@
 component accessors="true" {
 
 	// DI
-	property name="wirebox" 	inject="wirebox";
-	property name="populator" 	inject="wirebox:populator";
+	property name="wirebox"   inject="wirebox";
+	property name="populator" inject="wirebox:populator";
 
 	// Properties
 	property name="entityName";
@@ -49,10 +49,7 @@ component accessors="true" {
 	 */
 	function new( struct data = {} ){
 		var modelName = getEntityName() & ( getModuleName().len() ? "@#getModuleName()#" : "" );
-		return populator.populateFromStruct(
-			target = wireBox.getInstance( modelName ),
-			memento = arguments.data
-		);
+		return populator.populateFromStruct( target = wireBox.getInstance( modelName ), memento = arguments.data );
 	}
 
 	/**
@@ -65,12 +62,7 @@ component accessors="true" {
 			queryExecute(
 				"select id from #getTableName()#
 				where #getPrimaryKey()# = :id",
-				{
-					id : {
-						value     : arguments[ 1 ],
-						cfsqltype : "cf_sql_numeric"
-					}
-				}
+				{ id : { value : arguments[ 1 ], cfsqltype : "cf_sql_numeric" } }
 			).len()
 		)
 	}
@@ -79,31 +71,27 @@ component accessors="true" {
 	 * Check to see if there is a row with a matching primary key in the database. Much faster than a full entity query and object load
 	 *
 	 * @return Returns true if there is a row with the matching Primary Key
+	 *
 	 * @throws EntityNotFound if the entity is not found
 	 */
 	function existsOrFail(){
 		if ( exists( argumentCollection = arguments ) ) {
 			return true;
 		}
-		throw(
-			type    = "EntityNotFound",
-			message = "#entityName# Not Found"
-		);
+		throw( type = "EntityNotFound", message = "#entityName# Not Found" );
 	}
 
 	/**
 	 * Query and load an entity if possible, else throw an error
 	 *
 	 * @return Returns the Entity if there is a row with the matching Primary Key
+	 *
 	 * @throws EntityNotFound if the entity is not found
 	 */
 	function getOrFail(){
 		var maybeEntity = this.get( argumentCollection = arguments );
 		if ( !maybeEntity.isLoaded() ) {
-			throw(
-				type    = "EntityNotFound",
-				message = "#getEntityName()# Not Found"
-			);
+			throw( type = "EntityNotFound", message = "#getEntityName()# Not Found" );
 		}
 		return maybeEntity;
 	}

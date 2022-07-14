@@ -10,12 +10,9 @@ component extends="coldbox.system.RestHandler" {
 	this.prehandler_only = "show,delete,update";
 
 	any function preHandler( event, rc, prc, action, eventArguments ){
-		try{
-			validateOrFail(
-				target      = rc,
-				constraints = { rantID : { required : true, type : "numeric" } }
-			);
-		} catch( any e ){
+		try {
+			validateOrFail( target = rc, constraints = { rantID : { required : true, type : "numeric" } } );
+		} catch ( any e ) {
 			arguments.exception = e;
 			this.onValidationException( argumentCollection = arguments );
 		}
@@ -25,9 +22,7 @@ component extends="coldbox.system.RestHandler" {
 	 * Returns a list of Rants
 	 */
 	any function index( event, rc, prc ){
-		prc.response.setData(
-			rantService.list().map( ( rant ) => rant.getMemento() )
-		);
+		prc.response.setData( rantService.list().map( ( rant ) => rant.getMemento() ) );
 	}
 
 	/**
@@ -53,10 +48,7 @@ component extends="coldbox.system.RestHandler" {
 	function create( event, rc, prc ){
 		var rant = rantService.new();
 
-		validateOrFail(
-			target      = rc,
-			constraints = rant.constraints
-		);
+		validateOrFail( target = rc, constraints = rant.constraints );
 
 		userService.existsOrFail( rc.userID );
 
@@ -75,10 +67,7 @@ component extends="coldbox.system.RestHandler" {
 	function update( event, rc, prc ){
 		var rant = rantService.getOrFail( rc.rantId );
 
-		validateOrFail(
-			target      = rc,
-			constraints = rant.constraints
-		);
+		validateOrFail( target = rc, constraints = rant.constraints );
 
 		userService.existsOrFail( rc.userID );
 

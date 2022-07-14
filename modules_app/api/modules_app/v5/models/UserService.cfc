@@ -24,13 +24,8 @@ component
 		var q = queryExecute(
 			"select * from users
 			where id = :userID",
-			{
-				userID : {
-					value : "#userID#",
-					cfsqltype  : "cf_sql_numeric"
-				}
-			}
-		).reduce( ( result, row ) => populator.populateFromStruct( result, row ), new() );
+			{ userID : { value : "#userID#", cfsqltype : "cf_sql_numeric" } }
+		).reduce( ( result, row ) => populator.populateFromStruct( result, row ), new () );
 	}
 
 }
