@@ -15,7 +15,7 @@ component extends="coldbox.system.RestHandler" {
 	this.allowedMethods = {};
 
 	/**
-	 * Say Hello
+	 * Say Hello v1
 	 */
 	function index( event, rc, prc ){
 		event.getResponse().setData( "Welcome to my ColdBox RESTFul Service v1" );

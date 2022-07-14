@@ -1,5 +1,10 @@
 /**
  * My RESTFul Rants Event Handler which inherits from the module `api`
+ * Since we inherit from the RestHandler we get lots of goodies like automatic HTTP method protection,
+ * missing routes, invalid routes, and much more.
+ *
+ * @see https://coldbox.ortusbooks.com/digging-deeper/rest-handler
+ * @see https://coldbox.ortusbooks.com/digging-deeper/rest-handler#rest-handler-security
  */
 component extends="coldbox.system.RestHandler" {
 
@@ -17,7 +22,6 @@ component extends="coldbox.system.RestHandler" {
 
 	/**
 	 * Returns a single Rant
-	 *
 	 */
 	function view( event, rc, prc ){
 		if ( !structKeyExists( rc, "rantID" ) ) {
@@ -26,10 +30,10 @@ component extends="coldbox.system.RestHandler" {
 			prc.response.addMessage( "rantID is required" );
 			return;
 		}
-		if ( !isNumeric( rc.rantID ) ) {
+		if ( !isValid( "uuid", rc.rantID ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "rantID must be numeric" );
+			prc.response.addMessage( "rantID must be a UUID" );
 			return;
 		}
 		var rant = rantService.getRant( rc.rantID );
@@ -45,17 +49,16 @@ component extends="coldbox.system.RestHandler" {
 
 	/**
 	 * Deletes a single Rant
-	 *
 	 */
 	function delete( event, rc, prc ){
 		if ( !structKeyExists( rc, "rantID" ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
 			prc.response.addMessage( "rantID is required" );
-		} else if ( !isNumeric( rc.rantID ) ) {
+		} else if ( !isValid( "UUID", rc.rantID ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "rantID must be numeric" );
+			prc.response.addMessage( "rantID must be a UUID" );
 		} else {
 			var result = rantService.delete( rc.rantID );
 			if ( result.recordcount > 0 ) {
@@ -70,7 +73,6 @@ component extends="coldbox.system.RestHandler" {
 
 	/**
 	 * Creates a new Rant
-	 *
 	 */
 	function create( event, rc, prc ){
 		if ( !structKeyExists( rc, "body" ) ) {
@@ -91,10 +93,10 @@ component extends="coldbox.system.RestHandler" {
 			prc.response.addMessage( "userID is required" );
 			return;
 		}
-		if ( !isNumeric( rc.userID ) ) {
+		if ( !isValid( "uuid", rc.userID ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "userID must be numeric" );
+			prc.response.addMessage( "userID must be a UUID" );
 			return;
 		}
 		var user = userService.get( rc.userID )
@@ -119,7 +121,6 @@ component extends="coldbox.system.RestHandler" {
 
 	/**
 	 * Updates an Existing Rant
-	 *
 	 */
 	function save( event, rc, prc ){
 		if ( !structKeyExists( rc, "body" ) ) {
@@ -140,10 +141,10 @@ component extends="coldbox.system.RestHandler" {
 			prc.response.addMessage( "rantID is required" );
 			return
 		}
-		if ( !isNumeric( rc.rantID ) ) {
+		if ( !isValid( "uuid", rc.rantID ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "rantID must be numeric" );
+			prc.response.addMessage( "rantID must be a UUID" );
 			return
 		}
 		var rant = rantService.getRant( rc.rantID )
@@ -159,10 +160,10 @@ component extends="coldbox.system.RestHandler" {
 			prc.response.addMessage( "userID is required" );
 			return;
 		}
-		if ( !isNumeric( rc.userID ) ) {
+		if ( !isValid( "UUID", rc.userID ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "userID must be numeric" );
+			prc.response.addMessage( "userID must be a UUID" );
 			return;
 		}
 		var user = userService.get( rc.userID )

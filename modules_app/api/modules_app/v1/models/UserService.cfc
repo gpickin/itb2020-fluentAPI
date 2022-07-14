@@ -10,15 +10,12 @@ component singleton accessors="true" {
 		return this;
 	}
 
-	function get( required numeric userID ){
+	function get( required string userId ){
 		return queryExecute(
 			"select * from users
-			where id = :userID",
+			where id = :userId",
 			{
-				userID : {
-					value : "#userID#",
-					type  : "cf_sql_numeric"
-				}
+				userId : arguments.userId
 			}
 		);
 	}
