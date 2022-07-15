@@ -51,9 +51,9 @@ component accessors="true" {
 		moduleName  = "v5",
 		serviceName = "#arguments.entityName#Service@#arguments.moduleName#"
 	){
-		variables._primaryKey = arguments.primaryKey;
-		variables._entityName = arguments.entityName;
-		variables._moduleName = arguments.moduleName;
+		variables._primaryKey  = arguments.primaryKey;
+		variables._entityName  = arguments.entityName;
+		variables._moduleName  = arguments.moduleName;
 		variables._serviceName = arguments.serviceName;
 
 		return this;
@@ -63,7 +63,7 @@ component accessors="true" {
 	 * Once this entity is loaded, load up it's companion service
 	 */
 	function onDIComplete(){
-		variables._entityService = wirebox.getInstance( getServiceName() );
+		variables._entityService = wirebox.getInstance( variables._serviceName );
 	}
 
 	/**
