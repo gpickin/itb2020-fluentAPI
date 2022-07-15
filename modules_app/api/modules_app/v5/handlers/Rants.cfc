@@ -10,7 +10,7 @@ component extends="coldbox.system.RestHandler" {
 	this.prehandler_only = "show,delete,update";
 	any function preHandler( event, rc, prc, action, eventArguments ){
 		try {
-			validateOrFail( target = rc, constraints = { rantID : { required : true, type : "numeric" } } );
+			validateOrFail( target = rc, constraints = { rantId : { required : true, type : "numeric" } } );
 		} catch ( any e ) {
 			arguments.exception = e;
 			this.onValidationException( argumentCollection = arguments );
@@ -29,7 +29,7 @@ component extends="coldbox.system.RestHandler" {
 	 *
 	 */
 	function show( event, rc, prc ){
-		prc.response.setData( rantService.getOrFail( rc.rantID ).getMemento() );
+		prc.response.setData( rantService.getOrFail( rc.rantId ).getMemento() );
 	}
 
 	/**
@@ -37,7 +37,7 @@ component extends="coldbox.system.RestHandler" {
 	 *
 	 */
 	function delete( event, rc, prc ){
-		rantService.getOrFail( rc.rantID ).delete();
+		rantService.getOrFail( rc.rantId ).delete();
 
 		prc.response.addMessage( "Rant deleted" );
 	}
@@ -51,7 +51,7 @@ component extends="coldbox.system.RestHandler" {
 			.validateOrFail()
 			.save();
 
-		prc.response.setData( { "rantID" : result.getID() } ).addMessage( "Rant created" );
+		prc.response.setData( { "rantId" : result.getID() } ).addMessage( "Rant created" );
 	}
 
 	/**
@@ -60,7 +60,7 @@ component extends="coldbox.system.RestHandler" {
 	 */
 	function update( event, rc, prc ){
 		rantService
-			.getOrFail( rc.rantID )
+			.getOrFail( rc.rantId )
 			.populate( memento = rc, exclude = "id" )
 			.validateOrFail()
 			.save();

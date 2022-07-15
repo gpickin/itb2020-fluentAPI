@@ -11,12 +11,12 @@ component extends="v5.models.BaseEntity" accessors="true" {
 	property name="body"        type="string";
 	property name="createdDate" type="date";
 	property name="updatedDate" type="date";
-	property name="userID"      type="string";
+	property name="userId"      type="string";
 
 	// Validation Constraints
 	this.constraints = {
 		body   : { required : true },
-		userID : {
+		userId : {
 			required : true,
 			type     : "numeric",
 			udf      : ( value, target ) => {
@@ -39,7 +39,7 @@ component extends="v5.models.BaseEntity" accessors="true" {
 	 * getUser
 	 */
 	function getUser(){
-		return userService.get( getUserID() );
+		return userService.get( getuserId() );
 	}
 
 }

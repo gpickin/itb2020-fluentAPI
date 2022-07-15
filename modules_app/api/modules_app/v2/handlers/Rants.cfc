@@ -25,13 +25,13 @@ component extends="coldbox.system.RestHandler" {
 	function view( event, rc, prc ){
 		var validationResults = validate(
 			target      = rc,
-			constraints = { rantID : { required : true, type : "uuid" } }
+			constraints = { rantId : { required : true, type : "uuid" } }
 		);
 		if ( validationResults.hasErrors() ) {
 			prc.response.setErrorMessage( validationResults.getAllErrors(), 412 );
 			return;
 		}
-		var rant = rantService.get( rc.rantID );
+		var rant = rantService.get( rc.rantId );
 
 		if ( !rant.isEmpty() ) {
 			prc.response.setData( rant )
@@ -46,14 +46,14 @@ component extends="coldbox.system.RestHandler" {
 	function delete( event, rc, prc ){
 		var validationResults = validate(
 			target      = rc,
-			constraints = { rantID : { required : true, type : "uuid" } }
+			constraints = { rantId : { required : true, type : "uuid" } }
 		);
 		if ( validationResults.hasErrors() ) {
 			prc.response.setErrorMessage( validationResults.getAllErrors(), 412 );
 			return;
 		}
 
-		var result = rantService.delete( rc.rantID );
+		var result = rantService.delete( rc.rantId );
 		if ( result.recordcount > 0 ) {
 			prc.response.addMessage( "Rant deleted" );
 		} else {
@@ -68,7 +68,7 @@ component extends="coldbox.system.RestHandler" {
 		var validationResults = validate(
 			target      = rc,
 			constraints = {
-				userID : { required : true, type : "uuid" },
+				userId : { required : true, type : "uuid" },
 				body   : { required : true }
 			}
 		);
@@ -76,13 +76,13 @@ component extends="coldbox.system.RestHandler" {
 			prc.response.setErrorMessage( validationResults.getAllErrors(), 412 );
 			return;
 		}
-		if ( !userService.exists( rc.userID ) ) {
+		if ( !userService.exists( rc.userId ) ) {
 			prc.response.setErrorMessage( "User not found", 404 );
 			return;
 		}
-		var result = rantService.create( body = rc.body, userID = rc.userID );
+		var result = rantService.create( body = rc.body, userId = rc.userId );
 		if ( result.recordcount ) {
-			prc.response.setData( { "rantID" : result.generatedKey } );
+			prc.response.setData( { "rantId" : result.generatedKey } );
 			prc.response.addMessage( "Rant created" );
 			return;
 		} else {
@@ -98,9 +98,9 @@ component extends="coldbox.system.RestHandler" {
 		var validationResults = validate(
 			target      = rc,
 			constraints = {
-				rantID : { required : true, type : "uuid" },
+				rantId : { required : true, type : "uuid" },
 				body   : { required : true },
-				userID : { required : true, type : "uuid" }
+				userId : { required : true, type : "uuid" }
 			}
 		);
 		if ( validationResults.hasErrors() ) {
@@ -108,18 +108,18 @@ component extends="coldbox.system.RestHandler" {
 			return;
 		}
 
-		if ( !rantService.exists( rc.rantID ) ) {
+		if ( !rantService.exists( rc.rantId ) ) {
 			prc.response.setErrorMessage( "Rant not found", 404 );
 			return;
 		}
-		if ( !userService.exists( rc.userID ) ) {
+		if ( !userService.exists( rc.userId ) ) {
 			prc.response.setErrorMessage( "User not found", 404 );
 			return;
 		}
 		var result = rantService.update(
 			body   = rc.body,
-			userID = rc.userID,
-			rantID = rc.rantID
+			userId = rc.userId,
+			rantId = rc.rantId
 		);
 		if ( result.recordcount ) {
 			prc.response.addMessage( "Rant Updated" );

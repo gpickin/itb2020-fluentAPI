@@ -12,20 +12,11 @@ component
 	 */
 	UserService function init(){
 		super.init(
-			entityName    = "user",
-			tableName     = "users",
-			parameterName = "userID",
-			moduleName    = "v3"
+			entityName = "user",
+			tableName  = "users",
+			moduleName = "v3"
 		)
 		return this;
-	}
-
-	function get( required numeric userID ){
-		return queryExecute(
-			"select * from users
-			where id = :userID",
-			{ userID : { value : "#userID#", type : "cf_sql_numeric" } }
-		).reduce( ( result, row ) => row, {} );
 	}
 
 }

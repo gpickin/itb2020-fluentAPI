@@ -3,7 +3,7 @@ component {
 	function configure(){
 		resources(
 			resource      = "rants",
-			parameterName = "rantID",
+			parameterName = "rantId",
 			except        = [ "new", "edit" ]
 		);
 

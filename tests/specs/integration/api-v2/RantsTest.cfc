@@ -197,7 +197,6 @@ component extends="tests.resources.BaseTest" {
 							expect( returnedJSON ).toHaveKeyWithCase( "data" );
 							expect( returnedJSON.data ).toBeStruct();
 							expect( returnedJSON.data ).toHaveKeyWithCase( "rantID" );
-							expect( returnedJSON.data.rantID ).toBeGT( 7 );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );

@@ -11,12 +11,12 @@ component accessors="true" {
 	property name="body"        type="string";
 	property name="createdDate" type="date";
 	property name="updatedDate" type="date";
-	property name="userID"      type="string";
+	property name="userId"      type="string";
 
 	// Validation Constraints
 	this.constraints = {
 		body   : { required : true },
-		userID : { required : true, type : "numeric" }
+		userId : { required : true, type : "numeric" }
 	};
 
 	/**
@@ -30,7 +30,7 @@ component accessors="true" {
 	 * getUser
 	 */
 	function getUser(){
-		return userService.get( getUserID() );
+		return userService.get( getuserId() );
 	}
 
 	/**
@@ -49,7 +49,7 @@ component accessors="true" {
 			"body"        : getBody(),
 			"createdDate" : dateFormat( getCreatedDate(), "long" ),
 			"updatedDate" : dateFormat( getUpdatedDate(), "long" ),
-			"userId"      : getUserID()
+			"userId"      : getuserId()
 		};
 	}
 

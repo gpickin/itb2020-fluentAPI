@@ -7,7 +7,7 @@ component {
 		// Type the ID to numeric
 		resources(
 			resource      = "rants",
-			parameterName = "rantID-numeric",
+			parameterName = "rantId-numeric",
 			except        = [ "new", "edit" ]
 		)
 

@@ -22,26 +22,26 @@ component extends="coldbox.system.RestHandler" {
 	 *
 	 * Display a single Rant.
 	 *
-	 * @x-route      (GET) /api/v6/rants/:rantID
+	 * @x-route      (GET) /api/v6/rants/:rantId
 	 * @x-parameters ~api-v6/Rants/show/parameters.json##parameters
 	 * @response-200 ~api-v6/Rants/show/responses.json##200
 	 * @response-404 ~_responses/rant.404.json
 	 */
 	function show( event, rc, prc ) cache=true cacheTimeout=60{
-		prc.response.setData( rantService.getOrFail( rc.rantID ).getMemento() );
+		prc.response.setData( rantService.getOrFail( rc.rantId ).getMemento() );
 	}
 
 	/**
 	 *
 	 * Delete a single Rant.
 	 *
-	 * @x-route      (DELETE) /api/v6/rants/:rantID
+	 * @x-route      (DELETE) /api/v6/rants/:rantId
 	 * @x-parameters ~api-v6/Rants/delete/parameters.json##parameters
 	 * @response-200 ~api-v6/Rants/delete/responses.json##200
 	 * @response-404 ~_responses/rant.404.json
 	 */
 	function delete( event, rc, prc ){
-		rantService.getOrFail( rc.rantID ).delete();
+		rantService.getOrFail( rc.rantId ).delete();
 
 		prc.response.addMessage( "Rant deleted" );
 	}
@@ -61,7 +61,7 @@ component extends="coldbox.system.RestHandler" {
 			.validateOrFail()
 			.save();
 
-		prc.response.setData( { "rantID" : result.getID() } ).addMessage( "Rant created" );
+		prc.response.setData( { "rantId" : result.getID() } ).addMessage( "Rant created" );
 
 		getCache( "template" ).clearAllEvents();
 	}
@@ -70,14 +70,14 @@ component extends="coldbox.system.RestHandler" {
 	 *
 	 * Update an existing Rant.
 	 *
-	 * @x-route      (PUT) /api/v1/rants/:rantID
+	 * @x-route      (PUT) /api/v1/rants/:rantId
 	 * @requestBody  ~api-v6/Rants/update/requestBody.json
 	 * @response-200 ~api-v6/Rants/update/responses.json##200
 	 * @response-400 ~api-v6/Rants/update/responses.json##400
 	 */
 	function update( event, rc, prc ){
 		rantService
-			.getOrFail( rc.rantID )
+			.getOrFail( rc.rantId )
 			.populate( memento = rc, exclude = "id" )
 			.validateOrFail()
 			.save();

@@ -24,19 +24,19 @@ component extends="coldbox.system.RestHandler" {
 	 * Returns a single Rant
 	 */
 	function view( event, rc, prc ){
-		if ( !structKeyExists( rc, "rantID" ) ) {
+		if ( !structKeyExists( rc, "rantId" ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "rantID is required" );
+			prc.response.addMessage( "rantId is required" );
 			return;
 		}
-		if ( !isValid( "uuid", rc.rantID ) ) {
+		if ( !isValid( "uuid", rc.rantId ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "rantID must be a UUID" );
+			prc.response.addMessage( "rantId must be a UUID" );
 			return;
 		}
-		var rant = rantService.getRant( rc.rantID );
+		var rant = rantService.getRant( rc.rantId );
 
 		if ( rant.len() ) {
 			prc.response.setData( queryGetRow( rant, 1 ) );
@@ -51,16 +51,16 @@ component extends="coldbox.system.RestHandler" {
 	 * Deletes a single Rant
 	 */
 	function delete( event, rc, prc ){
-		if ( !structKeyExists( rc, "rantID" ) ) {
+		if ( !structKeyExists( rc, "rantId" ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "rantID is required" );
-		} else if ( !isValid( "UUID", rc.rantID ) ) {
+			prc.response.addMessage( "rantId is required" );
+		} else if ( !isValid( "UUID", rc.rantId ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "rantID must be a UUID" );
+			prc.response.addMessage( "rantId must be a UUID" );
 		} else {
-			var result = rantService.delete( rc.rantID );
+			var result = rantService.delete( rc.rantId );
 			if ( result.recordcount > 0 ) {
 				prc.response.addMessage( "Rant deleted" );
 			} else {
@@ -87,28 +87,28 @@ component extends="coldbox.system.RestHandler" {
 			prc.response.addMessage( "Rant body cannot be empty" );
 			return
 		}
-		if ( !structKeyExists( rc, "userID" ) ) {
+		if ( !structKeyExists( rc, "userId" ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "userID is required" );
+			prc.response.addMessage( "userId is required" );
 			return;
 		}
-		if ( !isValid( "uuid", rc.userID ) ) {
+		if ( !isValid( "uuid", rc.userId ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "userID must be a UUID" );
+			prc.response.addMessage( "userId must be a UUID" );
 			return;
 		}
-		var user = userService.get( rc.userID )
+		var user = userService.get( rc.userId )
 		if ( !user.len() ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 404 );
 			prc.response.addMessage( "User not found" );
 			return;
 		}
-		var result = rantService.create( body = rc.body, userID = rc.userID );
+		var result = rantService.create( body = rc.body, userId = rc.userId );
 		if ( result.recordcount ) {
-			prc.response.setData( { "rantID" : result.generatedKey } );
+			prc.response.setData( { "rantId" : result.generatedKey } );
 			prc.response.addMessage( "Rant created" );
 			return;
 		} else {
@@ -135,38 +135,38 @@ component extends="coldbox.system.RestHandler" {
 			prc.response.addMessage( "Rant body cannot be empty" );
 			return
 		}
-		if ( !structKeyExists( rc, "rantID" ) ) {
+		if ( !structKeyExists( rc, "rantId" ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "rantID is required" );
+			prc.response.addMessage( "rantId is required" );
 			return
 		}
-		if ( !isValid( "uuid", rc.rantID ) ) {
+		if ( !isValid( "uuid", rc.rantId ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "rantID must be a UUID" );
+			prc.response.addMessage( "rantId must be a UUID" );
 			return
 		}
-		var rant = rantService.getRant( rc.rantID )
+		var rant = rantService.getRant( rc.rantId )
 		if ( !rant.len() ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 404 );
 			prc.response.addMessage( "Rant not found" );
 			return;
 		}
-		if ( !structKeyExists( rc, "userID" ) ) {
+		if ( !structKeyExists( rc, "userId" ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "userID is required" );
+			prc.response.addMessage( "userId is required" );
 			return;
 		}
-		if ( !isValid( "UUID", rc.userID ) ) {
+		if ( !isValid( "UUID", rc.userId ) ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 412 );
-			prc.response.addMessage( "userID must be a UUID" );
+			prc.response.addMessage( "userId must be a UUID" );
 			return;
 		}
-		var user = userService.get( rc.userID )
+		var user = userService.get( rc.userId )
 		if ( !user.len() ) {
 			prc.response.setError( true );
 			prc.response.setStatusCode( 404 );
@@ -175,8 +175,8 @@ component extends="coldbox.system.RestHandler" {
 		}
 		var result = rantService.update(
 			body   = rc.body,
-			userID = rc.userID,
-			rantID = rc.rantID
+			userId = rc.userId,
+			rantId = rc.rantId
 		);
 		if ( result.recordcount ) {
 			prc.response.addMessage( "Rant Updated" );

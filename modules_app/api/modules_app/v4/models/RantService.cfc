@@ -14,7 +14,7 @@ component
 		super.init(
 			entityName    = "rant",
 			tableName     = "rants",
-			parameterName = "rantID",
+			parameterName = "rantId",
 			moduleName    = "v4"
 		)
 		return this;
@@ -41,19 +41,19 @@ component
 		}, [] );
 	}
 
-	Rant function get( required numeric rantID ){
+	Rant function get( required numeric rantId ){
 		return queryExecute(
 			"select * from rants
-			where id = :rantID",
-			{ rantID : { value : "#rantID#", cfsqltype : "cf_sql_numeric" } }
+			where id = :rantId",
+			{ rantId : { value : "#rantId#", cfsqltype : "cf_sql_numeric" } }
 		).reduce( ( result, row ) => populator.populateFromStruct( result, row ), new () );
 	}
 
-	function delete( required numeric rantID ){
+	function delete( required numeric rantId ){
 		queryExecute(
 			"delete from rants
-			where id = :rantID",
-			{ rantID : { value : "#rantID#", cfsqltype : "cf_sql_numeric" } },
+			where id = :rantId",
+			{ rantId : { value : "#rantId#", cfsqltype : "cf_sql_numeric" } },
 			{ result : "local.result" }
 		);
 		return local.result;
@@ -68,7 +68,7 @@ component
 			"insert into rants
 			set
 			body         = :body,
-			userID       = :userID,
+			userId       = :userId,
 			createdDate  = :createdDate,
 			updatedDate = :updatedDate
 			",
@@ -77,8 +77,8 @@ component
 					value     : "#arguments.rant.getBody()#",
 					cfsqltype : "cf_sql_longvarchar"
 				},
-				userID : {
-					value     : "#arguments.rant.getuserID()#",
+				userId : {
+					value     : "#arguments.rant.getuserId()#",
 					cfsqltype : "cf_sql_numeric"
 				},
 				createdDate : {
@@ -104,10 +104,10 @@ component
 			set
 			body         = :body,
 			updatedDate = :updatedDate
-			where id     = :rantID
+			where id     = :rantId
 			",
 			{
-				rantID : {
+				rantId : {
 					value     : "#arguments.rant.getID()#",
 					cfsqltype : "cf_sql_integer"
 				},

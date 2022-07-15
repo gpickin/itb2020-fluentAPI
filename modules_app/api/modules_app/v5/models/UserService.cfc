@@ -14,17 +14,17 @@ component
 		super.init(
 			entityName    = "user",
 			tableName     = "users",
-			parameterName = "userID",
+			parameterName = "userId",
 			moduleName    = "v5"
 		)
 		return this;
 	}
 
-	User function get( required numeric userID ){
+	User function get( required numeric userId ){
 		var q = queryExecute(
 			"select * from users
-			where id = :userID",
-			{ userID : { value : "#userID#", cfsqltype : "cf_sql_numeric" } }
+			where id = :userId",
+			{ userId : { value : "#userId#", cfsqltype : "cf_sql_numeric" } }
 		).reduce( ( result, row ) => populator.populateFromStruct( result, row ), new () );
 	}
 

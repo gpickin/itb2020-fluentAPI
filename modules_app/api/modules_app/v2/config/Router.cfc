@@ -3,9 +3,9 @@ component {
 	function configure(){
 		// CRUD
 		post( "/rants/create", "rants.create" )
-		delete( "/rants/:rantID/delete", "rants.delete" )
-		put( "/rants/:rantID/save", "rants.save" )
-		get( "/rants/:rantID", "rants.view" )
+		delete( "/rants/:rantId/delete", "rants.delete" )
+		put( "/rants/:rantId/save", "rants.save" )
+		get( "/rants/:rantId", "rants.view" )
 		get( "/rants", "rants.list" )
 
 		// Entry Point

@@ -32,7 +32,7 @@ component singleton accessors="true" {
 		return local.result;
 	}
 
-	function create( required body, required userID ){
+	function create( required body, required userId ){
 		var now   = now();
 		var newId = createUUID();
 		queryExecute(
@@ -40,12 +40,12 @@ component singleton accessors="true" {
 				set
 				id = :rantId,
 				body         = :body,
-				userID       = :userID
+				userId       = :userId
 			",
 			{
 				rantId : newId,
 				body   : { value : "#body#", cfsqltype : "cf_sql_longvarchar" },
-				userID : arguments.userId
+				userId : arguments.userId
 			},
 			{ result : "local.result" }
 		);

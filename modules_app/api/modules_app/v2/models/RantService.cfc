@@ -45,9 +45,9 @@ component singleton accessors="true" {
 		queryExecute(
 			"insert into rants
 				set
-				id  = :rantId,
-				body         = :body,
-				userId       = :userId
+				id  		= :rantId,
+				body        = :body,
+				userId      = :userId
 			",
 			{
 				rantId : newKey,
