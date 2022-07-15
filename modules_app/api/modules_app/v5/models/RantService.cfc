@@ -12,15 +12,14 @@ component
 	 */
 	RantService function init(){
 		super.init(
-			entityName    = "rant",
+			entityName    = "Rant",
 			tableName     = "rants",
-			parameterName = "rantId",
-			moduleName    = "v5"
+			parameterName = "rantId"
 		)
 		return this;
 	}
 
-	function list(){
+	array function list(){
 		return this
 			.listArray()
 			.map( function( rant ){
@@ -28,84 +27,49 @@ component
 			} );
 	}
 
-	function listArray(){
-		return queryExecute( "select * from rants ORDER BY createdDate DESC", {} ).reduce( ( result, row ) => {
-			result.append( row );
-			return result;
-		}, [] );
-	}
-
-	Rant function get( required numeric rantId ){
+	array function listArray(){
 		return queryExecute(
-			"select * from rants
-			where id = :rantId",
-			{ rantId : { value : "#rantId#", cfsqltype : "cf_sql_numeric" } }
-		).reduce( ( result, row ) => populator.populateFromStruct( result, row ), new () );
-	}
-
-	function delete( required numeric rantId ){
-		queryExecute(
-			"delete from rants
-			where id = :rantId",
-			{ rantId : { value : "#rantId#", cfsqltype : "cf_sql_numeric" } },
-			{ result : "local.result" }
+			"select * from rants ORDER BY createdDate DESC",
+			{},
+			{ returnType : "array" }
 		);
-		return local.result;
 	}
 
 	function create( required Rant rant ){
 		var now = now();
-		arguments.rant.setCreatedDate( now );
-		arguments.rant.setUpdatedDate( now );
+		arguments.rant.setId( createUUID() );
 
 		queryExecute(
 			"insert into rants
-			set
-			body         = :body,
-			userId       = :userId,
-			createdDate  = :createdDate,
-			updatedDate = :updatedDate
+				set
+					id 			= :rantId,
+					body        = :body,
+					userId      = :userId
 			",
 			{
-				body : {
+				rantId : arguments.rant.getId(),
+				body   : {
 					value     : "#arguments.rant.getBody()#",
 					cfsqltype : "cf_sql_longvarchar"
 				},
-				userId : {
-					value     : "#arguments.rant.getuserId()#",
-					cfsqltype : "cf_sql_numeric"
-				},
-				createdDate : {
-					value     : "#arguments.rant.getCreatedDate()#",
-					cfsqltype : "cf_sql_timestamp"
-				},
-				updatedDate : {
-					value     : "#arguments.rant.getUpdatedDate()#",
-					cfsqltype : "cf_sql_timestamp"
-				}
-			},
-			{ result : "local.result" }
+				userId : arguments.rant.getuserId()
+			}
 		);
-		arguments.rant.setID( local.result.generatedKey );
 		return arguments.rant;
 	}
 
 	function update( required Rant rant ){
-		var now = now();
-		arguments.rant.setUpdatedDate( now );
+		arguments.rant.setUpdatedDate( now() );
 		queryExecute(
 			"update rants
-			set
-			body         = :body,
-			updatedDate = :updatedDate
-			where id     = :rantId
+				set
+					body         	= :body,
+					updatedDate 	= :updatedDate
+				where id     	= :rantId
 			",
 			{
-				rantId : {
-					value     : "#arguments.rant.getID()#",
-					cfsqltype : "cf_sql_integer"
-				},
-				body : {
+				rantId : arguments.rant.getID(),
+				body   : {
 					value     : "#arguments.rant.getBody()#",
 					cfsqltype : "cf_sql_longvarchar"
 				},
@@ -113,10 +77,8 @@ component
 					value     : "#arguments.rant.getUpdatedDate()#",
 					cfsqltype : "cf_sql_timestamp"
 				}
-			},
-			{ result : "local.result" }
+			}
 		);
-
 		return arguments.rant;
 	}
 

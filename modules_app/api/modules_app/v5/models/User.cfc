@@ -11,13 +11,18 @@ component extends="v5.models.BaseEntity" accessors="true" {
 	property name="createdDate" type="date";
 	property name="updatedDate" type="date";
 
+	// Validation Constraints
+	this.constraints = {
+		username : { required : true },
+		email    : { required : true },
+		password : { required : true }
+	};
 
 	/**
 	 * Constructor
 	 */
 	User function init(){
-		super.init( entityName = "User", moduleName = "v5" );
-		return this;
+		return super.init( entityName = "User" );
 	}
 
 }

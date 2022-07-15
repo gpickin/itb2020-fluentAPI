@@ -18,9 +18,9 @@ component extends="v5.models.BaseEntity" accessors="true" {
 		body   : { required : true },
 		userId : {
 			required : true,
-			type     : "numeric",
+			type     : "uuid",
 			udf      : ( value, target ) => {
-				if ( isNull( arguments.value ) || !isNumeric( arguments.value ) ) return false
+				if ( isNull( arguments.value ) || !isValid( "uuid", arguments.value ) ) return false;
 				return userService.exists( arguments.value );
 			},
 			udfMessage : "User ({rejectedValue}) not found"
@@ -31,15 +31,21 @@ component extends="v5.models.BaseEntity" accessors="true" {
 	 * Constructor
 	 */
 	Rant function init(){
-		super.init( entityName = "rant", moduleName = "v5" );
-		return this;
+		return super.init( entityName = "rant" );
 	}
 
 	/**
-	 * getUser
+	 * Get related user object
 	 */
 	function getUser(){
-		return userService.get( getuserId() );
+		return userService.get( getUserId() );
+	}
+
+	/**
+	 * Does this rant have a user assigned to it already
+	 */
+	boolean function hasUser(){
+		return !isNull( variables.userId ) && len( variables.userId );
 	}
 
 }
