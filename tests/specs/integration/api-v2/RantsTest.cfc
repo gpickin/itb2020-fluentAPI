@@ -196,7 +196,7 @@ component extends="tests.resources.BaseTest" {
 							expect( event.getStatusCode() ).toBe( 200 );
 							expect( returnedJSON ).toHaveKeyWithCase( "data" );
 							expect( returnedJSON.data ).toBeStruct();
-							expect( returnedJSON.data ).toHaveKeyWithCase( "rantID" );
+							expect( returnedJSON.data ).toHaveKeyWithCase( "rantId" );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );
@@ -479,7 +479,7 @@ component extends="tests.resources.BaseTest" {
 					when( "I pass a valid rantID", function(){
 						then( "I will delete the rant successfully", function(){
 							var testUserId = queryExecute( "select id from users limit 1" ).id;
-							var testRantId = getInstance( "RantService@v1" ).create(
+							var testRantId = getInstance( "RantService@v2" ).create(
 								"my integration test",
 								testUserId
 							).generatedKey;

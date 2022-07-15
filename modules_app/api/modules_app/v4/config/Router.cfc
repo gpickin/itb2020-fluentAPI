@@ -1,14 +1,12 @@
 component {
 
 	function configure(){
-		resources(
-			resource      = "rants",
-			parameterName = "rantId",
-			except        = [ "new", "edit" ]
-		);
+		// API Based Resourceful Routes:
+		// https://coldbox.ortusbooks.com/the-basics/routing/routing-dsl/resourceful-routes#api-resourceful-routes
+		apiResources( resource = "rants", parameterName = "rantId" );
 
+		// Entry Point
 		route( "/", "echo.index" );
-		route( "/:handler/:action" ).end();
 	}
 
 }

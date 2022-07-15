@@ -12,10 +12,9 @@ component
 	 */
 	UserService function init(){
 		super.init(
-			entityName    = "user",
-			tableName     = "users",
-			parameterName = "userId",
-			moduleName    = "v4"
+			entityName = "User",
+			tableName  = "users",
+			moduleName = "v4"
 		)
 		return this;
 	}
@@ -24,14 +23,6 @@ component
 	 * Let WireBox build new Rant objects for me
 	 */
 	User function new() provider="User@v4"{
-	}
-
-	User function get( required numeric userId ){
-		var q = queryExecute(
-			"select * from users
-			where id = :userId",
-			{ userId : { value : "#userId#", cfsqltype : "cf_sql_numeric" } }
-		).reduce( ( result, row ) => populator.populateFromStruct( result, row ), new () );
 	}
 
 }

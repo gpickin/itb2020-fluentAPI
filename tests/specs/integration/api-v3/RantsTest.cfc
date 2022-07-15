@@ -168,7 +168,7 @@ component extends="tests.resources.BaseTest" {
 
 					when( "I pass a valid body and userID", function(){
 						then( "I will get a successful query result with a generatedKey", function(){
-							var testUserId = queryExecute( "select id from users limit 1" ).id;
+							var testUserId   = queryExecute( "select id from users limit 1" ).id;
 							var event        = post( "/api/v3/rants", { "body" : "xsxswxws", "userID" : testUserId } );
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
@@ -283,8 +283,11 @@ component extends="tests.resources.BaseTest" {
 
 					when( "Including a non uuid rantID param", function(){
 						then( "I will get a 400 error", function(){
-							var rantID       = "abc";
-							var event        = put( "/api/v3/rants/#rantID#", { "userID" : createUUID(), "body" : "abc" } );
+							var rantID = "abc";
+							var event  = put(
+								"/api/v3/rants/#rantID#",
+								{ "userID" : createUUID(), "body" : "abc" }
+							);
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
@@ -297,8 +300,11 @@ component extends="tests.resources.BaseTest" {
 
 					when( "Including valid userID for a non existing User", function(){
 						then( "I will get a 404 error", function(){
-							var testRantId   = queryExecute( "select id from rants limit 1" ).id;
-							var event        = put( "/api/v3/rants/#testRantId#", { "body" : "xsxswxws", "userID" : createUUID() } );
+							var testRantId = queryExecute( "select id from rants limit 1" ).id;
+							var event      = put(
+								"/api/v3/rants/#testRantId#",
+								{ "body" : "xsxswxws", "userID" : createUUID() }
+							);
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
@@ -312,7 +318,10 @@ component extends="tests.resources.BaseTest" {
 
 					when( "Including valid rantID for a non existing Rant", function(){
 						then( "I will get a 404 error", function(){
-							var event        = put( "/api/v3/rants/#createUUID()#", { "userID" : createUUID(), "body" : "xsxswxws" } );
+							var event = put(
+								"/api/v3/rants/#createUUID()#",
+								{ "userID" : createUUID(), "body" : "xsxswxws" }
+							);
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
@@ -326,8 +335,11 @@ component extends="tests.resources.BaseTest" {
 
 					when( "I pass a valid body and userID and rantID", function(){
 						then( "I will update the Rant Successfully", function(){
-							var testRant   = queryExecute( "select id,userId from rants limit 1" );
-							var event        = put( "/api/v3/rants/#testRant.id#", { "body" : "xsxswxws", "userID" : testRant.userId } );
+							var testRant = queryExecute( "select id,userId from rants limit 1" );
+							var event    = put(
+								"/api/v3/rants/#testRant.id#",
+								{ "body" : "xsxswxws", "userID" : testRant.userId }
+							);
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeFalse();
@@ -409,7 +421,7 @@ component extends="tests.resources.BaseTest" {
 					when( "I pass a valid rantID", function(){
 						then( "I will delete the rant successfully", function(){
 							var testUserId = queryExecute( "select id from users limit 1" ).id;
-							var testRantId = getInstance( "RantService@v1" ).create(
+							var testRantId = getInstance( "RantService@v3" ).create(
 								"my integration test",
 								testUserId
 							).generatedKey;

@@ -16,21 +16,24 @@ component accessors="true" {
 	// Validation Constraints
 	this.constraints = {
 		body   : { required : true },
-		userId : { required : true, type : "numeric" }
+		userId : { required : true, type : "uuid" }
 	};
 
 	/**
 	 * Constructor
 	 */
 	Rant function init(){
+		var now               = now();
+		variables.createdDate = now;
+		variables.updatedDate = now;
 		return this;
 	}
 
 	/**
-	 * getUser
+	 * get the user
 	 */
 	function getUser(){
-		return userService.get( getuserId() );
+		return userService.get( getUserId() );
 	}
 
 	/**
@@ -45,7 +48,7 @@ component accessors="true" {
 	 */
 	function getMemento(){
 		return {
-			"id"          : getID(),
+			"rantId"      : getId(),
 			"body"        : getBody(),
 			"createdDate" : dateFormat( getCreatedDate(), "long" ),
 			"updatedDate" : dateFormat( getUpdatedDate(), "long" ),

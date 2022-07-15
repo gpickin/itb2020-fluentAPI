@@ -1,5 +1,5 @@
 /**
- * Module Config
+ * v4 Module Config
  */
 component {
 

@@ -31,10 +31,7 @@ component extends="coldbox.system.RestHandler" {
 	 * Deletes a single Rant
 	 */
 	function delete( event, rc, prc ){
-		validateOrFail(
-			target      = rc,
-			constraints = { rantId : { required : true, type : "uuid" } }
-		);
+		validateOrFail( target = rc, constraints = { rantId : { required : true, type : "uuid" } } );
 		rantService.existsOrFail( rc.rantId )
 		rantService.delete( rc.rantId );
 		prc.response.addMessage( "Rant deleted" );

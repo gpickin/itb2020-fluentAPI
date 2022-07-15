@@ -3,6 +3,7 @@
  */
 component accessors="true" {
 
+	// Properties
 	property name="entityName";
 	property name="tableName";
 	property name="primaryKey";

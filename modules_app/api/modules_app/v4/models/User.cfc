@@ -11,10 +11,20 @@ component accessors="true" {
 	property name="createdDate" type="date";
 	property name="updatedDate" type="date";
 
+	// Validation Constraints
+	this.constraints = {
+		username : { required : true },
+		email    : { required : true },
+		password : { required : true }
+	};
+
 	/**
 	 * Constructor
 	 */
 	User function init(){
+		var now               = now();
+		variables.createdDate = now;
+		variables.updatedDate = now;
 		return this;
 	}
 
