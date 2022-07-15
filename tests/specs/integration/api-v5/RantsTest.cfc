@@ -253,8 +253,11 @@ component extends="tests.resources.BaseTest" {
 
 					when( "Including an empty body param", function(){
 						then( "I will get a 400 error", function(){
-							var testRant     = queryExecute( "select id,userId from rants limit 1" );
-							var event        = put( "/api/v5/rants/#testRant.id#", { "userID" : createUUID(), "body" : "" } );
+							var testRant = queryExecute( "select id,userId from rants limit 1" );
+							var event    = put(
+								"/api/v5/rants/#testRant.id#",
+								{ "userID" : createUUID(), "body" : "" }
+							);
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
@@ -282,7 +285,10 @@ component extends="tests.resources.BaseTest" {
 					when( "Including valid userID for a non existing User", function(){
 						then( "I will get a 400 error", function(){
 							var testRant = queryExecute( "select id,userId from rants limit 1" );
-							var event        = put( "/api/v5/rants/#testRant.id#", { "body" : "xsxswxws", "userID" : "1" } );
+							var event    = put(
+								"/api/v5/rants/#testRant.id#",
+								{ "body" : "xsxswxws", "userID" : "1" }
+							);
 							var returnedJSON = event.getRenderData().data;
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
 							expect( returnedJSON.error ).toBeTrue();
@@ -310,7 +316,10 @@ component extends="tests.resources.BaseTest" {
 					when( "I pass a valid body and userID and rantID", function(){
 						then( "I will update the Rant Successfully", function(){
 							var testRant = queryExecute( "select id,userId from rants limit 1" );
-							var event        = put( "/api/v5/rants/#testRant.id#", { "body" : "xsxswxws", "userID" : testRant.userId } );
+							var event    = put(
+								"/api/v5/rants/#testRant.id#",
+								{ "body" : "xsxswxws", "userID" : testRant.userId }
+							);
 							var returnedJSON = event.getRenderData().data;
 							// debug( returnedJSON );
 							expect( returnedJSON ).toHaveKeyWithCase( "error" );
