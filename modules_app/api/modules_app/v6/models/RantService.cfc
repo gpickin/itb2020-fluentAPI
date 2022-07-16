@@ -19,7 +19,7 @@ component
 		return this;
 	}
 
-	function list(){
+	array function list(){
 		return this
 			.listArray()
 			.map( function( rant ){
@@ -81,4 +81,5 @@ component
 		);
 		return arguments.rant;
 	}
+
 }
