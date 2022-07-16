@@ -1,11 +1,26 @@
 /**
  * My RESTFul Rants Event Handler which inherits from the module `api`
+ * Since we inherit from the RestHandler we get lots of goodies like automatic HTTP method protection,
+ * missing routes, invalid routes, and much more.
+ *
+ * @see https://coldbox.ortusbooks.com/digging-deeper/rest-handler
+ * @see https://coldbox.ortusbooks.com/digging-deeper/rest-handler#rest-handler-security
  */
 component extends="coldbox.system.RestHandler" {
 
 	// DI
 	property name="rantService" inject="RantService@v6";
 	property name="userService" inject="UserService@v6";
+
+	/**
+	 * Param global incoming variables
+	 */
+	any function preHandler( event, rc, prc, action, eventArguments ){
+		param rc.rantId         = "";
+		param rc.includes       = "";
+		param rc.excludes       = "";
+		param rc.ignoreDefaults = false;
+	}
 
 	/**
 	 *
@@ -15,7 +30,15 @@ component extends="coldbox.system.RestHandler" {
 	 * @response-200 ~api-v6/Rants/index/responses.json##200
 	 */
 	any function index( event, rc, prc ) cache=true cacheTimeout=60{
-		prc.response.setData( rantService.list().map( ( rant ) => rant.getMemento() ) );
+		prc.response.setData(
+			rantService
+				.list()
+				.map( ( rant ) => rant.getMemento(
+					includes      : rc.includes,
+					excludes      : rc.excludes,
+					ignoreDefaults: rc.ignoreDefaults
+				) )
+		);
 	}
 
 	/**
@@ -28,7 +51,15 @@ component extends="coldbox.system.RestHandler" {
 	 * @response-404 ~_responses/rant.404.json
 	 */
 	function show( event, rc, prc ) cache=true cacheTimeout=60{
-		prc.response.setData( rantService.getOrFail( rc.rantId ).getMemento() );
+		prc.response.setData(
+			rantService
+				.getOrFail( rc.rantId )
+				.getMemento(
+					includes      : rc.includes,
+					excludes      : rc.excludes,
+					ignoreDefaults: rc.ignoreDefaults
+				)
+		);
 	}
 
 	/**
@@ -42,7 +73,6 @@ component extends="coldbox.system.RestHandler" {
 	 */
 	function delete( event, rc, prc ){
 		rantService.getOrFail( rc.rantId ).delete();
-
 		prc.response.addMessage( "Rant deleted" );
 	}
 
@@ -56,12 +86,20 @@ component extends="coldbox.system.RestHandler" {
 	 * @response-400 ~api-v6/Rants/create/responses.json##400
 	 */
 	function create( event, rc, prc ){
-		var result = rantService
+		var rant = rantService
 			.new( rc )
 			.validateOrFail()
 			.save();
 
-		prc.response.setData( { "rantId" : result.getID() } ).addMessage( "Rant created" );
+		prc.response
+			.setData(
+				rant.getMemento(
+					includes      : rc.includes,
+					excludes      : rc.excludes,
+					ignoreDefaults: rc.ignoreDefaults
+				)
+			)
+			.addMessage( "Rant created" );
 
 		getCache( "template" ).clearAllEvents();
 	}
@@ -76,13 +114,21 @@ component extends="coldbox.system.RestHandler" {
 	 * @response-400 ~api-v6/Rants/update/responses.json##400
 	 */
 	function update( event, rc, prc ){
-		rantService
+		var rant = rantService
 			.getOrFail( rc.rantId )
 			.populate( memento = rc, exclude = "id" )
 			.validateOrFail()
 			.save();
 
-		prc.response.addMessage( "Rant Updated" );
+		prc.response
+			.setData(
+				rant.getMemento(
+					includes      : rc.includes,
+					excludes      : rc.excludes,
+					ignoreDefaults: rc.ignoreDefaults
+				)
+			)
+			.addMessage( "Rant Updated" );
 
 		getCache( "template" ).clearAllEvents();
 	}
