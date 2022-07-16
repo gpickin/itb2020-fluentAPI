@@ -1,7 +1,7 @@
 /**
  * I am a new User Object
  */
-component extends="v5.models.BaseEntity" accessors="true" {
+component extends="v6.models.BaseEntity" accessors="true" {
 
 	// Properties
 	property name="id"          type="string";
@@ -11,12 +11,18 @@ component extends="v5.models.BaseEntity" accessors="true" {
 	property name="createdDate" type="date";
 	property name="updatedDate" type="date";
 
+	// Validation Constraints
+	this.constraints = {
+		username : { required : true },
+		email    : { required : true },
+		password : { required : true }
+	};
 
 	/**
 	 * Constructor
 	 */
 	User function init(){
-		super.init( entityName = "User", moduleName = "v5" );
+		super.init( entityName = "User" );
 		return this;
 	}
 

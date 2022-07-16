@@ -1,14 +1,15 @@
 /**
- * I am the Base Entity
+ * I am a base entity which exposes some very cool methods to provide fluency and readability
+ * while still encapsulating them in a service.
  */
 component accessors="true" {
 
-	// global properties
-	property name="pk";
-	property name="entityName";
-	property name="serviceName";
-	property name="moduleName";
-	property name="entityService";
+	// Entity metadata + service
+	property name="_primaryKey";
+	property name="_entityName";
+	property name="_serviceName";
+	property name="_moduleName";
+	property name="_entityService";
 
 	// DI Injection
 	property name="wirebox"   inject="wirebox";
@@ -24,11 +25,11 @@ component accessors="true" {
 		// An array of properties/relationships to NEVER include
 		neverInclude    : [
 			"password",
-			"pk",
-			"entityName",
-			"serviceName",
-			"moduleName",
-			"entityService"
+			"_primaryKey",
+			"_entityName",
+			"_serviceName",
+			"_moduleName",
+			"_entityService"
 		],
 		// A struct of defaults for properties/relationships if they are null
 		defaults : {},
@@ -39,44 +40,48 @@ component accessors="true" {
 	/**
 	 * Initialize Entity - stores information needed
 	 *
-	 * @pk          The name of the primary key field in the entity
+	 * @primaryKey  The name of the primary key field in the entity
 	 * @entityName  The name of the entity so we can reference it for calls to related DAO and Service. Set as optional for backwards
-	 * @serviceName The name of the service that manages the entity
 	 * @moduleName  The name of the module for the objects
+	 * @serviceName The name of the service that manages the entity
 	 */
 	function init(
-		pk          = "id",
+		primaryKey  = "id",
 		entityName  = "",
-		serviceName = "",
-		moduleName  = ""
+		moduleName  = "v6",
+		serviceName = "#arguments.entityName#Service@#arguments.moduleName#"
 	){
-		setPk( arguments.pk );
+		variables._primaryKey  = arguments.primaryKey;
+		variables._entityName  = arguments.entityName;
+		variables._moduleName  = arguments.moduleName;
+		variables._serviceName = arguments.serviceName;
 
-		if ( len( entityName ) ) {
-			setEntityName( arguments.entityName );
-		}
-
-		if ( arguments.serviceName != "" ) {
-			setServiceName( arguments.serviceName );
-		} else {
-			setServiceName( arguments.entityName & "Service" );
-		}
-
-		setModuleName( arguments.moduleName );
-		if ( arguments.moduleName != "" ) {
-			setServiceName( getServiceName() & "@" & arguments.moduleName );
-		}
+		return this;
 	}
 
+	/**
+	 * Once this entity is loaded, load up it's companion service
+	 */
 	function onDIComplete(){
-		variables.entityService = wirebox.getInstance( getServiceName() );
+		variables._entityService = wirebox.getInstance( variables._serviceName );
 	}
 
 	/**
 	 * Verify if entity is loaded or not
 	 */
 	boolean function isLoaded(){
-		return ( !structKeyExists( variables, getPk() ) OR !len( variables[ getPk() ] ) ? false : true );
+		return (
+			!structKeyExists( variables, variables._primaryKey ) OR !len( variables[ variables._primaryKey ] ) ? false : true
+		);
+	}
+
+	/**
+	 * Get the primary key value of this object.
+	 *
+	 * @return The primary key or an empty value if not set.
+	 */
+	function getId(){
+		return isLoaded() ? variables[ variables._primaryKey ] : "";
 	}
 
 	/**
@@ -113,19 +118,19 @@ component accessors="true" {
 		string xml,
 		query qry
 	){
-		arguments[ "model" ] = this;
-		arguments.target     = this;
+		// Seed the target for population
+		arguments[ "target" ] = this;
 
 		// json?
-		if ( structKeyExists( arguments, "jsonstring" ) ) {
+		if ( !isNull( arguments.jsonstring ) ) {
 			return variables.populator.populateFromJSON( argumentCollection = arguments );
 		}
 		// XML
-		else if ( structKeyExists( arguments, "xml" ) ) {
+		else if ( !isNull( arguments.xml ) ) {
 			return variables.populator.populateFromXML( argumentCollection = arguments );
 		}
 		// Query
-		else if ( structKeyExists( arguments, "qry" ) ) {
+		else if ( !isNull( arguments.qry ) ) {
 			return variables.populator.populateFromQuery( argumentCollection = arguments );
 		}
 		// Mementos
@@ -151,9 +156,9 @@ component accessors="true" {
 	 */
 	function save(){
 		if ( isLoaded() ) {
-			return variables.entityService.update( this );
+			return variables._entityService.update( this );
 		} else {
-			return variables.entityService.create( this );
+			return variables._entityService.create( this );
 		}
 	}
 
@@ -161,7 +166,7 @@ component accessors="true" {
 	 * Delete an entity
 	 */
 	function delete(){
-		return variables.entityService.delete( this.getID() );
+		return variables._entityService.delete( this.getId() );
 	}
 
 }

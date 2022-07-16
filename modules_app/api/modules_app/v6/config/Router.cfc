@@ -1,19 +1,15 @@
 component {
 
 	function configure(){
-		// Echo
-		route( "/", "echo.index" )
-
-		// Type the ID to numeric
-		resources(
-			resource      = "rants",
-			parameterName = "rantId-numeric",
-			except        = [ "new", "edit" ]
-		)
-
+		// API Based Resourceful Routes:
+		// https://coldbox.ortusbooks.com/the-basics/routing/routing-dsl/resourceful-routes#api-resourceful-routes
+		apiResources( resource = "rants", parameterName = "rantId" );
 
 		// Catch All Invalid Routes
-		route( "/:anything", "Echo.onInvalidRoute" )
+		route( "/:anything", "Echo.onInvalidRoute" );
+
+		// Entry Point
+		route( "/", "echo.index" );
 	}
 
 }
