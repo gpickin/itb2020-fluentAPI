@@ -45,6 +45,7 @@ jobs:
           printf "DB_CLASS=com.mysql.cj.jdbc.Driver\n" >> .env
           printf "DB_BUNDLEVERSION=8.0.19\n" >> .env
           printf "DB_BUNDLENAME=com.mysql.cj\n" >> .env
+          printf "CBDEBUGGER_ENABLED=false\n" >> .env
 
       - name: Setup CommandBox CLI
         uses: Ortus-Solutions/setup-commandbox@main
