@@ -55,9 +55,14 @@ http://127.0.0.1:60146/cbswagger
 
 #### What can you do with the API Docs?
 
+- Immport into Insomnia: https://insomnia.rest/
 - Import into Postman: https://www.postman.com/
 - Use with Swagger.io site: https://editor.swagger.io/
 
 ### View Route Visualizer
 
 http://127.0.0.1:60146/route-visualizer
+
+### View CBDebugger
+
+http://127.0.0.1:60146/cbdebugger
