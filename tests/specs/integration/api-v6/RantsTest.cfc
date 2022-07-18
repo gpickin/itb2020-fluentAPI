@@ -7,7 +7,7 @@ component extends="tests.resources.BaseTest" {
 				setup();
 			} );
 
-			scenario( "Get a list of Rants", function(){
+			story( "Get a list of Rants", function(){
 				given( "I make a get call to /api/v6/rants", function(){
 					when( "I have no search filters", function(){
 						then( "I will get a list of Rants", function(){
@@ -25,7 +25,7 @@ component extends="tests.resources.BaseTest" {
 				} );
 			} );
 
-			scenario( "Get an individual Rant", function(){
+			story( "Get an individual Rant", function(){
 				given( "I make a get call to /api/v6/rants/:rantID", function(){
 					when( "I pass an invalid rantID", function(){
 						then( "it will be ignored and get the full listing", function(){
@@ -75,7 +75,7 @@ component extends="tests.resources.BaseTest" {
 			} );
 
 
-			scenario( "Create a Rant", function(){
+			story( "Create a Rant", function(){
 				given( "I make a post call to /api/v6/rants", function(){
 					when( "Using a get method", function(){
 						then( "I will hit the index action instead of the create action", function(){
@@ -186,7 +186,7 @@ component extends="tests.resources.BaseTest" {
 			} );
 
 
-			scenario( "Update a Rant", function(){
+			story( "Update a Rant", function(){
 				given( "I make a get call to /api/v6/rants/:rantID", function(){
 					when( "Using a get method", function(){
 						then( "I will hit the show action instead of the update action", function(){
@@ -326,7 +326,7 @@ component extends="tests.resources.BaseTest" {
 			} );
 
 
-			scenario( "Delete a Rant", function(){
+			story( "Delete a Rant", function(){
 				given( "I make a get call to /api/v6/rants/:rantID", function(){
 					when( "Using a get method", function(){
 						then( "I will hit the show action instead of the update action", function(){
