@@ -66,7 +66,7 @@ component extends="tests.resources.BaseTest" {
 							expect( event ).toHaveStatusCode( 200 );
 							expect( returnedJSON ).toHaveKeyWithCase( "data" );
 							expect( returnedJSON.data ).toBeStruct();
-							expect( returnedJSON.data ).toHaveKeyWithCase( "id" );
+							expect( returnedJSON.data ).toHaveKeyWithCase( "rantId" );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLength( 0 );
@@ -175,7 +175,7 @@ component extends="tests.resources.BaseTest" {
 							expect( event.getStatusCode() ).toBe( 200 );
 							expect( returnedJSON ).toHaveKeyWithCase( "data" );
 							expect( returnedJSON.data ).toBeStruct();
-							expect( returnedJSON.data ).toHaveKeyWithCase( "id" );
+							expect( returnedJSON.data ).toHaveKeyWithCase( "rantId" );
 							expect( returnedJSON ).toHaveKeyWithCase( "messages" );
 							expect( returnedJSON.messages ).toBeArray();
 							expect( returnedJSON.messages ).toHaveLengthGTE( 1 );

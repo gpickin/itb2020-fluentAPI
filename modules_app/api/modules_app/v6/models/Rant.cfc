@@ -31,7 +31,18 @@ component extends="v6.models.BaseEntity" accessors="true" {
 	 * Constructor
 	 */
 	Rant function init(){
-		return super.init( entityName = "rant" );
+		super.init( entityName = "rant" );
+
+		// Custom Includes
+		this.memento.defaultIncludes = [
+			"id:rantId",
+			"body",
+			"createdDate",
+			"updatedDate",
+			"user"
+		];
+
+		return this;
 	}
 
 	/**
