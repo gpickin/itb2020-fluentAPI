@@ -154,7 +154,7 @@
 			 */
 			cbswagger : {
 				// The route prefix to search.  Routes beginning with this prefix will be determined to be api routes
-				"routes"        : [ "api" ],
+				"routes"        : [ "api/v6" ],
 				// Any routes to exclude
 				"excludeRoutes" : [],
 				// The default output format: json or yml
