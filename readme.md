@@ -1,45 +1,33 @@
-# 2020-ITB - Modern Functional & Fluent CFML REST APIs
+# Modern Functional & Fluent CFML REST APIs
 
-This repo is the demo repo for the presentation given at Into the Box 2020.
-
-## Slides:
-
-The slides can be found at: https://drive.google.com/file/d/1C-__UfDdvvjpIGKtx4B_J14Z2frnJUKL/view?usp=sharing
+This repo is a demo for our presentation on building modern functional & fluent CFML REST APIs.
 
 ## App Setup
 
-### Modules needed
+### Install Dependencies
 
-This app works with CommandBox, it also uses a couple of CommandBox system modules which are useful in most CommandBox projects ( in box.json for simplicity ):
-
-- CFConfig CLI - https://www.forgebox.io/view/commandbox-cfconfig
-- CommandBox dotenv - https://www.forgebox.io/view/commandbox-dotenv
-- CFFormat - https://www.forgebox.io/view/commandbox-cfformat
-- 
-Recommened but not required: 
-
-- commandbox-cflint - https://www.forgebox.io/view/commandbox-cflint
+Just use CommandBox and install them: `box install`
 
 ### Database setup
 
-The database needed for this is MySQL 5.7. The SQL file for this project is located in the /workbench/database folder. Please use that to seed your database, and call the database fluentAPI for consistency with the .env.example file provided.
+The database needed for this is MySQL 5.7+ or 8+. The SQL file for this project is located in the `/workbench/database` folder. Please use that to seed your database, and call the database fluentAPI for consistency with the `.env.example` file provided or you can use our migrations.
 
-### Config setup
+First create the database `fluentapi` in your MySQL database and get some credentials ready for storage:
 
-Please copy the .env.example file into a new file you can create called .env
-You could use the `dotenv populate` command for a wizard to help you make that file.
+```bash
+# Seed your .env file with your db and credentials
+dotenv populate
 
-Change the host, username and password of the database server you intend to use.
+# reload the shell so the credentials are loaded
+reload
 
-### Install Dependencies
-
-The box.json stores all of the dependencies of the app, these are not stored in the repo, so please use the command below to install these dependencies ( using ForgeBox behind the scenes )
-
-`box install`
+# run our migrations
+migrate up
+```
 
 ### Start the app
 
-Once you have your .env, your db loaded, and your box.json dependencies installed, you can start your server.
+Once you have your `.env`, your db loaded, and your `box.json` dependencies installed, you can start your server.
 
 `box start`
 
@@ -67,9 +55,14 @@ http://127.0.0.1:60146/cbswagger
 
 #### What can you do with the API Docs?
 
+- Immport into Insomnia: https://insomnia.rest/
 - Import into Postman: https://www.postman.com/
 - Use with Swagger.io site: https://editor.swagger.io/
 
 ### View Route Visualizer
 
 http://127.0.0.1:60146/route-visualizer
+
+### View CBDebugger
+
+http://127.0.0.1:60146/cbdebugger

@@ -1,8 +1,9 @@
 component {
 
-	function configure() {
+	function configure(){
+		// Version Entry Point
 		route( "/", "echo.index" );
-		route( "/:handler/:action" ).end();
+		// No more routing as we are using convention based routing thanks to ColdBox
 	}
 
 }

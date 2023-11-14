@@ -1,80 +1,68 @@
 /**
  * I am the Rant Service v3
  */
-component extends="v3.models.BaseService" singleton accessors="true" {
+component
+	extends="v3.models.BaseService"
+	singleton
+	accessors="true"
+{
 
 	/**
 	 * Constructor
 	 */
-	RantService function init() {
+	RantService function init(){
 		super.init(
 			entityName = "rant",
-			tableName = "rants",
-			parameterName = "rantID",
+			tableName  = "rants",
 			moduleName = "v3"
 		)
 		return this;
 	}
 
-	function list() {
-		return queryExecute( "select * from rants ORDER BY createdDate DESC", {}, { returntype: "array" } );
-	}
-
-	function get( required numeric rantID ) {
+	array function list(){
 		return queryExecute(
-			"select * from rants
-			where id = :rantID",
-			{ rantID: { value: "#rantID#", type: "cf_sql_numeric" } },
-			{ returntype: "array" }
+			"select * from rants ORDER BY createdDate DESC",
+			{},
+			{ returnType : "array" }
 		);
 	}
 
-	function delete( required numeric rantID ) {
-		queryExecute(
-			"delete from rants
-			where id = :rantID",
-			{ rantID: { value: "#rantID#", type: "cf_sql_numeric" } },
-			{ result: "local.result" }
-		);
-		return local.result;
-	}
-
-	function create( required body, required numeric userID ) {
-		var now = now();
+	function create( required body, required userId ){
+		var now    = now();
+		var newKey = createUUID();
 		queryExecute(
 			"insert into rants
 			set
-			body = :body,
-			userID = :userID,
-			createdDate = :createdDate,
-			modifiedDate = :modifiedDate
+				id 				= :rantId,
+				body         	= :body,
+				userId       	= :userId
 			",
 			{
-				body: { value: "#body#", type: "cf_sql_longvarchar" },
-				userID: { value: "#userID#", type: "cf_sql_numeric" },
-				createdDate: { value: "#now#", type: "cf_sql_timestamp" },
-				modifiedDate: { value: "#now#", type: "cf_sql_timestamp" }
+				rantId : newKey,
+				body   : { value : "#body#", cfsqltype : "cf_sql_longvarchar" },
+				userId : arguments.userId
 			},
-			{ result: "local.result" }
+			{ result : "local.result" }
 		);
+		local.result.generatedKey = newKey;
 		return local.result;
 	}
 
-	function update( required body,  ) {
+	function update( required body, required rantId ){
 		var now = now();
 		queryExecute(
 			"update rants
-			set
-			body = :body,
-			modifiedDate = :modifiedDate
-			where id = :rantID
+				set
+				body        = :body,
+				updatedDate = :updatedDate
+				where id    = :rantId
 			",
 			{
-				rantID: { value: "#rantID#", type: "cf_sql_integer" },
-				body: { value: "#body#", type: "cf_sql_longvarchar" },
-				modifiedDate: { value: "#now#", type: "cf_sql_timestamp" }
+				rantId      : arguments.rantId,
+				body        : { value : "#body#", cfsqltype : "cf_sql_longvarchar" },
+				updatedDate : { value : "#now#", cfsqltype : "cf_sql_timestamp" }
 			},
-			{ result: "local.result" }
+			{ result : "local.result" }
 		);
 		return local.result;
 	}

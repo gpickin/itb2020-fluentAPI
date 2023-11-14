@@ -1,0 +1,99 @@
+name: Test Suites
+
+# We are a reusable Workflow only
+on:
+  workflow_call:
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-20.04
+    env:
+      DB_USER: root
+      DB_PASSWORD: root
+    strategy:
+      fail-fast: false
+      matrix:
+        cfengine: [ "lucee", "adobe" ]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: "adopt"
+          java-version: "11"
+
+      - name: Setup Database and Fixtures
+        run: |
+          sudo systemctl start mysql.service
+          # Create Database
+          mysql -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }} -e 'CREATE DATABASE fluentapi;'
+          # Import Database
+          mysql -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }} < workbench/database/fluentapi.sql
+
+      - name: Setup Environment For Testing Process
+        run: |
+          # Setup .env
+          touch .env
+          # ENV
+          printf "ENVIRONMENT=development\n" >> .env
+          printf "DB_HOST=localhost\n" >> .env
+          printf "DB_DATABASE=fluentapi\n" >> .env
+          printf "DB_USER=${{ env.DB_USER }}\n" >> .env
+          printf "DB_PASSWORD=${{ env.DB_PASSWORD }}\n" >> .env
+          printf "DB_CLASS=com.mysql.cj.jdbc.Driver\n" >> .env
+          printf "DB_BUNDLEVERSION=8.0.19\n" >> .env
+          printf "DB_BUNDLENAME=com.mysql.cj\n" >> .env
+          printf "CBDEBUGGER_ENABLED=false\n" >> .env
+
+      - name: Setup CommandBox CLI
+        uses: Ortus-Solutions/setup-commandbox@main
+
+      - name: Install Dependencies
+        run: |
+          box install
+
+      - name: Start ${{ matrix.cfengine }} Server
+        run: |
+          box server start serverConfigFile="server-${{ matrix.cfengine }}.json" --noSaveSettings --debug
+          # Install Adobe 2021 cfpm modules
+          if [[ "${{ matrix.cfengine }}" == "adobe@2021" ]] ; then
+            box run-script install:2021
+          fi
+          curl http://127.0.0.1:60146
+
+      - name: Run Tests
+        run: |
+          mkdir -p tests/results
+          box testbox run --verbose outputFile=tests/results/test-results outputFormats=json,antjunit
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: tests/results/**/*.xml
+          check_name: "${{ matrix.cfengine }} Test Results"
+
+      - name: Upload Test Results to Artifacts
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results-${{ matrix.cfengine }}
+          path: |
+            tests/results/**/*
+
+      - name: Failure Debugging Log
+        if: ${{ failure() }}
+        run: |
+          box server log serverConfigFile="server-${{ matrix.cfengine }}.json"
+
+      - name: Upload Debugging Log To Artifacts
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: Failure Debugging Info - ${{ matrix.cfengine }}
+          path: |
+            .engine/**/logs/*
+            .engine/**/WEB-INF/cfusion/logs/*

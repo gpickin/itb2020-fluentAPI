@@ -1,108 +1,79 @@
 /**
  * My RESTFul Rants Event Handler which inherits from the module `api`
+ * Since we inherit from the RestHandler we get lots of goodies like automatic HTTP method protection,
+ * missing routes, invalid routes, and much more.
+ *
+ * @see https://coldbox.ortusbooks.com/digging-deeper/rest-handler
+ * @see https://coldbox.ortusbooks.com/digging-deeper/rest-handler#rest-handler-security
  */
-component extends="api.handlers.BaseHandler" {
+component extends="coldbox.system.RestHandler" {
 
 	// DI
 	property name="rantService" inject="RantService@v4";
 	property name="userService" inject="UserService@v4";
 
-
 	/**
 	 * Returns a list of Rants
 	 */
-	any function index( event, rc, prc ) {
-		prc.response.setData( rantService.listArray() );
-		// prc.response.setData(
-		// 	rantService.list().map( function( rant ) {
-		// 		return rant.getMemento();
-		// 	})
-		// );
+	any function index( event, rc, prc ){
+		prc.response.setData( rantService.list().map( ( rant ) => rant.getMemento() ) );
 	}
 
 	/**
 	 * Returns a single Rant
-	 *
 	 */
-	function show( event, rc, prc ) {
-		var validationResults = validateOrFail(
-			target = rc,
-			constraints = { rantID: { required: true, type: "numeric" } }
-		);
-		prc.response.setData( rantService.getOrFail( rc.rantID ).getMemento() )
+	function show( event, rc, prc ){
+		validateOrFail( target = rc, constraints = { rantId : { required : true, type : "uuid" } } );
+		prc.response.setData( rantService.getOrFail( rc.rantId ).getMemento() );
 	}
 
 	/**
 	 * Deletes a single Rant
-	 *
 	 */
-	function delete( event, rc, prc ) {
-		var validationResults = validateOrFail(
-			target = rc,
-			constraints = { rantID: { required: true, type: "numeric" } }
-		);
-		rantService.existsOrFail( rc.rantID )
-		var result = rantService.delete( rc.rantID );
+	function delete( event, rc, prc ){
+		validateOrFail( target = rc, constraints = { rantId : { required : true, type : "uuid" } } );
+		rantService.existsOrFail( rc.rantId );
+		rantService.delete( rc.rantId );
 		prc.response.addMessage( "Rant deleted" );
 	}
 
 	/**
 	 * Creates a new Rant
-	 *
 	 */
-	function create( event, rc, prc ) {
-		var validationResults = validateOrFail(
-			target = rc,
-			constraints = { userID: { required: true, type: "numeric" }, body: { required: true } }
-		);
-		userService.existsOrFail( rc.userID );
+	function create( event, rc, prc ){
 		var rant = rantService.new();
-		rant.setBody( rc.body );
-		rant.setUserID( rc.userID );
-		// var rant = populateModel( rantService.new() );
-		validate(
-			target = rant,
-			constraints = { body: { required: true }, userID: { required: true, type: "numeric" } }
-		);
 
-		var result = rantService.create( rant );
-		prc.response.setData( { "rantID": result.getID() } );
+		validateOrFail( target = rc, constraints = rant.constraints );
+
+		userService.existsOrFail( rc.userId );
+
+		rant.setBody( rc.body );
+		rant.setUserId( rc.userId );
+
+		rantService.create( rant );
+
+		prc.response.setData( rant.getMemento() );
 		prc.response.addMessage( "Rant created" );
 	}
 
 	/**
 	 * Updates an Existing Rant
-	 *
 	 */
-	function update( event, rc, prc ) {
-		var validationResults = validateOrFail(
-			target = rc,
-			constraints = {
-				rantID: { required: true, type: "numeric" },
-				body: { required: true },
-				userID: { required: true, type: "numeric" }
-			}
-		);
+	function update( event, rc, prc ){
+		validateOrFail( target = rc, constraints = { rantId : { required : true, type : "uuid" } } );
 
-		rantService.existsOrFail( rc.rantID );
-		userService.existsOrFail( rc.userID );
+		var rant = rantService.getOrFail( rc.rantId );
 
-		var rant = rantService.getOrFail( rc.rantID );
-		// rant.setBody( rc.body );
-		// rant.setUserID( rc.userID );
-		// rant.setID( rc.rantID )
+		validateOrFail( target = rc, constraints = rant.constraints );
 
-		var rant = populateModel( model = rantService.new() );
-		rant.setID( rc.rantID )
-		validate(
-			target = rant,
-			constraints = {
-				id: { required: true, type: "numeric" },
-				body: { required: true },
-				userID: { required: true, type: "numeric" }
-			}
-		);
-		var result = rantService.update( rant );
+		userService.existsOrFail( rc.userId );
+
+		rant.setBody( rc.body );
+		rant.setuserId( rc.userId );
+
+		rantService.update( rant );
+
+		prc.response.setData( rant.getMemento() );
 		prc.response.addMessage( "Rant Updated" );
 	}
 

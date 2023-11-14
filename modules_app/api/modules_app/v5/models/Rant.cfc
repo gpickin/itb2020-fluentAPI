@@ -7,36 +7,45 @@ component extends="v5.models.BaseEntity" accessors="true" {
 	property name="userService" inject="UserService@v5";
 
 	// Properties
-	property name="id" type="string";
-	property name="body" type="string";
+	property name="id"          type="string";
+	property name="body"        type="string";
 	property name="createdDate" type="date";
-	property name="modifiedDate" type="date";
-	property name="userID" type="string";
+	property name="updatedDate" type="date";
+	property name="userId"      type="string";
 
+	// Validation Constraints
+	this.constraints = {
+		body   : { required : true },
+		userId : {
+			required : true,
+			type     : "uuid",
+			udf      : ( value, target ) => {
+				if ( isNull( arguments.value ) || !isValid( "uuid", arguments.value ) ) return false;
+				return userService.exists( arguments.value );
+			},
+			udfMessage : "User ({rejectedValue}) not found"
+		}
+	};
 
 	/**
 	 * Constructor
 	 */
-	Rant function init() {
-		super.init( entityName = "rant", moduleName = "v5" );
-		return this;
+	Rant function init(){
+		return super.init( entityName = "rant" );
 	}
 
 	/**
-	 * getUser
+	 * Get related user object
 	 */
-	function getUser() {
-		return userService.get( getUserID() );
+	function getUser(){
+		return userService.get( getUserId() );
 	}
 
-	// function getMemento() {
-	// 	return {
-	// 		"id" = getID(),
-	// 		"body" = getBody(),
-	// 		"createdDate" = dateFormat( getCreatedDate(), "long" ),
-	// 		"modifiedDate" = dateFormat( getModifiedDate(), "long" ),
-	// 		"userId" = getUserID()
-	// 	};
-	// }
+	/**
+	 * Does this rant have a user assigned to it already
+	 */
+	boolean function hasUser(){
+		return !isNull( variables.userId ) && len( variables.userId );
+	}
 
 }

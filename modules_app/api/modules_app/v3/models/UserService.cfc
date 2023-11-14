@@ -1,28 +1,22 @@
 /**
  * I am the User Service v3
  */
-component extends="v3.models.BaseService" singleton accessors="true" {
+component
+	extends="v3.models.BaseService"
+	singleton
+	accessors="true"
+{
 
 	/**
 	 * Constructor
 	 */
-	UserService function init() {
+	UserService function init(){
 		super.init(
 			entityName = "user",
-			tableName = "users",
-			parameterName = "userID",
+			tableName  = "users",
 			moduleName = "v3"
 		)
 		return this;
-	}
-
-	function get( required numeric userID ) {
-		return queryExecute(
-			"select * from users
-			where id = :userID",
-			{ userID: { value: "#userID#", type: "cf_sql_numeric" } },
-			{ returntype: "array" }
-		);
 	}
 
 }

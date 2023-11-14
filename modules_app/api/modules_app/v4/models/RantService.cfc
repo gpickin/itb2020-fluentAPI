@@ -1,106 +1,91 @@
 /**
  * I am the Rant Service v4
  */
-component extends="v4.models.BaseService" singleton accessors="true" {
-
-	// To populate objects from data
-	property name="populator" inject="wirebox:populator";
+component
+	extends="v4.models.BaseService"
+	singleton
+	accessors="true"
+{
 
 	/**
 	 * Constructor
 	 */
-	RantService function init() {
+	RantService function init(){
 		super.init(
-			entityName = "rant",
-			tableName = "rants",
-			parameterName = "rantID",
+			entityName = "Rant",
+			tableName  = "rants",
 			moduleName = "v4"
 		)
 		return this;
 	}
 
-	Rant function new() provider="Rant@v4" {
+	/**
+	 * Let WireBox build new Rant objects for me
+	 */
+	Rant function new() provider="Rant@v4"{
 	}
 
-	function list() {
+	array function list(){
 		return this
 			.listArray()
-			.map( function( rant ) {
+			.map( function( rant ){
 				return populator.populateFromStruct( new (), rant );
 			} );
 	}
 
-	function listArray() {
-		return queryExecute( "select * from rants ORDER BY createdDate DESC", {}, { returntype: "array" } )
-	}
-
-	Rant function get( required numeric rantID ) {
-		var q = queryExecute(
-			"select * from rants
-			where id = :rantID",
-			{ rantID: { value: "#rantID#", type: "cf_sql_numeric" } },
-			{ returntype: "array" }
+	array function listArray(){
+		return queryExecute(
+			"select * from rants ORDER BY createdDate DESC",
+			{},
+			{ returnType : "array" }
 		);
-		if ( q.len() ) {
-			return populator.populateFromStruct( new (), q[ 1 ] );
-		} else {
-			return new ()
-		}
 	}
 
-	function delete( required numeric rantID ) {
-		queryExecute(
-			"delete from rants
-			where id = :rantID",
-			{ rantID: { value: "#rantID#", type: "cf_sql_numeric" } },
-			{ result: "local.result" }
-		);
-		return local.result;
-	}
-
-	function create( required Rant rant ) {
+	function create( required Rant rant ){
 		var now = now();
-		arguments.rant.setCreatedDate( now );
-		arguments.rant.setModifiedDate( now );
+		arguments.rant.setId( createUUID() );
 
 		queryExecute(
 			"insert into rants
-			set
-			body = :body,
-			userID = :userID,
-			createdDate = :createdDate,
-			modifiedDate = :modifiedDate
+				set
+					id 			= :rantId,
+					body        = :body,
+					userId      = :userId
 			",
 			{
-				body: { value: "#arguments.rant.getBody()#", type: "cf_sql_longvarchar" },
-				userID: { value: "#arguments.rant.getuserID()#", type: "cf_sql_numeric" },
-				createdDate: { value: "#arguments.rant.getCreatedDate()#", type: "cf_sql_timestamp" },
-				modifiedDate: { value: "#arguments.rant.getModifiedDate()#", type: "cf_sql_timestamp" }
-			},
-			{ result: "local.result" }
+				rantId : arguments.rant.getId(),
+				body   : {
+					value     : "#arguments.rant.getBody()#",
+					cfsqltype : "cf_sql_longvarchar"
+				},
+				userId : arguments.rant.getuserId()
+			}
 		);
-		arguments.rant.setID( local.result.generatedKey );
 		return arguments.rant;
 	}
 
-	function update( required Rant rant ) {
-		var now = now();
-		arguments.rant.setModifiedDate( now );
+	function update( required Rant rant ){
+		arguments.rant.setUpdatedDate( now() );
 		queryExecute(
 			"update rants
-			set
-			body = :body,
-			modifiedDate = :modifiedDate
-			where id = :rantID
+				set
+					body         	= :body,
+					updatedDate 	= :updatedDate
+				where id     	= :rantId
 			",
 			{
-				rantID: { value: "#arguments.rant.getID()#", type: "cf_sql_integer" },
-				body: { value: "#arguments.rant.getBody()#", type: "cf_sql_longvarchar" },
-				modifiedDate: { value: "#arguments.rant.getModifiedDate()#", type: "cf_sql_timestamp" }
-			},
-			{ result: "local.result" }
+				rantId : arguments.rant.getID(),
+				body   : {
+					value     : "#arguments.rant.getBody()#",
+					cfsqltype : "cf_sql_longvarchar"
+				},
+				updatedDate : {
+					value     : "#arguments.rant.getUpdatedDate()#",
+					cfsqltype : "cf_sql_timestamp"
+				}
+			}
 		);
-		return local.result;
+		return arguments.rant;
 	}
 
 }

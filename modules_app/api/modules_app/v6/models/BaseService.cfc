@@ -1,71 +1,70 @@
 /**
- * I am the Base Service
+ * I am the Base Service v6
  */
 component accessors="true" {
 
+	// DI
+	property name="wirebox"   inject="wirebox";
+	property name="populator" inject="wirebox:populator";
+
+	// Properties
 	property name="entityName";
 	property name="tableName";
 	property name="primaryKey";
-	// property name="parameterName";
 	property name="serviceName";
 	property name="moduleName";
 
+	/**
+	 * Constructorhonduras
+	 *
+	 * @entityName  The name of the entity so we can reference it for calls to related DAO and Service. Set as optional for backwards
+	 * @tableName   The table name this service is bound to
+	 * @primaryKey  The primary key to use for operations
+	 * @moduleName  The name of the module for the objects
+	 * @serviceName The name of the service that manages the entity
+	 */
 	function init(
 		entityName,
 		tableName,
-		primaryKey = "id",
-		// parameterName="",
-		serviceName = "",
-		moduleName = ""
-	) {
+		primaryKey  = "id",
+		moduleName  = "v6",
+		serviceName = "#arguments.entityName#Service@#arguments.moduleName#"
+	){
 		setEntityName( arguments.entityName );
 		setTableName( arguments.tableName );
 		setPrimaryKey( arguments.primaryKey );
-		// if( arguments.parameterName != "" ){
-		// 	setParameterName( arguments.parameterName );
-		// } else {
-		// 	setParameterName( arguments.primaryKey );
-		// }
-		if ( arguments.serviceName != "" ) {
-			setServiceName( arguments.serviceName );
-		} else {
-			setServiceName( arguments.entityName & "Service" );
-		}
+		setServiceName( arguments.serviceName );
 		setModuleName( arguments.moduleName );
-		if ( arguments.moduleName != "" ) {
-			setServiceName( getServiceName() & "@" & arguments.moduleName );
-		}
+
+		return this;
 	}
 
 	/**
-	 * Return a new Entity, empty or pre-populated with passed in data
+	 * Get a new entity object according to entity name
 	 *
-	 * @data Data to populate the new Entity with
+	 * @properties The initial properties to populate the entity with
+	 *
+	 * @return A brand spanking new entity object
 	 */
-	function new( struct data = {} ) {
-		// if( data.isEmpty() ){
-
-		// } else {
-		var modelName = getEntityName();
-		if ( getModuleName() != "" ) {
-			modelName = modelName & "@" & getModuleName();
-		}
-		return populator.populateFromStruct( target = wireBox.getInstance( "#modelName#" ), memento = arguments.data )
-		// }
+	function new( struct properties = {} ){
+		var entity = wirebox.getInstance( "#getEntityname()#@#getModuleName()#" );
+		return populator.populateFromStruct( target = entity, memento = arguments.properties );
 	}
 
 	/**
-	 * Check to see if there is a row with a matching primary key in the database. Much faster than a full entity query and object load
+	 * Check to see if there is a row with a matching primary key in the database.
+	 * Much faster than a full entity query and object load
+	 *
+	 * @id The primary key id to verify
 	 *
 	 * @return Returns true if there is a row with the matching Primary Key, otherwise returns false
 	 */
-	boolean function exists() {
+	boolean function exists( required id ){
 		return booleanFormat(
 			queryExecute(
-				"select id from #getTableName()#
-				where #getPrimaryKey()# = :id",
-				{ id: { value: arguments[ 1 ], type: "cf_sql_numeric" } },
-				{ returntype: "array" }
+				"select #getPrimaryKey()# from #getTableName()#
+					where #getPrimaryKey()# = :id",
+				{ id : arguments.id }
 			).len()
 		)
 	}
@@ -73,55 +72,64 @@ component accessors="true" {
 	/**
 	 * Check to see if there is a row with a matching primary key in the database. Much faster than a full entity query and object load
 	 *
+	 * @id The primary key id to verify
+	 *
 	 * @return Returns true if there is a row with the matching Primary Key
+	 *
 	 * @throws EntityNotFound if the entity is not found
 	 */
-	function existsOrFail() {
+	boolean function existsOrFail( required id ){
 		if ( exists( argumentCollection = arguments ) ) {
 			return true;
-		} else {
-			throw( type = "EntityNotFound", message = "#entityName# Not Found" );
 		}
+		throw( type = "EntityNotFound", message = "#getEntityName()# Not Found" );
 	}
 
 	/**
 	 * Query and load an entity if possible, else throw an error
 	 *
+	 * @id The primary key id to retrieve
+	 *
 	 * @return Returns the Entity if there is a row with the matching Primary Key
+	 *
 	 * @throws EntityNotFound if the entity is not found
 	 */
-	function getOrFail() {
-		var maybeEntity = this.get( argumentCollection = arguments );
-		if ( isNull( maybeEntity ) || !maybeEntity.isLoaded() ) {
+	function getOrFail( required id ){
+		var maybeEntity = this.get( arguments.id );
+		if ( !maybeEntity.isLoaded() ) {
 			throw( type = "EntityNotFound", message = "#getEntityName()# Not Found" );
 		}
 		return maybeEntity;
 	}
 
 	/**
-	 * Helper to get Entity Constraints
+	 * Try to get an entity from the requested id
 	 *
-	 * @constraintsKeyName The name of the variable with the entity constraints inside of the entity. Defaults to the convention of `constraints`
+	 * @id The primary key id to retrieve
 	 *
-	 * @return a CBValidation compliant struct of Entity Constraints
+	 * @return Returns the Entity if there is a row with the matching Primary Key or an empty entity if not found
 	 */
-	function getConstraints( string constraintsKeyName = "constraints" ) {
-		return new ( {} )[ arguments.constraintsKeyName ];
+	function get( required id ){
+		return queryExecute(
+			"select * from #getTableName()#
+				where #getPrimaryKey()# = :id
+			",
+			{ id : arguments.id }
+		).reduce( ( result, row ) => populator.populateFromStruct( result, row ), new () );
 	}
 
-
 	/**
-	 * Helper to add a structure of Constraints into the existing entity constraints and return the combined struct
-	 *
-	 * @newConstraints The new struct full of constraints to add
-	 * @constraintsKeyName The name of the variable with the entity constraints inside of the entity. Defaults to the convention of `constraints`
-	 *
-	 * @return a CBValidation compliant struct of Entity Constraints
+	 * Base delete entity
 	 */
-	function addConstraints( newConstraints = {}, constraintsKeyName = "constraints" ) {
-		var constraints = getConstraints( arguments.constraintsKeyName );
-		constraints.append( arguments.newConstraints );
-		return constraints;
+	function delete( required id ){
+		queryExecute(
+			"delete from #getTableName()#
+				where #getPrimaryKey()# = :id
+			",
+			{ id : arguments.id },
+			{ result : "local.result" }
+		);
+		return local.result;
 	}
 
 }

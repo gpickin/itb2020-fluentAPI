@@ -6,26 +6,24 @@ component singleton accessors="true" {
 	/**
 	 * Constructor
 	 */
-	UserService function init() {
+	UserService function init(){
 		return this;
 	}
 
-	function get( required numeric userID ) {
+	struct function get( required string userId ){
 		return queryExecute(
 			"select * from users
-			where id = :userID",
-			{ userID: { value: "#userID#", type: "cf_sql_numeric" } },
-			{ returntype: "array" }
-		);
+				where id = :userId",
+			{ userId : arguments.userId }
+		).reduce( ( result, row ) => row, {} );
 	}
 
-	boolean function exists( required numeric userID ) {
+	boolean function exists( required string userId ){
 		return booleanFormat(
 			queryExecute(
 				"select id from users
-				where id = :userID",
-				{ userID: { value: "#userID#", type: "cf_sql_numeric" } },
-				{ returntype: "array" }
+					where id = :userId",
+				{ userId : arguments.userId }
 			).len()
 		)
 	}

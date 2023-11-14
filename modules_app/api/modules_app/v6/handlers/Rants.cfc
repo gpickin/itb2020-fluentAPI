@@ -1,101 +1,130 @@
 /**
  * My RESTFul Rants Event Handler which inherits from the module `api`
+ * Since we inherit from the RestHandler we get lots of goodies like automatic HTTP method protection,
+ * missing routes, invalid routes, and much more.
+ *
+ * @see https://coldbox.ortusbooks.com/digging-deeper/rest-handler
+ * @see https://coldbox.ortusbooks.com/digging-deeper/rest-handler#rest-handler-security
  */
-component displayName="Rants" extends="api.handlers.BaseHandler" {
+component extends="coldbox.system.RestHandler" {
 
 	// DI
 	property name="rantService" inject="RantService@v6";
 	property name="userService" inject="UserService@v6";
 
+	/**
+	 * Param global incoming variables for the endpoint
+	 */
+	any function preHandler( event, rc, prc, action, eventArguments ){
+		param rc.rantId         = "";
+		param rc.includes       = "";
+		param rc.excludes       = "";
+		param rc.ignoreDefaults = false;
+	}
 
 	/**
-	 * @route (GET) /api/v6/rants
-	 *
 	 * Returns a list of Rants
 	 *
-	 * @response-200 /resources/apidocs/api-v6/Rants/index/responses.json##200
+	 * @x-route      (GET) /api/v6/rants
+	 * @response-200 ~api-v6/Rants/index/responses.json##200
 	 */
-	any function index( event, rc, prc ) {
-		prc.response.setData( rantService.listArray() );
-	}
-
-	/**
-	 * @route (GET) /api/v6/rants/:rantID
-	 *
-	 * Display a single Rant.
-	 *
-	 * @x-parameters /resources/apidocs/api-v6/Rants/show/parameters.json##parameters
-	 * @response-200 /resources/apidocs/api-v6/Rants/show/responses.json##200
-	 * @response-404 /resources/apidocs/_responses/rant.404.json
-	 */
-	function show( event, rc, prc ) {
-		var validationResults = validateOrFail(
-			target = rc,
-			constraints = { rantID: { required: true, type: "numeric" } }
+	any function index( event, rc, prc ) cache=true cacheTimeout=60{
+		prc.response.setData(
+			rantService
+				.list()
+				.map( ( rant ) => rant.getMemento(
+					includes      : rc.includes,
+					excludes      : rc.excludes,
+					ignoreDefaults: rc.ignoreDefaults
+				) )
 		);
-		prc.response.setData( rantService.getOrFail( rc.rantID ).getMemento() )
 	}
 
 	/**
-	 * @route (DELETE) /api/v6/rants/:rantID
+	 * Return a single Rant by id
 	 *
+	 * @x-route      (GET) /api/v6/rants/:rantId
+	 * @x-parameters ~api-v6/Rants/show/parameters.json##parameters
+	 * @response-200 ~api-v6/Rants/show/responses.json##200
+	 * @response-404 ~_responses/rant.404.json
+	 */
+	function show( event, rc, prc ) cache=true cacheTimeout=60{
+		prc.response.setData(
+			rantService
+				.getOrFail( rc.rantId )
+				.getMemento(
+					includes      : rc.includes,
+					excludes      : rc.excludes,
+					ignoreDefaults: rc.ignoreDefaults
+				)
+		);
+	}
+
+	/**
 	 * Delete a single Rant.
 	 *
-	 * @x-parameters /resources/apidocs/api-v6/Rants/delete/parameters.json##parameters
-	 * @response-200 /resources/apidocs/api-v6/Rants/delete/responses.json##200
-	 * @response-404 /resources/apidocs/_responses/rant.404.json
+	 * @x-route      (DELETE) /api/v6/rants/:rantId
+	 * @x-parameters ~api-v6/Rants/delete/parameters.json##parameters
+	 * @response-200 ~api-v6/Rants/delete/responses.json##200
+	 * @response-404 ~_responses/rant.404.json
 	 */
-	function delete( event, rc, prc ) {
-		var validationResults = validateOrFail(
-			target = rc,
-			constraints = { rantID: { required: true, type: "numeric" } }
-		);
-		rantService.getOrFail( rc.rantID ).delete();
+	function delete( event, rc, prc ){
+		rantService.getOrFail( rc.rantId ).delete();
 		prc.response.addMessage( "Rant deleted" );
+		getCache( "template" ).clearAllEvents();
 	}
 
 	/**
-	 * @route (POST) /api/v1/rants
-	 *
 	 * Creates a new Rant.
 	 *
-	 * @requestBody /resources/apidocs/api-v6/Rants/create/requestBody.json
-	 * @response-200 /resources/apidocs/api-v6/Rants/create/responses.json##200
-	 * @response-412 /resources/apidocs/api-v6/Rants/create/responses.json##412
+	 * @x-route      (POST) /api/v1/rants
+	 * @requestBody  ~api-v6/Rants/create/requestBody.json
+	 * @response-200 ~api-v6/Rants/create/responses.json##200
+	 * @response-400 ~api-v6/Rants/create/responses.json##400
 	 */
-	function create( event, rc, prc ) {
-		var validationResults = validateOrFail( target = rc, constraints = rantService.getConstraints() );
-		userService.existsOrFail( rc.userID );
-		var result = rantService
-			.new( validationResults )
-			.validateOrFail( rantService.getConstraints() )
-			.save();
-		prc.response.setData( { "rantID": result.getID() } );
-		prc.response.addMessage( "Rant created" );
+	function create( event, rc, prc ){
+		prc.response
+			.setData(
+				rantService
+					.new( rc )
+					.validateOrFail()
+					.save()
+					.getMemento(
+						includes      : rc.includes,
+						excludes      : rc.excludes,
+						ignoreDefaults: rc.ignoreDefaults
+					)
+			)
+			.addMessage( "Rant created" );
+
+		getCache( "template" ).clearAllEvents();
 	}
 
 	/**
-	 * @route (PUT) /api/v1/rants/:rantID
-	 *
 	 * Update an existing Rant.
 	 *
-	 * @requestBody /resources/apidocs/api-v6/Rants/update/requestBody.json
-	 * @response-200 /resources/apidocs/api-v6/Rants/update/responses.json##200
-	 * @response-412 /resources/apidocs/api-v6/Rants/update/responses.json##412
+	 * @x-route      (PUT) /api/v1/rants/:rantId
+	 * @requestBody  ~api-v6/Rants/update/requestBody.json
+	 * @response-200 ~api-v6/Rants/update/responses.json##200
+	 * @response-400 ~api-v6/Rants/update/responses.json##400
 	 */
-	function update( event, rc, prc ) {
-		var validationResults = validateOrFail(
-			target = rc,
-			constraints = rantService.addConstraints( { rantID: { required: true, type: "numeric" } } )
-		);
-		userService.existsOrFail( rc.userID );
-		rantService
-			.getOrFail( rc.rantID )
-			.populate( validationResults )
-			.setID( rc.rantID )
-			.validateOrFail( constraints = rantService.addConstraints( { ID: { required: true, type: "numeric" } } ) )
-			.save();
-		prc.response.addMessage( "Rant Updated" );
+	function update( event, rc, prc ){
+		prc.response
+			.setData(
+				rantService
+					.getOrFail( rc.rantId )
+					.populate( memento = rc, exclude = "id" )
+					.validateOrFail()
+					.save()
+					.getMemento(
+						includes      : rc.includes,
+						excludes      : rc.excludes,
+						ignoreDefaults: rc.ignoreDefaults
+					)
+			)
+			.addMessage( "Rant Updated" );
+
+		getCache( "template" ).clearAllEvents();
 	}
 
 }
